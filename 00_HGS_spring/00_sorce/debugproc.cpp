@@ -8,7 +8,7 @@
 #include "debugproc.h"
 #include <string.h>
 #include <stdio.h>
-//#include "input.h"
+#include "input.h"
 
 //**********************************************************
 //マクロ定義
@@ -26,7 +26,7 @@ bool g_bDispDebug = false;	//デバッグ表示のON/OFF
 //**********************************************************
 //プロトタイプ宣言
 //**********************************************************
-//void SetManual(void);
+void SetManual(void);
 
 //**********************************************************
 //デバッグONOFF表示メッセージ
@@ -40,13 +40,12 @@ const char *c_apOnOff[DEBUGTYPE_MAX] =
 //**********************************************************
 //デバッグONOFF表示メッセージ
 //**********************************************************
-//const char *c_apMode[MODE_MAX] =
-//{
-//	"タイトル",
-//	"チュートリアル",
-//	"ゲーム",
-//	"ランキング",
-//};
+const char *c_apMode[MODE_MAX] =
+{
+	"タイトル",
+	"ゲーム",
+	"リザルト",
+};
 
 //==========================================================
 //デバッグ表示の初期化処理
@@ -88,12 +87,12 @@ void UninitDebugProc(void)
 void UpdateDebugProc(void)
 {
 	//操作説明設定
-	//SetManual();
+	SetManual();
 
-	//if (GetKeyboardTrigger(DIK_F1) == true)
-	//{//F1キーが押されたとき
-	//	g_bDispDebug = g_bDispDebug ? false : true;
-	//}
+	if (GetKeyboardTrigger(DIK_F1) == true)
+	{//F1キーが押されたとき
+		g_bDispDebug = g_bDispDebug ? false : true;
+	}
 }
 
 //==========================================================
@@ -202,9 +201,9 @@ void PrintDebugProc(const char *fmt, ...)
 //==========================================================
 //表示するテキスト設定
 //==========================================================
-//void SetManual(void)
-//{
-//	//デバッグ変更とFPS
-//	PrintDebugProc("【デバッグ表示】【F1】【FPS】 %d\n", GetFPS());
-//	PrintDebugProc("【現在の画面】[%s]\n", c_apMode[GetMode()]);
-//}
+void SetManual(void)
+{
+	//デバッグ変更とFPS
+	PrintDebugProc("【デバッグ表示】【F1】【FPS】 %d\n", GetFPS());
+	PrintDebugProc("【現在の画面】[%s]\n", c_apMode[GetMode()]);
+}

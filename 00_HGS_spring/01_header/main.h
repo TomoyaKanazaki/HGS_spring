@@ -82,5 +82,7 @@ void Update(void);
 void Draw(void);
 LPDIRECT3DDEVICE9 GetDevice(void);
 void SetMode(MODE NextMode);
+int GetFPS(void);
+MODE GetMode(void);
 
 #endif

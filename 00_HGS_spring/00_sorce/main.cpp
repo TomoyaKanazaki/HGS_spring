@@ -347,6 +347,9 @@ void Update(void)
 {
 	//デバイスの更新
 	UpdateDevice();
+
+	//デバッグプロックの更新
+	UpdateDebugProc();
 	
 	//画面モードに対応した処理を行う
 	switch (g_Mode)
@@ -399,6 +402,11 @@ void Draw(void)
 		default:
 			break;
 		}
+
+#ifdef _DEBUG
+		//デバッグプロックの描画
+		DrawDebugProc();
+#endif
 
 		//描画終了
 		g_pD3DDevice->EndScene();
@@ -455,4 +463,20 @@ void SetMode(MODE NextMode)
 LPDIRECT3DDEVICE9 GetDevice(void)
 {
 	return g_pD3DDevice;
+}
+
+//==========================================
+//  フレームレートの取得
+//==========================================
+int GetFPS()
+{
+	return g_nCountFPS;
+}
+
+//==========================================
+//  現在のモードの取得
+//==========================================
+MODE GetMode()
+{
+	return g_Mode;
 }
