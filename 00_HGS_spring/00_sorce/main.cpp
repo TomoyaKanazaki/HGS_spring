@@ -6,6 +6,7 @@
 //==========================================
 #include <time.h>
 #include "main.h"
+#include "input.h"
 #include "texture.h"
 #include "debugproc.h"
 
@@ -278,6 +279,12 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	g_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
 	g_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_CURRENT);
 
+	//デバイスの初期化処理
+	if (FAILED(InitDevice(hInstance, hWnd)))
+	{
+		return E_FAIL;
+	}
+
 	//各種オブジェクトの初期化処理
 
 	//乱数シードの設定
@@ -325,7 +332,8 @@ void Uninit(void)
 //==========================================
 void Update(void)
 {
-
+	//デバイスの更新
+	UpdateDevice();
 }
 
 //==========================================
