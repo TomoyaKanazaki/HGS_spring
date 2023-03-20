@@ -1,0 +1,102 @@
+#===========================================================
+#
+#	ステージの配置情報 [stage.txt]
+#	Author : 藤田 勇一 & you
+#
+#===========================================================
+#===========================================================
+#	移動範囲の情報
+#===========================================================
+STAGE_LIMITSET
+	NEAR = 2500
+	FAR = -2500
+	RIGHT = 2500
+	LEFT = -2500
+	FIELD = 0
+END_STAGE_LIMITSET
+
+#===========================================================
+#	メッシュドームの配置情報
+#===========================================================
+STAGE_MESHDOMESET
+
+	MESHDOMESET
+		POS = 0 0 0
+		ROT = 0 0 0
+		RADIUS = 50000
+		PARTWIDTH = 16
+		PARTHEIGHT = 16
+	END_MESHDOMESET
+
+END_STAGE_MESHDOMESET
+
+#===========================================================
+#	メッシュシリンダーの配置情報
+#===========================================================
+STAGE_MESHCYLINDERSET
+
+	MESHCYLINDERSET
+        POS = 0 0 0
+        ROT = 0 0 0
+        RADIUS = 30000
+        HEIGHT = 4500
+        PARTWIDTH = 16
+        PARTHEIGHT = 1
+        TYPE = 2
+    END_MESHCYLINDERSET
+
+    MESHCYLINDERSET
+        POS = 0 0 0
+        ROT = 0 120 0
+        RADIUS = 25000
+        HEIGHT = 3500
+        PARTWIDTH = 12
+        PARTHEIGHT = 1
+        TYPE = 1
+    END_MESHCYLINDERSET
+
+    MESHCYLINDERSET
+        POS = 0 0 0
+        ROT = 0 60 0
+        RADIUS = 20000
+        HEIGHT = 2500
+        PARTWIDTH = 8
+        PARTHEIGHT = 1
+        TYPE = 0
+    END_MESHCYLINDERSET
+
+END_STAGE_MESHCYLINDERSET
+
+#===========================================================
+#	メッシュフェールドの配置情報
+#===========================================================
+STAGE_MESHFIELDSET
+
+	MESHFIELDSET
+		POS = 0 0 0
+		ROT = 0 0 0
+		WIDTH = 100000
+		HEIGHT = 100000
+		PARTWIDTH = 100
+		PARTHEIGHT = 100
+		TYPE = 4
+	END_MESHFIELDSET
+	
+END_STAGE_MESHFIELDSET
+
+#===========================================================
+#	メッシュウォールの配置情報
+#===========================================================
+STAGE_MESHWALLSET
+
+	MESHWALLSET
+		POS = 7000 0 -4500
+		ROT = 0 90 0
+		WIDTH = 4000
+		HEIGHT = 10
+		PARTWIDTH = 8
+		PARTHEIGHT = 1
+		TYPE = 0
+	END_MESHWALLSET
+
+END_STAGE_MESHWALLSET

@@ -8,9 +8,7 @@
 //	インクルードファイル
 //**********************************************************************************************************************
 #include "main.h"
-#include "calculation.h"
 #include "meshfield.h"
-#include "player.h"
 
 //**********************************************************************************************************************
 //	マクロ定義
@@ -442,53 +440,6 @@ void SetMeshField(D3DXVECTOR3 pos, D3DXVECTOR3 rot, float fWidth, float fHeight,
 }
 
 //======================================================================================================================
-//	メッシュフィールドとの当たり判定
-//======================================================================================================================
-float CollisionMeshField(D3DXVECTOR3 pos)
-{
-	// 変数を宣言
-	float fLandPosY = GetLimitStage().fField;		// 着地予定の y座標
-
-	// 変数配列を宣言
-	D3DXVECTOR3 vecPos[4];	// 頂点位置 ([※] 0：右上　1：左上　2：左下　3：右下)
-
-	for (int nCntMeshField = 0; nCntMeshField < MAX_MESHFIELD; nCntMeshField++)
-	{ // メッシュフィールドの最大表示数分繰り返す
-
-		if (g_aMeshField[nCntMeshField].bUse == true)
-		{ // メッシュフィールドが使用されている場合
-
-			// 四頂点の位置の計算
-			VecSizePos
-			( // 引数
-				&vecPos[0],
-				g_aMeshField[nCntMeshField].pos,	// 絶対座標
-				g_aMeshField[nCntMeshField].rot,	// 向き
-				g_aMeshField[nCntMeshField].fWidth,	// 横幅
-				g_aMeshField[nCntMeshField].fHeight	// 縦幅
-			);
-
-			if (LineOuterProduct(vecPos[0], vecPos[1], pos) < 0
-			&&  LineOuterProduct(vecPos[1], vecPos[2], pos) < 0
-			&&  LineOuterProduct(vecPos[2], vecPos[3], pos) < 0
-			&&  LineOuterProduct(vecPos[3], vecPos[0], pos) < 0)
-			{ // 四辺の内側にいる場合 (当たっている場合)
-
-				if (fLandPosY < g_aMeshField[nCntMeshField].pos.y)
-				{ // 現在の着地点よりメッシュフィールドの方が上の場合
-
-					// 現在の着地点にメッシュフィールドの座標を設定
-					fLandPosY = g_aMeshField[nCntMeshField].pos.y;
-				}
-			}
-		}
-	}
-
-	// 着地する y座標を返す
-	return fLandPosY;
-}
-
-//======================================================================================================================
 //	メッシュフィールドの取得処理
 //======================================================================================================================
 MeshField *GetMeshField(void)
@@ -519,7 +470,7 @@ void TxtSetMeshField(void)
 	FILE *pFile;				// ファイルポインタ
 
 	// ファイルを読み込み形式で開く
-	pFile = (GetMode() == MODE_TUTORIAL) ? fopen(TUTORIAL_STAGE_SETUP_TXT, "r") : fopen(GAME_STAGE_SETUP_TXT, "r");
+	pFile = fopen(STAGE_SETUP_TXT, "r");
 
 	if (pFile != NULL)
 	{ // ファイルが開けた場合

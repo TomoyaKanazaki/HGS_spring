@@ -32,10 +32,12 @@
 //==========================================
 #define SCREEN_WIDTH (1280) //ウィンドウの幅
 #define SCREEN_HEIGHT (720) //ウィンドウの高さ
+#define MAX_STRING (1280) // テキスト読み込みの文字の最大数
 #define FVF_VERTEX_2D (D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1)
 #define FVF_VERTEX_3D (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE | D3DFVF_TEX1)
 #define CLASS_NAME "WindowClass"
 #define WINDOW_NAME "HGS_spring"
+#define STAGE_SETUP_TXT "02_data\\00_TXT\\stage.txt" // ステージ配置のセットアップテキスト
 
 //==========================================
 //  頂点座標[2D]の構造体を定義

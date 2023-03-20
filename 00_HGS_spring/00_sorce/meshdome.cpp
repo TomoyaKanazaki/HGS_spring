@@ -9,7 +9,6 @@
 //**********************************************************************************************************************
 #include "main.h"
 #include "meshdome.h"
-#include "weather.h"
 
 //**********************************************************************************************************************
 //	マクロ定義
@@ -76,7 +75,6 @@ void InitMeshDome(void)
 	D3DXVECTOR3 vecNor;							// 法線ベクトルの計算用
 	float       fRotWidth, fRotHeight;			// 頂点位置の方向の計算用
 	int         nNumVtx = 0;					// 頂点数の計測用
-	WEATHERTYPE weather = GetWeather();			// 天気
 
 	// ポインタを宣言
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();	// デバイスへのポインタ
@@ -175,36 +173,8 @@ void InitMeshDome(void)
 					// 法線ベクトルの設定
 					pVtx[0].nor = vecNor;
 
-					switch (weather)
-					{
-					case WEATHERTYPE_SUNNY:		// 晴れ
-
-						// 頂点カラーの設定
-						pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-
-						break;					// 抜け出す
-
-					case WEATHERTYPE_RAIN:		// 雨
-
-						// 頂点カラーの設定
-						pVtx[0].col = D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f);
-
-						break;					// 抜け出す
-
-					case WEATHERTYPE_SNOW:		// 雪
-
-						// 頂点カラーの設定
-						pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-
-						break;					// 抜け出す
-
-					case WEATHERTYPE_THUNDER:	// 雷雨
-
-						// 頂点カラーの設定
-						pVtx[0].col = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f);
-
-						break;					// 抜け出す
-					}
+					// 頂点カラーの設定
+					pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
 					// テクスチャ座標の設定
 					pVtx[0].tex = D3DXVECTOR2
@@ -432,7 +402,7 @@ void TxtSetMeshDome(void)
 	FILE *pFile;				// ファイルポインタ
 
 	// ファイルを読み込み形式で開く
-	pFile = (GetMode() == MODE_TUTORIAL) ? fopen(TUTORIAL_STAGE_SETUP_TXT, "r") : fopen(GAME_STAGE_SETUP_TXT, "r");
+	pFile = fopen(STAGE_SETUP_TXT, "r");
 
 	if (pFile != NULL)
 	{ // ファイルが開けた場合

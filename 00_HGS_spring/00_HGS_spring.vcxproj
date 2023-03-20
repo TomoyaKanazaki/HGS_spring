@@ -173,6 +173,10 @@
     <ClCompile Include="00_sorce\input.cpp" />
     <ClCompile Include="00_sorce\light.cpp" />
     <ClCompile Include="00_sorce\main.cpp" />
+    <ClCompile Include="00_sorce\meshcylinder.cpp" />
+    <ClCompile Include="00_sorce\meshdome.cpp" />
+    <ClCompile Include="00_sorce\meshfield.cpp" />
+    <ClCompile Include="00_sorce\meshwall.cpp" />
     <ClCompile Include="00_sorce\model.cpp" />
     <ClCompile Include="00_sorce\polygon.cpp" />
     <ClCompile Include="00_sorce\texture.cpp" />
