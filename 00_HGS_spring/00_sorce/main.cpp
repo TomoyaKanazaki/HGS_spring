@@ -8,6 +8,10 @@
 #include "main.h"
 #include "texture.h"
 #include "debugproc.h"
+#include "fade.h"
+#include "title.h"
+#include "game.h"
+#include "result.h"
 
 //==========================================
 //  グローバル変数宣言
@@ -17,9 +21,9 @@ LPDIRECT3DDEVICE9 g_pD3DDevice = NULL; //Direct3Dデバイスへのポインタ
 int g_nCountFPS = 0; //FPSカウンタ
 
 #ifdef _DEBUG
-
+MODE g_Mode = MODE_TITLE; //現在の画面モード (デバッグモードの初期状態)
 #else
-
+MODE g_Mode = MODE_TITLE; //現在の画面モード (リリースモードの初期状態)
 #endif //_DEBUG
 
 //==========================================
@@ -194,6 +198,7 @@ LRESULT CALLBACK WindowsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 //==========================================
 HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 {
+	//ローカル変数宣言
 	D3DDISPLAYMODE d3ddm; //ディスプレイモード
 	D3DPRESENT_PARAMETERS d3dpp; //プレゼンテーションパラメータ
 
@@ -289,6 +294,9 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	//テクスチャの初期化
 	InitTexture();
 
+	//フェードの初期化
+	InitFade(g_Mode);
+
 	return S_OK;
 }
 
@@ -304,6 +312,11 @@ void Uninit(void)
 
 	//テクスチャの終了
 	UninitTexture();
+
+	//全画面モードの終了
+	UninitTitle();
+	UninitGame();
+	UninitResult();
 
 	//Direct3Dデバイスの破棄
 	if (g_pD3DDevice != NULL)
@@ -325,7 +338,21 @@ void Uninit(void)
 //==========================================
 void Update(void)
 {
-
+	//画面モードに対応した処理を行う
+	switch (g_Mode)
+	{
+	case MODE_TITLE:
+		UpdateTitle();
+		break;
+	case MODE_GAME:
+		UpdateGame();
+		break;
+	case MODE_RESULT:
+		UpdateResult();
+		break;
+	default:
+		break;
+	}
 }
 
 //==========================================
@@ -347,12 +374,69 @@ void Draw(void)
 	//描画開始
 	if (SUCCEEDED(g_pD3DDevice->BeginScene()))
 	{
+		//画面モードに対応した処理を行う
+		switch (g_Mode)
+		{
+		case MODE_TITLE:
+			DrawTitle();
+			break;
+		case MODE_GAME:
+			DrawGame();
+			break;
+		case MODE_RESULT:
+			DrawResult();
+			break;
+		default:
+			break;
+		}
+
 		//描画終了
 		g_pD3DDevice->EndScene();
 	}
 
 	//バックバッファとフロントバッファの切り替え
 	g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
+}
+
+//==========================================
+//  画面モードの設定
+//==========================================
+void SetMode(MODE NextMode)
+{
+	//現在の画面モードを終了する
+	switch (g_Mode)
+	{
+	case MODE_TITLE:
+		UninitTitle();
+		break;
+	case MODE_GAME:
+		UninitGame();
+		break;
+	case MODE_RESULT:
+		UninitResult();
+		break;
+	default:
+		break;
+	}
+
+	//次の画面モードを設定する
+	g_Mode = NextMode;
+
+	//次の画面モードを初期化する
+	switch (g_Mode)
+	{
+	case MODE_TITLE:
+		InitTitle();
+		break;
+	case MODE_GAME:
+		InitGame();
+		break;
+	case MODE_RESULT:
+		InitResult();
+		break;
+	default:
+		break;
+	}
 }
 
 //==========================================
