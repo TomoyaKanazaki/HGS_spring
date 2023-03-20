@@ -358,8 +358,8 @@ MigrationBackup/
 /00_HGS_spring/*.pdb
 /00_HGS_spring/*.ipdb
 /00_HGS_spring/*.iobj
-/00_HGS_spring/*.filters
 /00_HGS_spring/.vs/00_HGS_spring/v14/*.suo
+/00_HGS_spring/00_HGS_spring.VC.db
+/00_HGS_spring/00_HGS_spring.vcxproj.filters
 /00_HGS_spring/data/TXT/*.txt
 /00_HGS_spring/data/BIN/*.bin
-/00_HGS_spring/00_HGS_spring.VC.db
