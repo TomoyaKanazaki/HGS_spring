@@ -35,7 +35,7 @@
 #define FVF_VERTEX_2D (D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1)
 #define FVF_VERTEX_3D (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE | D3DFVF_TEX1)
 #define CLASS_NAME "WindowClass"
-#define WINDOW_NAME "imgui_test"
+#define WINDOW_NAME "HGS_spring"
 
 //==========================================
 //  頂点座標[2D]の構造体を定義
@@ -65,7 +65,6 @@ typedef struct
 LRESULT CALLBACK WindowsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow);
 LPDIRECT3DDEVICE9 GetDevice(void);
-LPD3DXFONT GetFont(void);
 void Uninit(void);
 void Update(void);
 void Draw(void);
