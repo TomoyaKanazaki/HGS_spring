@@ -33,9 +33,14 @@ void InitLight(void)
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();	// デバイスへのポインタ
 
 	// 拡散光カラーを設定
-	aDiffuse[0] = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	aDiffuse[0] = D3DXCOLOR(1.0f,  1.0f,  1.0f,  1.0f);
 	aDiffuse[1] = D3DXCOLOR(0.65f, 0.65f, 0.65f, 1.0f);
-	aDiffuse[2] = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f);
+	aDiffuse[2] = D3DXCOLOR(0.2f,  0.2f,  0.2f,  1.0f);
+
+	// 方向ベクトルを設定
+	aVecDir[0] = D3DXVECTOR3( 0.34f, -0.87f,  0.35f);
+	aVecDir[1] = D3DXVECTOR3(-0.59f, -0.10f, -0.80f);
+	aVecDir[2] = D3DXVECTOR3(-0.22f, -0.74f,  0.63f);
 
 	for (int nCntLight = 0; nCntLight < MAX_LIGHT; nCntLight++)
 	{ // 使用するライト数分繰り返す

@@ -12,6 +12,7 @@
 #include "input.h"
 
 #ifdef _DEBUG	// デバッグ処理
+#include "debugproc.h"
 #endif
 
 //************************************************************
@@ -48,9 +49,6 @@
 //************************************************************
 //	プロトタイプ宣言
 //************************************************************
-void InitMapCamera(void);			// マップカメラの初期化処理
-void InitUiCamera(void);			// UIカメラの初期化処理
-
 void MoveFollowCamera(void);		// メインカメラの位置の更新処理 (追従)
 
 void MoveCamera(void);				// メインカメラの位置の更新処理 (操作)
@@ -87,12 +85,6 @@ void InitCamera(void)
 	g_aCamera[CAMERATYPE_MAIN].viewport.Height = SCREEN_HEIGHT;	// 描画する画面の縦幅
 	g_aCamera[CAMERATYPE_MAIN].viewport.MinZ   = 0.0f;
 	g_aCamera[CAMERATYPE_MAIN].viewport.MaxZ   = 1.0f;
-
-	// マップカメラの初期化
-	InitMapCamera();
-
-	// UIカメラの初期化
-	InitUiCamera();
 }
 
 //============================================================
@@ -119,6 +111,13 @@ void UpdateCamera(void)
 
 	// カメラの向きの更新 (操作)
 	RotCamera();
+#endif
+
+#ifdef _DEBUG	// デバッグ処理
+	// 視点と注視点の表示
+	PrintDebugProc("\n");
+	PrintDebugProc("【 視点 】%f %f %f\n", g_aCamera[CAMERATYPE_MAIN].posV.x, g_aCamera[CAMERATYPE_MAIN].posV.y, g_aCamera[CAMERATYPE_MAIN].posV.z);
+	PrintDebugProc("【注視点】%f %f %f\n", g_aCamera[CAMERATYPE_MAIN].posR.x, g_aCamera[CAMERATYPE_MAIN].posR.y, g_aCamera[CAMERATYPE_MAIN].posR.z);
 #endif
 }
 
@@ -163,54 +162,6 @@ void SetCamera(int nID)
 
 	// ビューマトリックスの設定
 	pDevice->SetTransform(D3DTS_VIEW, &g_aCamera[nID].mtxView);
-}
-
-//======================================================================================================================
-//	マップカメラの初期化処理
-//======================================================================================================================
-void InitMapCamera(void)
-{
-	// 基本情報を初期化
-	g_aCamera[CAMERATYPE_MAP].posV     = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// 現在の視点
-	g_aCamera[CAMERATYPE_MAP].posVOld  = g_aCamera[CAMERATYPE_MAP].posV;		// 前回の視点
-	g_aCamera[CAMERATYPE_MAP].posR     = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// 現在の注視点
-	g_aCamera[CAMERATYPE_MAP].destPosV = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// 目標の視点
-	g_aCamera[CAMERATYPE_MAP].destPosR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// 目標の注視点
-	g_aCamera[CAMERATYPE_MAP].vecU     = D3DXVECTOR3(0.0f, 0.0f, 1.0f);			// 上方向ベクトル
-	g_aCamera[CAMERATYPE_MAP].rot      = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// 向き
-	g_aCamera[CAMERATYPE_MAP].fDis     = 0.0f;									// 視点と注視点の距離
-
-	// ビューポート情報を初期化
-	g_aCamera[CAMERATYPE_MAP].viewport.X      = MAPCAM_X;		// 左上隅のピクセル座標 (x)
-	g_aCamera[CAMERATYPE_MAP].viewport.Y      = MAPCAM_Y;		// 左上隅のピクセル座標 (y)
-	g_aCamera[CAMERATYPE_MAP].viewport.Width  = MAPCAM_SIZE_X;	// 描画する画面の横幅
-	g_aCamera[CAMERATYPE_MAP].viewport.Height = MAPCAM_SIZE_Y;	// 描画する画面の縦幅
-	g_aCamera[CAMERATYPE_MAP].viewport.MinZ   = 0.0f;
-	g_aCamera[CAMERATYPE_MAP].viewport.MaxZ   = 1.0f;
-}
-
-//======================================================================================================================
-//	UIカメラの初期化処理
-//======================================================================================================================
-void InitUiCamera(void)
-{
-	// 基本情報を初期化
-	g_aCamera[CAMERATYPE_UI].posV     = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// 現在の視点
-	g_aCamera[CAMERATYPE_UI].posVOld  = g_aCamera[CAMERATYPE_UI].posV;		// 前回の視点
-	g_aCamera[CAMERATYPE_UI].posR     = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// 現在の注視点
-	g_aCamera[CAMERATYPE_UI].destPosV = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// 目標の視点
-	g_aCamera[CAMERATYPE_UI].destPosR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// 目標の注視点
-	g_aCamera[CAMERATYPE_UI].vecU     = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// 上方向ベクトル
-	g_aCamera[CAMERATYPE_UI].rot      = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// 向き
-	g_aCamera[CAMERATYPE_UI].fDis     = 0.0f;								// 視点と注視点の距離
-
-	// ビューポート情報を初期化
-	g_aCamera[CAMERATYPE_UI].viewport.X      = 0;				// 左上隅のピクセル座標 (x)
-	g_aCamera[CAMERATYPE_UI].viewport.Y      = 0;				// 左上隅のピクセル座標 (y)
-	g_aCamera[CAMERATYPE_UI].viewport.Width  = SCREEN_WIDTH;	// 描画する画面の横幅
-	g_aCamera[CAMERATYPE_UI].viewport.Height = SCREEN_HEIGHT;	// 描画する画面の縦幅
-	g_aCamera[CAMERATYPE_UI].viewport.MinZ   = 0.0f;
-	g_aCamera[CAMERATYPE_UI].viewport.MaxZ   = 1.0f;
 }
 
 #if 0

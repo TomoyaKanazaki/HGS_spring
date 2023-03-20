@@ -33,12 +33,11 @@ typedef struct
 //**********************************************************************************************************************
 //	プロトタイプ宣言
 //**********************************************************************************************************************
-void InitMeshField(void);					// メッシュフィールドの初期化処理
-void UninitMeshField(void);					// メッシュフィールドの終了処理
-void UpdateMeshField(void);					// メッシュフィールドの更新処理
-void DrawMeshField(bool bMap);				// メッシュフィールドの描画処理
-float CollisionMeshField(D3DXVECTOR3 pos);	// メッシュフィールドとの当たり判定
-MeshField *GetMeshField(void);				// メッシュフィールドの取得処理
+void InitMeshField(void);		// メッシュフィールドの初期化処理
+void UninitMeshField(void);		// メッシュフィールドの終了処理
+void UpdateMeshField(void);		// メッシュフィールドの更新処理
+void DrawMeshField(void);		// メッシュフィールドの描画処理
+MeshField *GetMeshField(void);	// メッシュフィールドの取得処理
 
 
 #endif

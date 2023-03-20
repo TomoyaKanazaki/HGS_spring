@@ -20,7 +20,7 @@
 //**********************************************************************************************************************
 const char *apTextureMeshDome[] =	// テクスチャの相対パス
 {
-	"data\\TEXTURE\\sky000.png",	// メッシュドームのテクスチャの相対パス
+	"02_data\\02_TEXTURE\\sky000.png",	// 空のテクスチャの相対パス
 };
 
 //**********************************************************************************************************************
@@ -28,7 +28,7 @@ const char *apTextureMeshDome[] =	// テクスチャの相対パス
 //**********************************************************************************************************************
 typedef enum
 {
-	TEXTURE_MESHDOME_NORMAL = 0,	// メッシュドーム (通常)
+	TEXTURE_MESHDOME_SKY = 0,		// 空
 	TEXTURE_MESHDOME_MAX,			// この列挙型の総数
 } TEXTURE_MESHDOME;
 
@@ -109,133 +109,137 @@ void InitMeshDome(void)
 	// メッシュドームのセットアップ
 	TxtSetMeshDome();
 
-	// 頂点バッファの生成
-	pDevice->CreateVertexBuffer
-	( // 引数
-		sizeof(VERTEX_3D) * g_nNeedVtxDome,	// 必要頂点数
-		D3DUSAGE_WRITEONLY,					// 使用方法
-		FVF_VERTEX_3D,						// 頂点フォーマット
-		D3DPOOL_MANAGED,					// メモリの指定
-		&g_pVtxBuffMeshDome,				// 頂点バッファへのポインタ
-		NULL
-	);
+	if (g_nNeedVtxDome > 0)
+	{ // 必要頂点数が 0より大きい場合
 
-	// インデックスバッファの生成
-	pDevice->CreateIndexBuffer
-	( // 引数
-		sizeof(WORD) * g_nNeedIdxDome,		// 必要インデックス数
-		D3DUSAGE_WRITEONLY,					// 使用方法
-		D3DFMT_INDEX16,						// インデックスバッファのフォーマット
-		D3DPOOL_MANAGED,					// メモリの指定
-		&g_pIdxBuffMeshDome,				// インデックスバッファへのポインタ
-		NULL
-	);
+		// 頂点バッファの生成
+		pDevice->CreateVertexBuffer
+		( // 引数
+			sizeof(VERTEX_3D) * g_nNeedVtxDome,	// 必要頂点数
+			D3DUSAGE_WRITEONLY,					// 使用方法
+			FVF_VERTEX_3D,						// 頂点フォーマット
+			D3DPOOL_MANAGED,					// メモリの指定
+			&g_pVtxBuffMeshDome,				// 頂点バッファへのポインタ
+			NULL
+		);
 
-	//------------------------------------------------------------------------------------------------------------------
-	//	頂点情報の初期化
-	//------------------------------------------------------------------------------------------------------------------
-	// 頂点バッファをロックし、頂点情報へのポインタを取得
-	g_pVtxBuffMeshDome->Lock(0, 0, (void**)&pVtx, 0);
+		// インデックスバッファの生成
+		pDevice->CreateIndexBuffer
+		( // 引数
+			sizeof(WORD) * g_nNeedIdxDome,		// 必要インデックス数
+			D3DUSAGE_WRITEONLY,					// 使用方法
+			D3DFMT_INDEX16,						// インデックスバッファのフォーマット
+			D3DPOOL_MANAGED,					// メモリの指定
+			&g_pIdxBuffMeshDome,				// インデックスバッファへのポインタ
+			NULL
+		);
 
-	for (int nCntMeshDome = 0; nCntMeshDome < MAX_MESHDOME; nCntMeshDome++)
-	{ // メッシュドームの最大表示数分繰り返す
+		//------------------------------------------------------------------------------------------------------------------
+		//	頂点情報の初期化
+		//------------------------------------------------------------------------------------------------------------------
+		// 頂点バッファをロックし、頂点情報へのポインタを取得
+		g_pVtxBuffMeshDome->Lock(0, 0, (void**)&pVtx, 0);
 
-		if (g_aMeshDome[nCntMeshDome].bUse == true)
-		{ // メッシュドームが使用されている場合
+		for (int nCntMeshDome = 0; nCntMeshDome < MAX_MESHDOME; nCntMeshDome++)
+		{ // メッシュドームの最大表示数分繰り返す
 
-			for (int nCntHeight = 0; nCntHeight < g_aMeshDome[nCntMeshDome].nPartHeight + 1; nCntHeight++)
-			{ // 縦の分割数 +1回繰り返す
+			if (g_aMeshDome[nCntMeshDome].bUse == true)
+			{ // メッシュドームが使用されている場合
 
-				for (int nCntWidth = 0; nCntWidth < g_aMeshDome[nCntMeshDome].nPartWidth + 1; nCntWidth++)
-				{ // 横の分割数 +1回繰り返す
+				for (int nCntHeight = 0; nCntHeight < g_aMeshDome[nCntMeshDome].nPartHeight + 1; nCntHeight++)
+				{ // 縦の分割数 +1回繰り返す
 
-					// 頂点の向きを計算
-					fRotWidth  = nCntWidth  * ((D3DX_PI * 2.0f) / g_aMeshDome[nCntMeshDome].nPartWidth);
-					fRotHeight = nCntHeight * ((D3DX_PI * 0.5f) / g_aMeshDome[nCntMeshDome].nPartHeight);
+					for (int nCntWidth = 0; nCntWidth < g_aMeshDome[nCntMeshDome].nPartWidth + 1; nCntWidth++)
+					{ // 横の分割数 +1回繰り返す
 
-					// 頂点座標の方向を設定
-					vecPos = D3DXVECTOR3
-					( // 引数
-						g_aMeshDome[nCntMeshDome].fRadius * sinf(fRotHeight) * sinf(fRotWidth),	// x
-						g_aMeshDome[nCntMeshDome].fRadius * cosf(fRotHeight),					// y
-						g_aMeshDome[nCntMeshDome].fRadius * sinf(fRotHeight) * cosf(fRotWidth)	// z
-					);
+						// 頂点の向きを計算
+						fRotWidth = nCntWidth  * ((D3DX_PI * 2.0f) / g_aMeshDome[nCntMeshDome].nPartWidth);
+						fRotHeight = nCntHeight * ((D3DX_PI * 0.5f) / g_aMeshDome[nCntMeshDome].nPartHeight);
 
-					// 頂点座標の設定
-					pVtx[0].pos = g_aMeshDome[nCntMeshDome].pos + vecPos;
+						// 頂点座標の方向を設定
+						vecPos = D3DXVECTOR3
+						( // 引数
+							g_aMeshDome[nCntMeshDome].fRadius * sinf(fRotHeight) * sinf(fRotWidth),	// x
+							g_aMeshDome[nCntMeshDome].fRadius * cosf(fRotHeight),					// y
+							g_aMeshDome[nCntMeshDome].fRadius * sinf(fRotHeight) * cosf(fRotWidth)	// z
+						);
 
-					// 法線ベクトルの方向を設定
-					vecNor = -vecPos;
+						// 頂点座標の設定
+						pVtx[0].pos = g_aMeshDome[nCntMeshDome].pos + vecPos;
 
-					// ベクトルを正規化
-					D3DXVec3Normalize(&vecNor, &vecNor);
+						// 法線ベクトルの方向を設定
+						vecNor = -vecPos;
 
-					// 法線ベクトルの設定
-					pVtx[0].nor = vecNor;
+						// ベクトルを正規化
+						D3DXVec3Normalize(&vecNor, &vecNor);
 
-					// 頂点カラーの設定
-					pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+						// 法線ベクトルの設定
+						pVtx[0].nor = vecNor;
 
-					// テクスチャ座標の設定
-					pVtx[0].tex = D3DXVECTOR2
-					( // 引数
-						nCntWidth  * 1.0f / (float)g_aMeshDome[nCntMeshDome].nPartWidth,	// u
-						nCntHeight * 1.0f / (float)g_aMeshDome[nCntMeshDome].nPartHeight	// v
-					);
+						// 頂点カラーの設定
+						pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
-					// 頂点データのポインタを 1つ分進める
-					pVtx += 1;
+						// テクスチャ座標の設定
+						pVtx[0].tex = D3DXVECTOR2
+						( // 引数
+							nCntWidth  * 1.0f / (float)g_aMeshDome[nCntMeshDome].nPartWidth,	// u
+							nCntHeight * 1.0f / (float)g_aMeshDome[nCntMeshDome].nPartHeight	// v
+						);
+
+						// 頂点データのポインタを 1つ分進める
+						pVtx += 1;
+					}
 				}
 			}
 		}
-	}
 
-	// 頂点バッファをアンロックする
-	g_pVtxBuffMeshDome->Unlock();
+		// 頂点バッファをアンロックする
+		g_pVtxBuffMeshDome->Unlock();
 
-	//------------------------------------------------------------------------------------------------------------------
-	//	インデックス情報の初期化
-	//------------------------------------------------------------------------------------------------------------------
-	// インデックスバッファをロックし、頂点番号データへのポインタを取得
-	g_pIdxBuffMeshDome->Lock(0, 0, (void**)&pIdx, 0);
+		//------------------------------------------------------------------------------------------------------------------
+		//	インデックス情報の初期化
+		//------------------------------------------------------------------------------------------------------------------
+		// インデックスバッファをロックし、頂点番号データへのポインタを取得
+		g_pIdxBuffMeshDome->Lock(0, 0, (void**)&pIdx, 0);
 
-	for (int nCntMeshDome = 0; nCntMeshDome < MAX_MESHDOME; nCntMeshDome++)
-	{ // メッシュドームの最大表示数分繰り返す
+		for (int nCntMeshDome = 0; nCntMeshDome < MAX_MESHDOME; nCntMeshDome++)
+		{ // メッシュドームの最大表示数分繰り返す
 
-		if (g_aMeshDome[nCntMeshDome].bUse == true)
-		{ // メッシュドームが使用されている場合
+			if (g_aMeshDome[nCntMeshDome].bUse == true)
+			{ // メッシュドームが使用されている場合
 
-			for (int nCntHeight = 0, nCntWidth = 0; nCntHeight < g_aMeshDome[nCntMeshDome].nPartHeight; nCntHeight++)
-			{ // 縦の分割数 +1回繰り返す
+				for (int nCntHeight = 0, nCntWidth = 0; nCntHeight < g_aMeshDome[nCntMeshDome].nPartHeight; nCntHeight++)
+				{ // 縦の分割数 +1回繰り返す
 
-				for (nCntWidth = 0; nCntWidth < g_aMeshDome[nCntMeshDome].nPartWidth + 1; nCntWidth++)
-				{ // 横の分割数 +1回繰り返す
+					for (nCntWidth = 0; nCntWidth < g_aMeshDome[nCntMeshDome].nPartWidth + 1; nCntWidth++)
+					{ // 横の分割数 +1回繰り返す
 
-					pIdx[0] = nNumVtx + ((g_aMeshDome[nCntMeshDome].nPartWidth + 1) * (nCntHeight + 1) + nCntWidth);
-					pIdx[1] = nNumVtx + ((g_aMeshDome[nCntMeshDome].nPartWidth + 1) * nCntHeight + nCntWidth);
+						pIdx[0] = nNumVtx + ((g_aMeshDome[nCntMeshDome].nPartWidth + 1) * (nCntHeight + 1) + nCntWidth);
+						pIdx[1] = nNumVtx + ((g_aMeshDome[nCntMeshDome].nPartWidth + 1) * nCntHeight + nCntWidth);
 
-					// インデックスデータのポインタを 2つ分進める
-					pIdx += 2;
+						// インデックスデータのポインタを 2つ分進める
+						pIdx += 2;
+					}
+
+					if (nCntHeight != g_aMeshDome[nCntMeshDome].nPartHeight - 1)
+					{ // 一番手前の分割場所ではない場合
+
+						pIdx[0] = nNumVtx + ((g_aMeshDome[nCntMeshDome].nPartWidth + 1) * nCntHeight + nCntWidth - 1);
+						pIdx[1] = nNumVtx + ((g_aMeshDome[nCntMeshDome].nPartWidth + 1) * (nCntHeight + 2));
+
+						// インデックスデータのポインタを 2つ分進める
+						pIdx += 2;
+					}
 				}
 
-				if (nCntHeight != g_aMeshDome[nCntMeshDome].nPartHeight - 1)
-				{ // 一番手前の分割場所ではない場合
-
-					pIdx[0] = nNumVtx + ((g_aMeshDome[nCntMeshDome].nPartWidth + 1) * nCntHeight + nCntWidth - 1);
-					pIdx[1] = nNumVtx + ((g_aMeshDome[nCntMeshDome].nPartWidth + 1) * (nCntHeight + 2));
-
-					// インデックスデータのポインタを 2つ分進める
-					pIdx += 2;
-				}
+				// 頂点バッファの開始地点を必要数分ずらす
+				nNumVtx += g_aMeshDome[nCntMeshDome].nNumVtx;
 			}
-
-			// 頂点バッファの開始地点を必要数分ずらす
-			nNumVtx += g_aMeshDome[nCntMeshDome].nNumVtx;
 		}
-	}
 
-	// インデックスバッファをアンロックする
-	g_pIdxBuffMeshDome->Unlock();
+		// インデックスバッファをアンロックする
+		g_pIdxBuffMeshDome->Unlock();
+	}
 }
 
 //======================================================================================================================
@@ -325,7 +329,7 @@ void DrawMeshDome(void)
 			pDevice->SetFVF(FVF_VERTEX_3D);
 
 			// テクスチャの設定
-			pDevice->SetTexture(0, g_apTextureMeshDome[TEXTURE_MESHDOME_NORMAL]);
+			pDevice->SetTexture(0, g_apTextureMeshDome[TEXTURE_MESHDOME_SKY]);
 
 			// ポリゴンの描画
 			pDevice->DrawIndexedPrimitive

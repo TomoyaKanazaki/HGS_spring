@@ -11,40 +11,11 @@
 #include "meshfield.h"
 
 //**********************************************************************************************************************
-//	マクロ定義
-//**********************************************************************************************************************
-#define MAP_COL_AREA_OVER	(D3DXCOLOR(0.35f, 0.35f, 0.35f, 1.0f))	// マップのエリア外の色
-#define MAP_COL_ROAD		(D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f))		// マップの道路の色
-#define MAP_COL_SIDEWALK	(D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f))		// マップの歩道の色
-#define MAP_COL_FIELD		(D3DXCOLOR(0.9f, 0.9f, 0.9f, 1.0f))		// マップの地面の色
-
-//**********************************************************************************************************************
 //	コンスト定義
 //**********************************************************************************************************************
 const char *apTextureMeshField[] =		// テクスチャの相対パス
 {
-	"data\\TEXTURE\\road000.png",			// 直線のテクスチャの相対パス
-	"data\\TEXTURE\\road001.png",			// 曲がり角度のテクスチャの相対パス
-	"data\\TEXTURE\\road002.png",			// 交差点のテクスチャの相対パス
-	"data\\TEXTURE\\road003.png",			// 丁字路のテクスチャの相対パス
-	"data\\TEXTURE\\sidewalk000.png",		// 地面のテクスチャの相対パス
-	"data\\TEXTURE\\Tile.jpg",				// タイルのテクスチャの相対パス
-	"data\\TEXTURE\\shopping_street.jpg",	// 商店街の道のテクスチャの相対パス
-	"data\\TEXTURE\\red_sidewalk.jpg",		// 歩道のテクスチャの相対パス
-	"data\\TEXTURE\\sidewalk002.png",		// 地面のテクスチャの相対パス
-};
-
-const D3DXCOLOR aColorMeshField[] =		// マップの地面カラー
-{
-	MAP_COL_ROAD,		// 直線のテクスチャの地面カラー
-	MAP_COL_ROAD,		// 曲がり角度のテクスチャの地面カラー
-	MAP_COL_ROAD,		// 交差点のテクスチャの地面カラー
-	MAP_COL_ROAD,		// 丁字路のテクスチャの地面カラー
-	MAP_COL_FIELD,		// 地面のテクスチャの地面カラー
-	MAP_COL_FIELD,		// 地面のテクスチャの地面カラー
-	MAP_COL_SIDEWALK,	// 歩道のテクスチャの地面カラー
-	MAP_COL_SIDEWALK,	// 歩道のテクスチャの地面カラー
-	MAP_COL_AREA_OVER,	// エリア外のテクスチャの地面カラー
+	"02_data\\02_TEXTURE\\meshfield000.png",	// 通常のテクスチャの相対パス
 };
 
 //**********************************************************************************************************************
@@ -52,15 +23,7 @@ const D3DXCOLOR aColorMeshField[] =		// マップの地面カラー
 //**********************************************************************************************************************
 typedef enum
 {
-	TEXTURE_MESHFIELD_ROAD_LINE = 0,	// (道路) 直線
-	TEXTURE_MESHFIELD_ROAD_TURN,		// (道路) 曲がり角度
-	TEXTURE_MESHFIELD_ROAD_CROSS,		// (道路) 交差点
-	TEXTURE_MESHFIELD_ROAD_TJUNC,		// (道路) 丁字路
-	TEXTURE_MESHFIELD_SIDEWALK,			// 歩道
-	TEXTURE_MESHFIELD_TILE,				// タイル
-	TEXTURE_MESHFIELD_SHOPPING_STREET,	// 商店街の道
-	TEXTURE_MESHFIELD_SIDEWALK2,		// 歩道
-	TEXTURE_MESHFIELD_AREAOVER,			// 歩道
+	TEXTURE_MESHFIELD_NORMAL = 0,		// 通常
 	TEXTURE_MESHFIELD_MAX,				// この列挙型の総数
 } TEXTURE_MESHFIELD;
 
@@ -124,116 +87,120 @@ void InitMeshField(void)
 	// メッシュフィールドのセットアップ
 	TxtSetMeshField();
 
-	// 頂点バッファの生成
-	pDevice->CreateVertexBuffer
-	( // 引数
-		sizeof(VERTEX_3D) * g_nNeedVtxField,	// 必要頂点数
-		D3DUSAGE_WRITEONLY,						// 使用方法
-		FVF_VERTEX_3D,							// 頂点フォーマット
-		D3DPOOL_MANAGED,						// メモリの指定
-		&g_pVtxBuffMeshField,					// 頂点バッファへのポインタ
-		NULL
-	);
+	if (g_nNeedVtxField > 0)
+	{ // 必要頂点数が 0より大きい場合
 
-	// インデックスバッファの生成
-	pDevice->CreateIndexBuffer
-	( // 引数
-		sizeof(WORD) * g_nNeedIdxField,			// 必要インデックス数
-		D3DUSAGE_WRITEONLY,						// 使用方法
-		D3DFMT_INDEX16,							// インデックスバッファのフォーマット
-		D3DPOOL_MANAGED,						// メモリの指定
-		&g_pIdxBuffMeshField,					// インデックスバッファへのポインタ
-		NULL
-	);
+		// 頂点バッファの生成
+		pDevice->CreateVertexBuffer
+		( // 引数
+			sizeof(VERTEX_3D) * g_nNeedVtxField,	// 必要頂点数
+			D3DUSAGE_WRITEONLY,						// 使用方法
+			FVF_VERTEX_3D,							// 頂点フォーマット
+			D3DPOOL_MANAGED,						// メモリの指定
+			&g_pVtxBuffMeshField,					// 頂点バッファへのポインタ
+			NULL
+		);
 
-	//------------------------------------------------------------------------------------------------------------------
-	//	頂点情報の初期化
-	//------------------------------------------------------------------------------------------------------------------
-	// 頂点バッファをロックし、頂点情報へのポインタを取得
-	g_pVtxBuffMeshField->Lock(0, 0, (void**)&pVtx, 0);
+		// インデックスバッファの生成
+		pDevice->CreateIndexBuffer
+		( // 引数
+			sizeof(WORD) * g_nNeedIdxField,			// 必要インデックス数
+			D3DUSAGE_WRITEONLY,						// 使用方法
+			D3DFMT_INDEX16,							// インデックスバッファのフォーマット
+			D3DPOOL_MANAGED,						// メモリの指定
+			&g_pIdxBuffMeshField,					// インデックスバッファへのポインタ
+			NULL
+		);
 
-	for (int nCntMeshField = 0; nCntMeshField < MAX_MESHFIELD; nCntMeshField++)
-	{ // メッシュフィールドの最大表示数分繰り返す
+		//------------------------------------------------------------------------------------------------------------------
+		//	頂点情報の初期化
+		//------------------------------------------------------------------------------------------------------------------
+		// 頂点バッファをロックし、頂点情報へのポインタを取得
+		g_pVtxBuffMeshField->Lock(0, 0, (void**)&pVtx, 0);
 
-		if (g_aMeshField[nCntMeshField].bUse == true)
-		{ // メッシュフィールドが使用されている場合
+		for (int nCntMeshField = 0; nCntMeshField < MAX_MESHFIELD; nCntMeshField++)
+		{ // メッシュフィールドの最大表示数分繰り返す
 
-			for (int nCntHeight = 0; nCntHeight < g_aMeshField[nCntMeshField].nPartHeight + 1; nCntHeight++)
-			{ // 縦の分割数 +1回繰り返す
+			if (g_aMeshField[nCntMeshField].bUse == true)
+			{ // メッシュフィールドが使用されている場合
 
-				for (int nCntWidth = 0; nCntWidth < g_aMeshField[nCntMeshField].nPartWidth + 1; nCntWidth++)
-				{ // 横の分割数 +1回繰り返す
+				for (int nCntHeight = 0; nCntHeight < g_aMeshField[nCntMeshField].nPartHeight + 1; nCntHeight++)
+				{ // 縦の分割数 +1回繰り返す
 
-					// 頂点座標の設定
-					pVtx[0].pos = D3DXVECTOR3
-					( // 引数
-						nCntWidth * (g_aMeshField[nCntMeshField].fWidth / (float)g_aMeshField[nCntMeshField].nPartWidth) - (g_aMeshField[nCntMeshField].fWidth * 0.5f),			// x
-						0.0f,																																					// y
-						-(nCntHeight * (g_aMeshField[nCntMeshField].fHeight / (float)g_aMeshField[nCntMeshField].nPartHeight) - (g_aMeshField[nCntMeshField].fHeight * 0.5f))	// z
-					);
+					for (int nCntWidth = 0; nCntWidth < g_aMeshField[nCntMeshField].nPartWidth + 1; nCntWidth++)
+					{ // 横の分割数 +1回繰り返す
 
-					// 法線ベクトルの設定
-					pVtx[0].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+						// 頂点座標の設定
+						pVtx[0].pos = D3DXVECTOR3
+						( // 引数
+							nCntWidth * (g_aMeshField[nCntMeshField].fWidth / (float)g_aMeshField[nCntMeshField].nPartWidth) - (g_aMeshField[nCntMeshField].fWidth * 0.5f),			// x
+							0.0f,																																					// y
+							-(nCntHeight * (g_aMeshField[nCntMeshField].fHeight / (float)g_aMeshField[nCntMeshField].nPartHeight) - (g_aMeshField[nCntMeshField].fHeight * 0.5f))	// z
+						);
 
-					// 頂点カラーの設定
-					pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+						// 法線ベクトルの設定
+						pVtx[0].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
-					// テクスチャ座標の設定
-					pVtx[0].tex = D3DXVECTOR2(1.0f * (nCntWidth % 2), 1.0f * nCntHeight);
+						// 頂点カラーの設定
+						pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
-					// 頂点データのポインタを 1つ分進める
-					pVtx += 1;
+						// テクスチャ座標の設定
+						pVtx[0].tex = D3DXVECTOR2(1.0f * (nCntWidth % 2), 1.0f * nCntHeight);
+
+						// 頂点データのポインタを 1つ分進める
+						pVtx += 1;
+					}
 				}
 			}
 		}
-	}
 
-	// 頂点バッファをアンロックする
-	g_pVtxBuffMeshField->Unlock();
+		// 頂点バッファをアンロックする
+		g_pVtxBuffMeshField->Unlock();
 
-	//------------------------------------------------------------------------------------------------------------------
-	//	インデックス情報の初期化
-	//------------------------------------------------------------------------------------------------------------------
-	// インデックスバッファをロックし、頂点番号データへのポインタを取得
-	g_pIdxBuffMeshField->Lock(0, 0, (void**)&pIdx, 0);
+		//------------------------------------------------------------------------------------------------------------------
+		//	インデックス情報の初期化
+		//------------------------------------------------------------------------------------------------------------------
+		// インデックスバッファをロックし、頂点番号データへのポインタを取得
+		g_pIdxBuffMeshField->Lock(0, 0, (void**)&pIdx, 0);
 
-	for (int nCntMeshField = 0; nCntMeshField < MAX_MESHFIELD; nCntMeshField++)
-	{ // メッシュフィールドの最大表示数分繰り返す
+		for (int nCntMeshField = 0; nCntMeshField < MAX_MESHFIELD; nCntMeshField++)
+		{ // メッシュフィールドの最大表示数分繰り返す
 
-		if (g_aMeshField[nCntMeshField].bUse == true)
-		{ // メッシュフィールドが使用されている場合
+			if (g_aMeshField[nCntMeshField].bUse == true)
+			{ // メッシュフィールドが使用されている場合
 
-			for (int nCntHeight = 0, nCntWidth = 0; nCntHeight < g_aMeshField[nCntMeshField].nPartHeight; nCntHeight++)
-			{ // 縦の分割数 +1回繰り返す
+				for (int nCntHeight = 0, nCntWidth = 0; nCntHeight < g_aMeshField[nCntMeshField].nPartHeight; nCntHeight++)
+				{ // 縦の分割数 +1回繰り返す
 
-				for (nCntWidth = 0; nCntWidth < g_aMeshField[nCntMeshField].nPartWidth + 1; nCntWidth++)
-				{ // 横の分割数 +1回繰り返す
+					for (nCntWidth = 0; nCntWidth < g_aMeshField[nCntMeshField].nPartWidth + 1; nCntWidth++)
+					{ // 横の分割数 +1回繰り返す
 
-					pIdx[0] = nNumVtx + ((g_aMeshField[nCntMeshField].nPartWidth + 1) * (nCntHeight + 1) + nCntWidth);
-					pIdx[1] = nNumVtx + ((g_aMeshField[nCntMeshField].nPartWidth + 1) * nCntHeight + nCntWidth);
+						pIdx[0] = nNumVtx + ((g_aMeshField[nCntMeshField].nPartWidth + 1) * (nCntHeight + 1) + nCntWidth);
+						pIdx[1] = nNumVtx + ((g_aMeshField[nCntMeshField].nPartWidth + 1) * nCntHeight + nCntWidth);
 
-					// インデックスデータのポインタを 2つ分進める
-					pIdx += 2;
+						// インデックスデータのポインタを 2つ分進める
+						pIdx += 2;
+					}
+
+					if (nCntHeight != g_aMeshField[nCntMeshField].nPartHeight - 1)
+					{ // 一番手前の分割場所ではない場合
+
+						pIdx[0] = nNumVtx + ((g_aMeshField[nCntMeshField].nPartWidth + 1) * nCntHeight + nCntWidth - 1);
+						pIdx[1] = nNumVtx + ((g_aMeshField[nCntMeshField].nPartWidth + 1) * (nCntHeight + 2));
+
+						// インデックスデータのポインタを 2つ分進める
+						pIdx += 2;
+					}
 				}
 
-				if (nCntHeight != g_aMeshField[nCntMeshField].nPartHeight - 1)
-				{ // 一番手前の分割場所ではない場合
-
-					pIdx[0] = nNumVtx + ((g_aMeshField[nCntMeshField].nPartWidth + 1) * nCntHeight + nCntWidth - 1);
-					pIdx[1] = nNumVtx + ((g_aMeshField[nCntMeshField].nPartWidth + 1) * (nCntHeight + 2));
-
-					// インデックスデータのポインタを 2つ分進める
-					pIdx += 2;
-				}
+				// 頂点バッファの開始地点を必要数分ずらす
+				nNumVtx += g_aMeshField[nCntMeshField].nNumVtx;
 			}
-
-			// 頂点バッファの開始地点を必要数分ずらす
-			nNumVtx += g_aMeshField[nCntMeshField].nNumVtx;
 		}
-	}
 
-	// インデックスバッファをアンロックする
-	g_pIdxBuffMeshField->Unlock();
+		// インデックスバッファをアンロックする
+		g_pIdxBuffMeshField->Unlock();
+	}
 }
 
 //======================================================================================================================
@@ -281,7 +248,7 @@ void UpdateMeshField(void)
 //======================================================================================================================
 //	メッシュフィールドの描画処理
 //======================================================================================================================
-void DrawMeshField(bool bMap)
+void DrawMeshField(void)
 {
 	// 変数を宣言
 	int        nNumIdx = 0;						// インデックス数の計測用
@@ -289,52 +256,6 @@ void DrawMeshField(bool bMap)
 
 	// ポインタを宣言
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();	// デバイスへのポインタ
-	VERTEX_3D        *pVtx;						// 頂点情報へのポインタ
-
-	if (bMap == true)
-	{ // マップ表示用のメッシュフィールドの描画の場合
-
-		// ライティングを無効にする
-		pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
-
-		// Zテストを無効にする
-		pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);	// Zテストの設定
-		pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);		// Zバッファ更新の有効 / 無効の設定
-	}
-
-	// 頂点バッファをロックし、頂点情報へのポインタを取得
-	g_pVtxBuffMeshField->Lock(0, 0, (void**)&pVtx, 0);
-
-	for (int nCntMeshField = 0; nCntMeshField < MAX_MESHFIELD; nCntMeshField++)
-	{ // メッシュフィールドの最大表示数分繰り返す
-
-		if (g_aMeshField[nCntMeshField].bUse == true)
-		{ // メッシュフィールドが使用されている場合
-
-			for (int nCntCol = 0; nCntCol < g_aMeshField[nCntMeshField].nNumVtx; nCntCol++)
-			{ // メッシュフィールドの頂点数分繰り返す
-
-				if (bMap == true)
-				{ // マップ表示用のメッシュフィールドの描画の場合
-
-					// 頂点カラーの設定
-					pVtx[nCntCol].col = aColorMeshField[g_aMeshField[nCntMeshField].nType];
-				}
-				else
-				{ // 通常のメッシュフィールドの描画の場合
-
-					// 頂点カラーの設定
-					pVtx[nCntCol].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-				}
-			}
-		}
-
-		// 頂点データのポインタの開始地点を必要数分ずらす
-		pVtx += g_aMeshField[nCntMeshField].nNumVtx;
-	}
-
-	// 頂点バッファをアンロックする
-	g_pVtxBuffMeshField->Unlock();
 
 	for (int nCntMeshField = 0; nCntMeshField < MAX_MESHFIELD; nCntMeshField++)
 	{ // メッシュフィールドの最大表示数分繰り返す
@@ -365,18 +286,8 @@ void DrawMeshField(bool bMap)
 			// 頂点フォーマットの設定
 			pDevice->SetFVF(FVF_VERTEX_3D);
 
-			if (bMap == true)
-			{ // マップ表示用のメッシュフィールドの描画の場合
-
-				// テクスチャの設定
-				pDevice->SetTexture(0, NULL);
-			}
-			else
-			{ // 通常のメッシュフィールドの描画の場合
-
-				// テクスチャの設定
-				pDevice->SetTexture(0, g_apTextureMeshField[g_aMeshField[nCntMeshField].nType]);
-			}
+			// テクスチャの設定
+			pDevice->SetTexture(0, g_apTextureMeshField[g_aMeshField[nCntMeshField].nType]);
 
 			// ポリゴンの描画
 			pDevice->DrawIndexedPrimitive
@@ -393,13 +304,6 @@ void DrawMeshField(bool bMap)
 			nNumIdx += g_aMeshField[nCntMeshField].nNumIdx;
 		}
 	}
-
-	// ライティングを有効にする
-	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-
-	// Zテストを有効にする
-	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);	// Zテストの設定
-	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);		// Zバッファ更新の有効 / 無効の設定
 }
 
 //======================================================================================================================
