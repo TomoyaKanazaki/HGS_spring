@@ -7,13 +7,13 @@
 #include <time.h>
 #include "main.h"
 #include "texture.h"
+#include "debugproc.h"
 
 //==========================================
 //  グローバル変数宣言
 //==========================================
 LPDIRECT3D9 g_pD3D = NULL; //Direct3Dオブジェクトへのポインタ
 LPDIRECT3DDEVICE9 g_pD3DDevice = NULL; //Direct3Dデバイスへのポインタ
-LPD3DXFONT g_pFont = NULL; //フォントへのポインタ
 int g_nCountFPS = 0; //FPSカウンタ
 
 #ifdef _DEBUG
@@ -278,21 +278,13 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	g_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
 	g_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_CURRENT);
 
-	//デバッグ表示用フォントの生成
-	D3DXCreateFont
-	(
-		g_pD3DDevice, 18, 0, 0, 0, FALSE,
-		SHIFTJIS_CHARSET,
-		OUT_DEFAULT_PRECIS,
-		DEFAULT_QUALITY,
-		DEFAULT_PITCH,
-		"Terminal", &g_pFont
-	);
-
 	//各種オブジェクトの初期化処理
 
 	//乱数シードの設定
 	srand((unsigned int)time(0));
+
+	//デバッグプロックの初期化
+	InitDebugProc();
 
 	//テクスチャの初期化
 	InitTexture();
@@ -307,15 +299,11 @@ void Uninit(void)
 {
 	//各種オブジェクトの終了処理
 
+	//デバッグプロックの終了
+	UninitDebugProc();
+
 	//テクスチャの終了
 	UninitTexture();
-
-	//デバッグ用フォントの破棄
-	if (g_pFont != NULL)
-	{
-		g_pFont->Release();
-		g_pFont = NULL;
-	}
 
 	//Direct3Dデバイスの破棄
 	if (g_pD3DDevice != NULL)
@@ -373,12 +361,4 @@ void Draw(void)
 LPDIRECT3DDEVICE9 GetDevice(void)
 {
 	return g_pD3DDevice;
-}
-
-//==========================================
-//  フォントの取得
-//==========================================
-LPD3DXFONT GetFont(void)
-{
-	return g_pFont;
 }
