@@ -5,6 +5,8 @@
 //
 //==========================================
 #include "title.h"
+#include "fade.h"
+#include "input.h"
 
 //==========================================
 //  初期化処理
@@ -27,7 +29,11 @@ void UninitTitle()
 //==========================================
 void UpdateTitle()
 {
-
+	//フェード
+	if (GetKeyboardTrigger(DIK_RETURN))
+	{
+		SetFade(MODE_GAME);
+	}
 }
 
 //==========================================

@@ -320,6 +320,9 @@ void Uninit(void)
 	//テクスチャの終了
 	UninitTexture();
 
+	//フェードの終了
+	UninitFade();
+
 	//全画面モードの終了
 	UninitTitle();
 	UninitGame();
@@ -350,6 +353,9 @@ void Update(void)
 
 	//デバッグプロックの更新
 	UpdateDebugProc();
+
+	//フェードの更新
+	UpdateFade();
 	
 	//画面モードに対応した処理を行う
 	switch (g_Mode)
@@ -387,6 +393,9 @@ void Draw(void)
 	//描画開始
 	if (SUCCEEDED(g_pD3DDevice->BeginScene()))
 	{
+		//フェードの描画
+		DrawFade();
+
 		//画面モードに対応した処理を行う
 		switch (g_Mode)
 		{

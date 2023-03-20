@@ -1,45 +1,62 @@
 //==========================================
 //
-//  リザルトモードの制御(result.cpp)
+//  ポーズ(pause.cpp)
 //  Author : Tomoya Kanazaki
 //
 //==========================================
-#include "result.h"
-#include "fade.h"
+#include "pause.h"
 #include "input.h"
+#include "debugproc.h"
+
+//==========================================
+//  グローバル変数宣言
+//==========================================
+bool g_bPause;
 
 //==========================================
 //  初期化処理
 //==========================================
-void InitResult()
+void InitPause()
 {
-
+	//変数の初期化
+	g_bPause = false;
 }
 
 //==========================================
 //  終了処理
 //==========================================
-void UninitResult()
+void UninitPause()
 {
-
+	
 }
 
 //==========================================
 //  更新処理
 //==========================================
-void UpdateResult()
+void UpdatePause()
 {
-	//フェード
-	if (GetKeyboardTrigger(DIK_RETURN))
+	if (GetKeyboardTrigger(DIK_P))
 	{
-		SetFade(MODE_TITLE);
+		g_bPause = !g_bPause;
 	}
 }
 
 //==========================================
 //  描画処理
 //==========================================
-void DrawResult()
+void DrawPause()
 {
+	//デバッグ表示
+	if (g_bPause)
+	{
+		PrintDebugProc("ポーズ中");
+	}
+}
 
+//==========================================
+//  ポーズ状態の取得
+//==========================================
+bool GetPause()
+{
+	return g_bPause;
 }
