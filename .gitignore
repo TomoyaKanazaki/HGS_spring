@@ -351,13 +351,14 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
-/00_ゲーム制作 ソースファイル/project000 Team SilenceFujita/Debug
-/00_ゲーム制作 ソースファイル/project000 Team SilenceFujita/Release
-/00_ゲーム制作 ソースファイル/project000 Team SilenceFujita/*.exe
-/00_ゲーム制作 ソースファイル/project000 Team SilenceFujita/*.db
-/00_ゲーム制作 ソースファイル/project000 Team SilenceFujita/*.pdb
-/00_ゲーム制作 ソースファイル/project000 Team SilenceFujita/*.ipdb
-/00_ゲーム制作 ソースファイル/project000 Team SilenceFujita/*.iobj
-/00_ゲーム制作 ソースファイル/project000 Team SilenceFujita/.vs/project000 Team SilenceFujita/v14/*.suo
-/00_ゲーム制作 ソースファイル/project000 Team SilenceFujita/data/TXT/*.txt
 /00_HGS_spring/Debug
+/00_HGS_spring/Release
+/00_HGS_spring/*.exe
+/00_HGS_spring/*.db
+/00_HGS_spring/*.pdb
+/00_HGS_spring/*.ipdb
+/00_HGS_spring/*.iobj
+/00_HGS_spring/*.filters
+/00_HGS_spring/.vs/00_HGS_spring/v14/*.suo
+/00_HGS_spring/data/TXT/*.txt
+/00_HGS_spring/data/BIN/*.bin
