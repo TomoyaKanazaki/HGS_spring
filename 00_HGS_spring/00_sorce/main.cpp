@@ -138,7 +138,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR lpCmdLine
 				dwFrameCount = 0; //フレームカウントをクリア
 			}
 
-			if ((dwCurrentTime - dwExecLastTime) >= (1000 / 144))
+			if ((dwCurrentTime - dwExecLastTime) >= (1000 / 60))
 			{
 				//60分の1秒経過
 				dwExecLastTime = dwCurrentTime;
