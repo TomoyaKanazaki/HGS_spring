@@ -62,13 +62,25 @@ typedef struct
 }VERTEX_3D;
 
 //==========================================
+//  画面モードの定義
+//==========================================
+typedef enum
+{
+	MODE_TITLE = 0, //タイトル
+	MODE_GAME, //ゲーム
+	MODE_RESULT, //リザルト
+	MODE_MAX
+}MODE;
+
+//==========================================
 //  プロトタイプ
 //==========================================
 LRESULT CALLBACK WindowsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow);
-LPDIRECT3DDEVICE9 GetDevice(void);
 void Uninit(void);
 void Update(void);
 void Draw(void);
+LPDIRECT3DDEVICE9 GetDevice(void);
+void SetMode(MODE NextMode);
 
 #endif
