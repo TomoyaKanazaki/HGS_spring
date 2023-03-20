@@ -65,7 +65,6 @@ typedef struct
 LRESULT CALLBACK WindowsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow);
 LPDIRECT3DDEVICE9 GetDevice(void);
-LPD3DXFONT GetFont(void);
 void Uninit(void);
 void Update(void);
 void Draw(void);
