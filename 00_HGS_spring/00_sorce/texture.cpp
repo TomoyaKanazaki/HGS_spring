@@ -11,8 +11,7 @@
 //==========================================
 const char *c_pTextureFilePass[TEXTURE_MAX] =
 {
-	"data/TEXTURE/effect_000.jpg", //エフェクトでデフォルトに使うテクスチャ
-	"data/TEXTURE/effect_001.jpg", //エフェクトに使う四角のテクスチャ
+	"02_data/02_TEXTURE/effect_000.jpg"
 }; //テクスチャパス
 
 //==========================================
