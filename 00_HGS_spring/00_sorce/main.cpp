@@ -347,6 +347,7 @@ void Update(void)
 {
 	//デバイスの更新
 	UpdateDevice();
+	
 	//画面モードに対応した処理を行う
 	switch (g_Mode)
 	{
