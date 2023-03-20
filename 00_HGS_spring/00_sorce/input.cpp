@@ -732,5 +732,5 @@ bool GetMousePress(MOUSE_PUSH nKey)
 //==========================================
 D3DXVECTOR3 GetMouseMove(void)
 {
-	return D3DXVECTOR3(((float)g_Mouse.MouseState.lX) * MOUSE_SENS, ((float)g_Mouse.MouseState.lY) * MOUSE_SENS, 0.0f);
+	return D3DXVECTOR3(((float)g_Mouse.MouseState.lX) * MOUSE_SENS, ((float)g_Mouse.MouseState.lY) * MOUSE_SENS, ((float)g_Mouse.MouseState.lZ) * MOUSE_SENS);
 }

@@ -9,6 +9,7 @@
 //************************************************************
 #include "main.h"
 #include "camera.h"
+#include "input.h"
 
 #ifdef _DEBUG	// デバッグ処理
 #endif
@@ -107,7 +108,7 @@ void UninitCamera(void)
 //============================================================
 void UpdateCamera(void)
 {
-#if 1
+#if 0
 
 #else
 	// カメラの位置の更新 (操作)
@@ -353,7 +354,6 @@ void MoveFixedCamera(void)
 }
 #endif
 
-#if 0
 //============================================================
 //	メインカメラの位置の更新処理 (操作)
 //============================================================
@@ -362,7 +362,7 @@ void MoveCamera(void)
 	//--------------------------------------------------------
 	//	マウス操作の更新
 	//--------------------------------------------------------
-	if (GetMousePress(MOUKEY_LEFT) == true && GetMousePress(MOUKEY_RIGHT) == true)
+	if (GetMousePress(PUSH_LEFT) == true && GetMousePress(PUSH_RIGHT) == true)
 	{ // 右クリックと左クリックが押されている場合
 
 		// 視点を移動
@@ -415,7 +415,7 @@ void RotCamera(void)
 	//--------------------------------------------------------
 	//	マウス操作の更新
 	//--------------------------------------------------------
-	if (GetMousePress(MOUKEY_LEFT) == true && GetMousePress(MOUKEY_RIGHT) == false)
+	if (GetMousePress(PUSH_LEFT) == true && GetMousePress(PUSH_RIGHT) == false)
 	{ // 左クリックだけが押されている場合
 
 		// マウスの x移動量の方向に y軸を回転
@@ -444,7 +444,7 @@ void RotCamera(void)
 	//--------------------------------------------------------
 	//	マウス操作の更新
 	//--------------------------------------------------------
-	if (GetMousePress(MOUKEY_RIGHT) == true && GetMousePress(MOUKEY_LEFT) == false)
+	if (GetMousePress(PUSH_RIGHT) == true && GetMousePress(PUSH_LEFT) == false)
 	{ // 右クリックだけが押されている場合
 
 		// マウスの x移動量の方向に y軸を回転
@@ -470,7 +470,6 @@ void RotCamera(void)
 	g_aCamera[CAMERATYPE_MAIN].posR.y = g_aCamera[CAMERATYPE_MAIN].posV.y + ((-g_aCamera[CAMERATYPE_MAIN].fDis * cosf(g_aCamera[CAMERATYPE_MAIN].rot.x)));
 	g_aCamera[CAMERATYPE_MAIN].posR.z = g_aCamera[CAMERATYPE_MAIN].posV.z + ((-g_aCamera[CAMERATYPE_MAIN].fDis * sinf(g_aCamera[CAMERATYPE_MAIN].rot.x)) * cosf(g_aCamera[CAMERATYPE_MAIN].rot.y));
 }
-#endif
 
 //============================================================
 //	カメラの向きの補正処理 (x)
