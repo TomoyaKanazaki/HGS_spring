@@ -8,6 +8,7 @@
 #include "pause.h"
 #include "fade.h"
 #include "input.h"
+#include "load.h"
 
 #include "camera.h"
 #include "light.h"
@@ -41,6 +42,9 @@ void InitGame()
 
 	//ポーズの初期化
 	InitPause();
+
+	// ステージのセットアップ
+	TxtSetStage();
 }
 
 //==========================================

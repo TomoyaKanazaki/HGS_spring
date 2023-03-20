@@ -160,6 +160,8 @@
     <ClInclude Include="01_header\game.h" />
     <ClInclude Include="01_header\input.h" />
     <ClInclude Include="01_header\light.h" />
+    <ClInclude Include="01_header\limit.h" />
+    <ClInclude Include="01_header\load.h" />
     <ClInclude Include="01_header\main.h" />
     <ClInclude Include="01_header\meshcylinder.h" />
     <ClInclude Include="01_header\meshdome.h" />
@@ -179,6 +181,8 @@
     <ClCompile Include="00_sorce\game.cpp" />
     <ClCompile Include="00_sorce\input.cpp" />
     <ClCompile Include="00_sorce\light.cpp" />
+    <ClCompile Include="00_sorce\limit.cpp" />
+    <ClCompile Include="00_sorce\load.cpp" />
     <ClCompile Include="00_sorce\main.cpp" />
     <ClCompile Include="00_sorce\meshcylinder.cpp" />
     <ClCompile Include="00_sorce\meshdome.cpp" />
