@@ -154,14 +154,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="01_header\camera.h" />
     <ClInclude Include="01_header\debugproc.h" />
+    <ClInclude Include="01_header\light.h" />
     <ClInclude Include="01_header\main.h" />
     <ClInclude Include="01_header\model.h" />
     <ClInclude Include="01_header\polygon.h" />
     <ClInclude Include="01_header\texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="00_sorce\camera.cpp" />
     <ClCompile Include="00_sorce\debugproc.cpp" />
+    <ClCompile Include="00_sorce\light.cpp" />
     <ClCompile Include="00_sorce\main.cpp" />
     <ClCompile Include="00_sorce\model.cpp" />
     <ClCompile Include="00_sorce\polygon.cpp" />
