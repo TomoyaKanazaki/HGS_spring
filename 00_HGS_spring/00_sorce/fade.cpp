@@ -155,7 +155,7 @@ void DrawFade(void)
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
 	//テクスチャの設定
-	pDevice->SetTexture(0, GetTexture(TEXTURE_SUISEI));
+	pDevice->SetTexture(0, GetTexture(TEXTURE_EFFECT));
 
 	//ポリゴンの描画
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
@@ -171,7 +171,7 @@ void SetFade(MODE nextmode)
 	{
 		g_fade = FADE_OUT;
 		g_NextMode = nextmode;
-		g_ColorFade = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f);
+		g_ColorFade = D3DXCOLOR(0.286f, 0.878f, 0.957f, 0.0f);
 	}
 }
 

@@ -14,7 +14,6 @@
 typedef enum
 {
 	TEXTURE_EFFECT = 0, //エフェクトのテクスチャ
-	TEXTURE_SUISEI, //すいせい
 	TEXTURE_MAX
 }TEXTURE_LABEL;
 

@@ -83,7 +83,7 @@ LPDIRECT3DVERTEXBUFFER9 Init_2D_Polygon(int nNum)
 	(
 		sizeof(VERTEX_2D) * 4 * nNum,
 		D3DUSAGE_WRITEONLY,
-		FVF_VERTEX_3D,
+		FVF_VERTEX_2D,
 		D3DPOOL_MANAGED,
 		&pVtxBuff,
 		NULL

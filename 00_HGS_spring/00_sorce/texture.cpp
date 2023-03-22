@@ -12,7 +12,6 @@
 const char *c_pTextureFilePass[TEXTURE_MAX] =
 {
 	"02_data/02_TEXTURE/effect_000.jpg",
-	"02_data/02_TEXTURE/talent_suisei_2.png"
 }; //テクスチャパス
 
 //==========================================
