@@ -15,8 +15,7 @@
 //**********************************************************************************************************************
 const char *apTextureMeshWall[] =		// テクスチャの相対パス
 {
-	"data\\TEXTURE\\sidewalk001.png",	// 歩道のテクスチャの相対パス
-	"data\\TEXTURE\\wall000.png",		// ビル街のテクスチャの相対パス
+	"02_data\\02_TEXTURE\\meshwall000.png",	// 通常のテクスチャの相対パス
 };
 
 //**********************************************************************************************************************
@@ -24,8 +23,7 @@ const char *apTextureMeshWall[] =		// テクスチャの相対パス
 //**********************************************************************************************************************
 typedef enum
 {
-	TEXTURE_MESHWALL_SIDEWALK = 0,		// 歩道
-	TEXTURE_MESHWALL_BUILDING,			// ビル街
+	TEXTURE_MESHWALL_NORMAL = 0,		// 通常
 	TEXTURE_MESHWALL_MAX,				// この列挙型の総数
 } TEXTURE_MESHWALL;
 
@@ -89,116 +87,120 @@ void InitMeshWall(void)
 	// メッシュウォールのセットアップ
 	TxtSetMeshWall();
 
-	// 頂点バッファの生成
-	pDevice->CreateVertexBuffer
-	( // 引数
-		sizeof(VERTEX_3D) * g_nNeedVtxWall,	// 必要頂点数
-		D3DUSAGE_WRITEONLY,					// 使用方法
-		FVF_VERTEX_3D,						// 頂点フォーマット
-		D3DPOOL_MANAGED,					// メモリの指定
-		&g_pVtxBuffMeshWall,				// 頂点バッファへのポインタ
-		NULL
-	);
+	if (g_nNeedVtxWall > 0)
+	{ // 必要頂点数が 0より大きい場合
 
-	// インデックスバッファの生成
-	pDevice->CreateIndexBuffer
-	( // 引数
-		sizeof(WORD) * g_nNeedIdxWall,		// 必要インデックス数
-		D3DUSAGE_WRITEONLY,					// 使用方法
-		D3DFMT_INDEX16,						// インデックスバッファのフォーマット
-		D3DPOOL_MANAGED,					// メモリの指定
-		&g_pIdxBuffMeshWall,				// インデックスバッファへのポインタ
-		NULL
-	);
+		// 頂点バッファの生成
+		pDevice->CreateVertexBuffer
+		( // 引数
+			sizeof(VERTEX_3D) * g_nNeedVtxWall,	// 必要頂点数
+			D3DUSAGE_WRITEONLY,					// 使用方法
+			FVF_VERTEX_3D,						// 頂点フォーマット
+			D3DPOOL_MANAGED,					// メモリの指定
+			&g_pVtxBuffMeshWall,				// 頂点バッファへのポインタ
+			NULL
+		);
 
-	//------------------------------------------------------------------------------------------------------------------
-	//	頂点情報の初期化
-	//------------------------------------------------------------------------------------------------------------------
-	// 頂点バッファをロックし、頂点情報へのポインタを取得
-	g_pVtxBuffMeshWall->Lock(0, 0, (void**)&pVtx, 0);
+		// インデックスバッファの生成
+		pDevice->CreateIndexBuffer
+		( // 引数
+			sizeof(WORD) * g_nNeedIdxWall,		// 必要インデックス数
+			D3DUSAGE_WRITEONLY,					// 使用方法
+			D3DFMT_INDEX16,						// インデックスバッファのフォーマット
+			D3DPOOL_MANAGED,					// メモリの指定
+			&g_pIdxBuffMeshWall,				// インデックスバッファへのポインタ
+			NULL
+		);
 
-	for (int nCntMeshWall = 0; nCntMeshWall < MAX_MESHWALL; nCntMeshWall++)
-	{ // メッシュウォールの最大表示数分繰り返す
+		//------------------------------------------------------------------------------------------------------------------
+		//	頂点情報の初期化
+		//------------------------------------------------------------------------------------------------------------------
+		// 頂点バッファをロックし、頂点情報へのポインタを取得
+		g_pVtxBuffMeshWall->Lock(0, 0, (void**)&pVtx, 0);
 
-		if (g_aMeshWall[nCntMeshWall].bUse == true)
-		{ // メッシュウォールが使用されている場合
+		for (int nCntMeshWall = 0; nCntMeshWall < MAX_MESHWALL; nCntMeshWall++)
+		{ // メッシュウォールの最大表示数分繰り返す
 
-			for (int nCntHeight = 0; nCntHeight < g_aMeshWall[nCntMeshWall].nPartHeight + 1; nCntHeight++)
-			{ // 縦の分割数 +1回繰り返す
+			if (g_aMeshWall[nCntMeshWall].bUse == true)
+			{ // メッシュウォールが使用されている場合
 
-				for (int nCntWidth = 0; nCntWidth < g_aMeshWall[nCntMeshWall].nPartWidth + 1; nCntWidth++)
-				{ // 横の分割数 +1回繰り返す
+				for (int nCntHeight = 0; nCntHeight < g_aMeshWall[nCntMeshWall].nPartHeight + 1; nCntHeight++)
+				{ // 縦の分割数 +1回繰り返す
 
-					// 頂点座標の設定
-					pVtx[0].pos = D3DXVECTOR3
-					( // 引数
-						nCntWidth * (g_aMeshWall[nCntMeshWall].fWidth / (float)g_aMeshWall[nCntMeshWall].nPartWidth) - (g_aMeshWall[nCntMeshWall].fWidth * 0.5f),	// x
-						-(nCntHeight * (g_aMeshWall[nCntMeshWall].fHeight / (float)g_aMeshWall[nCntMeshWall].nPartHeight)) + g_aMeshWall[nCntMeshWall].fHeight,		// y
-						0.0f																																		// z
-					);
+					for (int nCntWidth = 0; nCntWidth < g_aMeshWall[nCntMeshWall].nPartWidth + 1; nCntWidth++)
+					{ // 横の分割数 +1回繰り返す
 
-					// 法線ベクトルの設定
-					pVtx[0].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+						// 頂点座標の設定
+						pVtx[0].pos = D3DXVECTOR3
+						( // 引数
+							nCntWidth * (g_aMeshWall[nCntMeshWall].fWidth / (float)g_aMeshWall[nCntMeshWall].nPartWidth) - (g_aMeshWall[nCntMeshWall].fWidth * 0.5f),	// x
+							-(nCntHeight * (g_aMeshWall[nCntMeshWall].fHeight / (float)g_aMeshWall[nCntMeshWall].nPartHeight)) + g_aMeshWall[nCntMeshWall].fHeight,		// y
+							0.0f																																		// z
+						);
 
-					// 頂点カラーの設定
-					pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+						// 法線ベクトルの設定
+						pVtx[0].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
 
-					// テクスチャ座標の設定
-					pVtx[0].tex = D3DXVECTOR2(1.0f * (nCntWidth % 2), 1.0f * nCntHeight);
+						// 頂点カラーの設定
+						pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
-					// 頂点データのポインタを 1つ分進める
-					pVtx += 1;
+						// テクスチャ座標の設定
+						pVtx[0].tex = D3DXVECTOR2(1.0f * (nCntWidth % 2), 1.0f * nCntHeight);
+
+						// 頂点データのポインタを 1つ分進める
+						pVtx += 1;
+					}
 				}
 			}
 		}
-	}
 
-	// 頂点バッファをアンロックする
-	g_pVtxBuffMeshWall->Unlock();
+		// 頂点バッファをアンロックする
+		g_pVtxBuffMeshWall->Unlock();
 
-	//------------------------------------------------------------------------------------------------------------------
-	//	インデックス情報の初期化
-	//------------------------------------------------------------------------------------------------------------------
-	// インデックスバッファをロックし、頂点番号データへのポインタを取得
-	g_pIdxBuffMeshWall->Lock(0, 0, (void**)&pIdx, 0);
+		//------------------------------------------------------------------------------------------------------------------
+		//	インデックス情報の初期化
+		//------------------------------------------------------------------------------------------------------------------
+		// インデックスバッファをロックし、頂点番号データへのポインタを取得
+		g_pIdxBuffMeshWall->Lock(0, 0, (void**)&pIdx, 0);
 
-	for (int nCntMeshWall = 0; nCntMeshWall < MAX_MESHWALL; nCntMeshWall++)
-	{ // メッシュウォールの最大表示数分繰り返す
+		for (int nCntMeshWall = 0; nCntMeshWall < MAX_MESHWALL; nCntMeshWall++)
+		{ // メッシュウォールの最大表示数分繰り返す
 
-		if (g_aMeshWall[nCntMeshWall].bUse == true)
-		{ // メッシュウォールが使用されている場合
+			if (g_aMeshWall[nCntMeshWall].bUse == true)
+			{ // メッシュウォールが使用されている場合
 
-			for (int nCntHeight = 0; nCntHeight < g_aMeshWall[nCntMeshWall].nPartHeight; nCntHeight++)
-			{ // 縦の分割数 +1回繰り返す
+				for (int nCntHeight = 0; nCntHeight < g_aMeshWall[nCntMeshWall].nPartHeight; nCntHeight++)
+				{ // 縦の分割数 +1回繰り返す
 
-				for (int nCntWidth = 0; nCntWidth < g_aMeshWall[nCntMeshWall].nPartWidth + 1; nCntWidth++)
-				{ // 横の分割数 +1回繰り返す
+					for (int nCntWidth = 0; nCntWidth < g_aMeshWall[nCntMeshWall].nPartWidth + 1; nCntWidth++)
+					{ // 横の分割数 +1回繰り返す
 
-					pIdx[0] = nNumVtx + ((g_aMeshWall[nCntMeshWall].nPartWidth + 1) * (nCntHeight + 1) + nCntWidth);
-					pIdx[1] = nNumVtx + ((g_aMeshWall[nCntMeshWall].nPartWidth + 1) * nCntHeight + nCntWidth);
+						pIdx[0] = nNumVtx + ((g_aMeshWall[nCntMeshWall].nPartWidth + 1) * (nCntHeight + 1) + nCntWidth);
+						pIdx[1] = nNumVtx + ((g_aMeshWall[nCntMeshWall].nPartWidth + 1) * nCntHeight + nCntWidth);
 
-					// インデックスデータのポインタを 2つ分進める
-					pIdx += 2;
+						// インデックスデータのポインタを 2つ分進める
+						pIdx += 2;
+					}
+
+					if (nCntHeight != g_aMeshWall[nCntMeshWall].nPartHeight - 1)
+					{ // 一番手前の分割場所ではない場合
+
+						pIdx[0] = nNumVtx + ((g_aMeshWall[nCntMeshWall].nPartWidth + 1) * nCntHeight + g_aMeshWall[nCntMeshWall].nPartWidth);
+						pIdx[1] = nNumVtx + ((g_aMeshWall[nCntMeshWall].nPartWidth + 1) * (nCntHeight + 2));
+
+						// インデックスデータのポインタを 2つ分進める
+						pIdx += 2;
+					}
 				}
 
-				if (nCntHeight != g_aMeshWall[nCntMeshWall].nPartHeight - 1)
-				{ // 一番手前の分割場所ではない場合
-
-					pIdx[0] = nNumVtx + ((g_aMeshWall[nCntMeshWall].nPartWidth + 1) * nCntHeight + g_aMeshWall[nCntMeshWall].nPartWidth);
-					pIdx[1] = nNumVtx + ((g_aMeshWall[nCntMeshWall].nPartWidth + 1) * (nCntHeight + 2));
-
-					// インデックスデータのポインタを 2つ分進める
-					pIdx += 2;
-				}
+				// 頂点バッファの開始地点を必要数分ずらす
+				nNumVtx += g_aMeshWall[nCntMeshWall].nNumVtx;
 			}
-
-			// 頂点バッファの開始地点を必要数分ずらす
-			nNumVtx += g_aMeshWall[nCntMeshWall].nNumVtx;
 		}
-	}
 
-	// インデックスバッファをアンロックする
-	g_pIdxBuffMeshWall->Unlock();
+		// インデックスバッファをアンロックする
+		g_pIdxBuffMeshWall->Unlock();
+	}
 }
 
 //======================================================================================================================

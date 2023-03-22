@@ -353,9 +353,6 @@ void Update(void)
 
 	//デバッグプロックの更新
 	UpdateDebugProc();
-
-	//フェードの更新
-	UpdateFade();
 	
 	//画面モードに対応した処理を行う
 	switch (g_Mode)
@@ -372,6 +369,9 @@ void Update(void)
 	default:
 		break;
 	}
+
+	//フェードの更新
+	UpdateFade();
 }
 
 //==========================================
@@ -379,6 +379,9 @@ void Update(void)
 //==========================================
 void Draw(void)
 {
+	// 変数を宣言
+	D3DVIEWPORT9 viewportDef;	// カメラのビューポート保存用
+
 	//画面クリア
 	g_pD3DDevice->Clear
 	(
@@ -393,8 +396,8 @@ void Draw(void)
 	//描画開始
 	if (SUCCEEDED(g_pD3DDevice->BeginScene()))
 	{
-		//フェードの描画
-		DrawFade();
+		// 現在のビューポートを取得
+		g_pD3DDevice->GetViewport(&viewportDef);
 
 		//画面モードに対応した処理を行う
 		switch (g_Mode)
@@ -411,6 +414,12 @@ void Draw(void)
 		default:
 			break;
 		}
+
+		// ビューポートを元に戻す
+		g_pD3DDevice->SetViewport(&viewportDef);
+
+		//フェードの描画
+		DrawFade();
 
 #ifdef _DEBUG
 		//デバッグプロックの描画

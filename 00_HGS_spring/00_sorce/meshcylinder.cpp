@@ -14,16 +14,13 @@
 //	マクロ定義
 //**********************************************************************************************************************
 #define MAX_MESHCYLINDER	(4)			// メッシュシリンダーの最大数
-#define RES_PLUS_POS_Y		(100.0f)	// リザルト時の y座標の加算量
 
 //**********************************************************************************************************************
 //	コンスト定義
 //**********************************************************************************************************************
 const char *apTextureMeshCylinder[] =	// テクスチャの相対パス
 {
-	"data\\TEXTURE\\scenery000.png",	// ビル街 (明るい) のテクスチャの相対パス
-	"data\\TEXTURE\\scenery001.png",	// ビル街 (通常) のテクスチャの相対パス
-	"data\\TEXTURE\\scenery002.png",	// ビル街 (暗い) のテクスチャの相対パス
+	"02_data\\02_TEXTURE\\scenery000.png",	// 景色のテクスチャの相対パス
 };
 
 //**********************************************************************************************************************
@@ -31,9 +28,7 @@ const char *apTextureMeshCylinder[] =	// テクスチャの相対パス
 //**********************************************************************************************************************
 typedef enum
 {
-	TEXTURE_MESHCYLINDER_BRIGHT = 0,	// メッシュシリンダー (明るい)
-	TEXTURE_MESHCYLINDER_NORMAL,		// メッシュシリンダー (通常)
-	TEXTURE_MESHCYLINDER_DARK,			// メッシュシリンダー (暗い)
+	TEXTURE_MESHCYLINDER_SCENERY = 0,	// 景色
 	TEXTURE_MESHCYLINDER_MAX,			// この列挙型の総数
 } TEXTURE_MESHCYLINDER;
 
@@ -117,125 +112,129 @@ void InitMeshCylinder(void)
 	// メッシュシリンダーのセットアップ
 	TxtSetMeshCylinder();
 
-	// 頂点バッファの生成
-	pDevice->CreateVertexBuffer
-	( // 引数
-		sizeof(VERTEX_3D) * g_nNeedVtxCylinder,	// 必要頂点数
-		D3DUSAGE_WRITEONLY,						// 使用方法
-		FVF_VERTEX_3D,							// 頂点フォーマット
-		D3DPOOL_MANAGED,						// メモリの指定
-		&g_pVtxBuffMeshCylinder,				// 頂点バッファへのポインタ
-		NULL
-	);
+	if (g_nNeedVtxCylinder > 0)
+	{ // 必要頂点数が 0より大きい場合
 
-	// インデックスバッファの生成
-	pDevice->CreateIndexBuffer
-	( // 引数
-		sizeof(WORD) * g_nNeedIdxCylinder,		// 必要インデックス数
-		D3DUSAGE_WRITEONLY,						// 使用方法
-		D3DFMT_INDEX16,							// インデックスバッファのフォーマット
-		D3DPOOL_MANAGED,						// メモリの指定
-		&g_pIdxBuffMeshCylinder,				// インデックスバッファへのポインタ
-		NULL
-	);
+		// 頂点バッファの生成
+		pDevice->CreateVertexBuffer
+		( // 引数
+			sizeof(VERTEX_3D) * g_nNeedVtxCylinder,	// 必要頂点数
+			D3DUSAGE_WRITEONLY,						// 使用方法
+			FVF_VERTEX_3D,							// 頂点フォーマット
+			D3DPOOL_MANAGED,						// メモリの指定
+			&g_pVtxBuffMeshCylinder,				// 頂点バッファへのポインタ
+			NULL
+		);
 
-	//------------------------------------------------------------------------------------------------------------------
-	//	頂点情報の初期化
-	//------------------------------------------------------------------------------------------------------------------
-	// 頂点バッファをロックし、頂点情報へのポインタを取得
-	g_pVtxBuffMeshCylinder->Lock(0, 0, (void**)&pVtx, 0);
+		// インデックスバッファの生成
+		pDevice->CreateIndexBuffer
+		( // 引数
+			sizeof(WORD) * g_nNeedIdxCylinder,		// 必要インデックス数
+			D3DUSAGE_WRITEONLY,						// 使用方法
+			D3DFMT_INDEX16,							// インデックスバッファのフォーマット
+			D3DPOOL_MANAGED,						// メモリの指定
+			&g_pIdxBuffMeshCylinder,				// インデックスバッファへのポインタ
+			NULL
+		);
 
-	for (int nCntMeshCylinder = 0; nCntMeshCylinder < MAX_MESHCYLINDER; nCntMeshCylinder++)
-	{ // メッシュシリンダーの最大表示数分繰り返す
+		//------------------------------------------------------------------------------------------------------------------
+		//	頂点情報の初期化
+		//------------------------------------------------------------------------------------------------------------------
+		// 頂点バッファをロックし、頂点情報へのポインタを取得
+		g_pVtxBuffMeshCylinder->Lock(0, 0, (void**)&pVtx, 0);
 
-		if (g_aMeshCylinder[nCntMeshCylinder].bUse == true)
-		{ // メッシュシリンダーが使用されている場合
+		for (int nCntMeshCylinder = 0; nCntMeshCylinder < MAX_MESHCYLINDER; nCntMeshCylinder++)
+		{ // メッシュシリンダーの最大表示数分繰り返す
 
-			for (int nCntHeight = 0; nCntHeight < g_aMeshCylinder[nCntMeshCylinder].nPartHeight + 1; nCntHeight++)
-			{ // 縦の分割数 +1回繰り返す
+			if (g_aMeshCylinder[nCntMeshCylinder].bUse == true)
+			{ // メッシュシリンダーが使用されている場合
 
-				for (int nCntWidth = 0; nCntWidth < g_aMeshCylinder[nCntMeshCylinder].nPartWidth + 1; nCntWidth++)
-				{ // 横の分割数 +1回繰り返す
+				for (int nCntHeight = 0; nCntHeight < g_aMeshCylinder[nCntMeshCylinder].nPartHeight + 1; nCntHeight++)
+				{ // 縦の分割数 +1回繰り返す
 
-					// 頂点座標の方向を設定
-					vecPos = D3DXVECTOR3
-					( // 引数
-						sinf(D3DXToRadian(nCntWidth * (360 / (float)g_aMeshCylinder[nCntMeshCylinder].nPartWidth))) * g_aMeshCylinder[nCntMeshCylinder].fRadius,						// x
-						-(nCntHeight * (g_aMeshCylinder[nCntMeshCylinder].fHeight / (float)g_aMeshCylinder[nCntMeshCylinder].nPartHeight)) + g_aMeshCylinder[nCntMeshCylinder].fHeight,	// y
-						cosf(D3DXToRadian(nCntWidth * (360 / (float)g_aMeshCylinder[nCntMeshCylinder].nPartWidth))) * g_aMeshCylinder[nCntMeshCylinder].fRadius							// z
-					);
+					for (int nCntWidth = 0; nCntWidth < g_aMeshCylinder[nCntMeshCylinder].nPartWidth + 1; nCntWidth++)
+					{ // 横の分割数 +1回繰り返す
 
-					// 頂点座標の設定
-					pVtx[0].pos = g_aMeshCylinder[nCntMeshCylinder].pos + vecPos;
+						// 頂点座標の方向を設定
+						vecPos = D3DXVECTOR3
+						( // 引数
+							sinf(D3DXToRadian(nCntWidth * (360 / (float)g_aMeshCylinder[nCntMeshCylinder].nPartWidth))) * g_aMeshCylinder[nCntMeshCylinder].fRadius,						// x
+							-(nCntHeight * (g_aMeshCylinder[nCntMeshCylinder].fHeight / (float)g_aMeshCylinder[nCntMeshCylinder].nPartHeight)) + g_aMeshCylinder[nCntMeshCylinder].fHeight,	// y
+							cosf(D3DXToRadian(nCntWidth * (360 / (float)g_aMeshCylinder[nCntMeshCylinder].nPartWidth))) * g_aMeshCylinder[nCntMeshCylinder].fRadius							// z
+						);
 
-					// 法線ベクトルの方向を設定
-					vecNor = D3DXVECTOR3(-vecPos.x, 0.0f, -vecPos.z);
+						// 頂点座標の設定
+						pVtx[0].pos = g_aMeshCylinder[nCntMeshCylinder].pos + vecPos;
 
-					// ベクトルを正規化
-					D3DXVec3Normalize(&vecNor, &vecNor);
+						// 法線ベクトルの方向を設定
+						vecNor = D3DXVECTOR3(-vecPos.x, 0.0f, -vecPos.z);
 
-					// 法線ベクトルの設定
-					pVtx[0].nor = vecNor;
+						// ベクトルを正規化
+						D3DXVec3Normalize(&vecNor, &vecNor);
 
-					// 頂点カラーの設定
-					pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+						// 法線ベクトルの設定
+						pVtx[0].nor = vecNor;
 
-					// テクスチャ座標の設定
-					pVtx[0].tex = D3DXVECTOR2(1.0f * (nCntWidth % 2), 1.0f * nCntHeight);
+						// 頂点カラーの設定
+						pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
-					// 頂点データのポインタを 1つ分進める
-					pVtx += 1;
+						// テクスチャ座標の設定
+						pVtx[0].tex = D3DXVECTOR2(1.0f * (nCntWidth % 2), 1.0f * nCntHeight);
+
+						// 頂点データのポインタを 1つ分進める
+						pVtx += 1;
+					}
 				}
 			}
 		}
-	}
 
-	// 頂点バッファをアンロックする
-	g_pVtxBuffMeshCylinder->Unlock();
+		// 頂点バッファをアンロックする
+		g_pVtxBuffMeshCylinder->Unlock();
 
-	//------------------------------------------------------------------------------------------------------------------
-	//	インデックス情報の初期化
-	//------------------------------------------------------------------------------------------------------------------
-	// インデックスバッファをロックし、頂点番号データへのポインタを取得
-	g_pIdxBuffMeshCylinder->Lock(0, 0, (void**)&pIdx, 0);
+		//------------------------------------------------------------------------------------------------------------------
+		//	インデックス情報の初期化
+		//------------------------------------------------------------------------------------------------------------------
+		// インデックスバッファをロックし、頂点番号データへのポインタを取得
+		g_pIdxBuffMeshCylinder->Lock(0, 0, (void**)&pIdx, 0);
 
-	for (int nCntMeshCylinder = 0; nCntMeshCylinder < MAX_MESHCYLINDER; nCntMeshCylinder++)
-	{ // メッシュシリンダーの最大表示数分繰り返す
+		for (int nCntMeshCylinder = 0; nCntMeshCylinder < MAX_MESHCYLINDER; nCntMeshCylinder++)
+		{ // メッシュシリンダーの最大表示数分繰り返す
 
-		if (g_aMeshCylinder[nCntMeshCylinder].bUse == true)
-		{ // メッシュシリンダーが使用されている場合
+			if (g_aMeshCylinder[nCntMeshCylinder].bUse == true)
+			{ // メッシュシリンダーが使用されている場合
 
-			for (int nCntHeight = 0, nCntWidth = 0; nCntHeight < g_aMeshCylinder[nCntMeshCylinder].nPartHeight; nCntHeight++)
-			{ // 縦の分割数 +1回繰り返す
+				for (int nCntHeight = 0, nCntWidth = 0; nCntHeight < g_aMeshCylinder[nCntMeshCylinder].nPartHeight; nCntHeight++)
+				{ // 縦の分割数 +1回繰り返す
 
-				for (nCntWidth = 0; nCntWidth < g_aMeshCylinder[nCntMeshCylinder].nPartWidth + 1; nCntWidth++)
-				{ // 横の分割数 +1回繰り返す
+					for (nCntWidth = 0; nCntWidth < g_aMeshCylinder[nCntMeshCylinder].nPartWidth + 1; nCntWidth++)
+					{ // 横の分割数 +1回繰り返す
 
-					pIdx[0] = nNumVtx + ((g_aMeshCylinder[nCntMeshCylinder].nPartWidth + 1) * (nCntHeight + 1) + nCntWidth);
-					pIdx[1] = nNumVtx + ((g_aMeshCylinder[nCntMeshCylinder].nPartWidth + 1) * nCntHeight + nCntWidth);
+						pIdx[0] = nNumVtx + ((g_aMeshCylinder[nCntMeshCylinder].nPartWidth + 1) * (nCntHeight + 1) + nCntWidth);
+						pIdx[1] = nNumVtx + ((g_aMeshCylinder[nCntMeshCylinder].nPartWidth + 1) * nCntHeight + nCntWidth);
 
-					// インデックスデータのポインタを 2つ分進める
-					pIdx += 2;
+						// インデックスデータのポインタを 2つ分進める
+						pIdx += 2;
+					}
+
+					if (nCntHeight != g_aMeshCylinder[nCntMeshCylinder].nPartHeight - 1)
+					{ // 一番手前の分割場所ではない場合
+
+						pIdx[0] = nNumVtx + ((g_aMeshCylinder[nCntMeshCylinder].nPartWidth + 1) * nCntHeight + nCntWidth - 1);
+						pIdx[1] = nNumVtx + ((g_aMeshCylinder[nCntMeshCylinder].nPartWidth + 1) * (nCntHeight + 2));
+
+						// インデックスデータのポインタを 2つ分進める
+						pIdx += 2;
+					}
 				}
 
-				if (nCntHeight != g_aMeshCylinder[nCntMeshCylinder].nPartHeight - 1)
-				{ // 一番手前の分割場所ではない場合
-
-					pIdx[0] = nNumVtx + ((g_aMeshCylinder[nCntMeshCylinder].nPartWidth + 1) * nCntHeight + nCntWidth - 1);
-					pIdx[1] = nNumVtx + ((g_aMeshCylinder[nCntMeshCylinder].nPartWidth + 1) * (nCntHeight + 2));
-
-					// インデックスデータのポインタを 2つ分進める
-					pIdx += 2;
-				}
+				// 頂点バッファの開始地点を必要数分ずらす
+				nNumVtx += g_aMeshCylinder[nCntMeshCylinder].nNumVtx;
 			}
-
-			// 頂点バッファの開始地点を必要数分ずらす
-			nNumVtx += g_aMeshCylinder[nCntMeshCylinder].nNumVtx;
 		}
-	}
 
-	// インデックスバッファをアンロックする
-	g_pIdxBuffMeshCylinder->Unlock();
+		// インデックスバッファをアンロックする
+		g_pIdxBuffMeshCylinder->Unlock();
+	}
 }
 
 //======================================================================================================================

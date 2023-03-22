@@ -360,5 +360,5 @@ MigrationBackup/
 /00_HGS_spring/*.iobj
 /00_HGS_spring/.vs/00_HGS_spring/v14/*.suo
 /00_HGS_spring/00_HGS_spring.vcxproj.filters
-/00_HGS_spring/02_data/00_TXT/*.txt
-/00_HGS_spring/02_data/01_BIN/*.bin
+/00_HGS_spring/02_data/00_TXT
+/00_HGS_spring/02_data/01_BIN
