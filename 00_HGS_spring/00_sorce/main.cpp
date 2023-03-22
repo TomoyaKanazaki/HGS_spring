@@ -8,6 +8,7 @@
 #include "main.h"
 #include "input.h"
 #include "texture.h"
+#include "model.h"
 #include "debugproc.h"
 #include "fade.h"
 #include "title.h"
@@ -87,7 +88,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR lpCmdLine
 		return -1;
 	}
 #else
-	if (FAILED(Init(hInstance, hWnd, FALSE)))
+	if (FAILED(Init(hInstance, hWnd, TRUE)))
 	{
 		//初期化処理に失敗した場合
 		return -1;
@@ -144,8 +145,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR lpCmdLine
 				dwExecLastTime = dwCurrentTime;
 				dwFrameCount++; //フレームカウントを加算
 
-								//更新処理
+				//更新処理
 				Update();
+
 				//描画処理
 				Draw();
 			}
@@ -295,11 +297,16 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	//乱数シードの設定
 	srand((unsigned int)time(0));
 
+#ifdef _DEBUG
 	//デバッグプロックの初期化
 	InitDebugProc();
+#endif
 
 	//テクスチャの初期化
 	InitTexture();
+
+	// モデルの初期化
+	InitModel();
 
 	//フェードの初期化
 	InitFade(g_Mode);
@@ -314,11 +321,16 @@ void Uninit(void)
 {
 	//各種オブジェクトの終了処理
 
+#ifdef _DEBUG
 	//デバッグプロックの終了
 	UninitDebugProc();
+#endif
 
 	//テクスチャの終了
 	UninitTexture();
+
+	// モデルの終了
+	UninitModel();
 
 	//フェードの終了
 	UninitFade();
@@ -351,8 +363,10 @@ void Update(void)
 	//デバイスの更新
 	UpdateDevice();
 
+#ifdef _DEBUG
 	//デバッグプロックの更新
 	UpdateDebugProc();
+#endif
 	
 	//画面モードに対応した処理を行う
 	switch (g_Mode)
