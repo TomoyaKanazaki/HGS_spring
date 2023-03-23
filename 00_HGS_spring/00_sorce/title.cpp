@@ -11,6 +11,7 @@
 #include "camera.h"
 #include "light.h"
 #include "meshfield.h"
+#include "meshdome.h"
 #include "area.h"
 #include "player.h"
 #include "sound.h"
@@ -54,6 +55,9 @@ void InitTitle()
 
 	// 区域の初期化
 	InitArea();
+
+	// メッシュドームの初期化
+	InitMeshDome();
 
 	// メッシュフィールドの初期化
 	InitMeshField();
@@ -144,6 +148,9 @@ void UninitTitle()
 	// 区域の初期化
 	UninitArea();
 
+	// メッシュドームの初期化
+	UninitMeshDome();
+
 	// メッシュフィールドの初期化
 	UninitMeshField();
 
@@ -181,6 +188,9 @@ void UpdateTitle()
 
 	// 区域の初期化
 	UpdateArea();
+
+	// メッシュドームの初期化
+	UpdateMeshDome();
 
 	// メッシュフィールドの初期化
 	UpdateMeshField();
@@ -274,6 +284,9 @@ void DrawTitle()
 
 	// 区域の初期化
 	DrawArea();
+
+	// メッシュドームの初期化
+	DrawMeshDome();
 
 	// メッシュフィールドの初期化
 	DrawMeshField();
