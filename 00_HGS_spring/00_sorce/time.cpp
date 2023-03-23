@@ -18,7 +18,7 @@
 #define TIME_DIGIT (3) //桁数
 #define START_TIME (120) //ゲーム時間 (1/1秒)
 #define TIME_SIZE (100.0f) //タイムポリゴンのサイズ
-#define TIME_POS (D3DXVECTOR3((float)SCREEN_WIDTH, TIME_SIZE, 0.0f)) //タイムの描画位置
+#define TIME_POS (D3DXVECTOR3((float)SCREEN_WIDTH - 10.0f, TIME_SIZE, 0.0f)) //タイムの描画位置
 
 //==========================================
 //  プロトタイプ宣言
@@ -95,6 +95,14 @@ void UpdateTime()
 	{
 		g_nBaseTime -= 1000;
 	}
+	if (GetKeyboardTrigger(DIK_LEFT))
+	{
+		g_nBaseTime -= 10000;
+	}
+	if (GetKeyboardTrigger(DIK_RIGHT))
+	{
+		g_nBaseTime += 100000;
+	}
 #endif
 	//デバッグ表示
 	PrintDebugProc("経過時間 ( 1/1000s * 1000s = 1s ) : %d\n", nBetweenTime);
@@ -119,13 +127,13 @@ void DrawTime()
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
 	//残り時間から描画するポリゴン数を変化する
-	if (g_nTime < 100)
-	{
-		nNumDigit -= 1;
-	}
 	if (g_nTime < 10)
 	{
 		nNumDigit -= 2;
+	}
+	else if (g_nTime < 100)
+	{
+		nNumDigit -= 1;
 	}
 
 	for (int nCnt = 0; nCnt < nNumDigit; nCnt++)
@@ -217,4 +225,12 @@ void SetTimePolygon()
 
 	//頂点バッファをアンロック
 	g_pVtxBuffTime->Unlock();
+}
+
+//==========================================
+//  残り時間の取得
+//==========================================
+int GetTime()
+{
+	return g_nTime;
 }
