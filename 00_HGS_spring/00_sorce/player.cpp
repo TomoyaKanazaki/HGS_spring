@@ -12,7 +12,7 @@
 //==========================================
 //  マクロ定義
 //==========================================
-#define PLAYER_MOVE (5.0f) //プレイヤーの移動量
+#define PLAYER_MOVE (2.0f) //プレイヤーの移動量
 #define PLAYER_ROTATE (0.1f) //プレイヤーの方向転換の慣性
 
 //==========================================
@@ -163,21 +163,26 @@ void ChangeMovePlayer()
 		bMove = true;
 	}
 
-	//入力補正(正規化)
-	D3DXVec3Normalize(&g_Player.move, &move);
-
 	//移動量を決定
-	g_Player.move.x *= PLAYER_MOVE;
-	g_Player.move.z *= PLAYER_MOVE;
+	if (bMove)
+	{
+		//入力補正(正規化)
+		D3DXVec3Normalize(&g_Player.move, &move);
+
+		g_Player.move.x *= PLAYER_MOVE;
+		g_Player.move.z *= PLAYER_MOVE;
+	}
+	else
+	{
+		g_Player.move.x = g_Player.move.x;
+		g_Player.move.z = g_Player.move.z;
+	}
 
 	//移動量を加算
 	g_Player.pos += g_Player.move;
 
 	//方向転換
-	if (bMove)
-	{
-		ChangeRotPlayer();
-	}
+	ChangeRotPlayer();
 
 	//デバッグ表示
 	PrintDebugProc("エスケープ君はここにいる! ( %f : %f : %f )\n", g_Player.pos.x, g_Player.pos.y, g_Player.pos.z);
