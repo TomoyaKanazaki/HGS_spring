@@ -25,6 +25,7 @@
 #include "player.h"
 #include "ScoreGauge.h"
 #include "score.h"
+#include "PlusScore.h"
 
 //==========================================
 //  初期化処理
@@ -78,6 +79,9 @@ void InitGame()
 
 	//スコアの初期化
 	InitScore();
+
+	//プラススコアの初期化
+	InitPlusScore();
 }
 
 //==========================================
@@ -129,6 +133,9 @@ void UninitGame()
 
 	//スコアの終了
 	UninitScore();
+
+	//プラススコアの終了
+	UninitPlusScore();
 }
 
 //==========================================
@@ -180,6 +187,9 @@ void UpdateGame()
 
 		//スコアの更新
 		UpdateScore();
+
+		//プラススコアの更新
+		UpdatePlusScore();
 	}
 
 	//フェード
@@ -235,4 +245,7 @@ void DrawGame()
 
 	//スコアの描画
 	DrawScore();
+
+	//プラススコアの描画
+	DrawPlusScore();
 }

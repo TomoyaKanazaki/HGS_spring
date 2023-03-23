@@ -60,7 +60,7 @@ void InitEnemy(void)
 		&g_pMeshEnemy[ENEMY_NTYPE00]);
 
 	//XÉtÉ@ÉCÉãÇÃì«Ç›çûÇ›
-	D3DXLoadMeshFromX("02_data\\03_MODEL\\taihou00.x",
+	D3DXLoadMeshFromX("02_data\\03_MODEL\\cannon.x",
 		D3DXMESH_SYSTEMMEM,
 		pDevice,
 		NULL,
@@ -168,7 +168,7 @@ void UpdateSlime(int nCnt)
 		break;
 	}
 
-	if (CollisionCircle(pPosPlayer, g_Enemy[nCnt].pos, ENEMY_CHASE, 0.0f, -10.0f, 10.0f) == true)
+	if (CollisionCircle(pPosPlayer, g_Enemy[nCnt].pos, ENEMY_CHASE, 5.0f, -10.0f, 10.0f) == true)
 	{
 		//à⁄ìÆèàóù
 		g_Enemy[nCnt].move = D3DXVECTOR3(-cosf(g_Enemy[nCnt].rot.y) * ENWMY_MOVE, 0.0f, sinf(g_Enemy[nCnt].rot.y) * ENWMY_MOVE);

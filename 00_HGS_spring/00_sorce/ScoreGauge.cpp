@@ -3,6 +3,7 @@
 #include "player.h"
 #include "game.h"
 #include "time.h"
+#include "area.h"
 
 //ƒ}ƒNƒ’è‹`
 #define NUM_SSUI		(4)	//GAMEUI‚Ìí—Ş”
@@ -17,7 +18,7 @@
 #define SIZE_TATE_BG_X		(10.0f)		//u‚½‚Äv‚Ì•
 #define SIZE_TATE_BG_Y		(720.0f)	//u‚½‚Äv‚Ì‚‚³
 
-#define GAUGE_SPEED			(10.0f)	//ƒQ[ƒW‚ÌƒXƒs[ƒh
+#define GAUGE_SPEED			(20.0f)	//ƒQ[ƒW‚ÌƒXƒs[ƒh
 
 //\‘¢‘Ì‚Ì’è‹`
 typedef struct
@@ -34,6 +35,7 @@ LPDIRECT3DTEXTURE9 g_apTextureScoreGauge[NUM_SSUI] = {};	//ƒeƒNƒXƒ`ƒƒ‚Ö‚Ìƒ|ƒCƒ“ƒ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffScoreGauge = NULL;		//’¸“_ƒoƒbƒtƒ@‚Ö‚Ìƒ|ƒCƒ“ƒ^
 SCOREGAUGE g_aSucoreGauge[NUM_SSUI];						//\‘¢‘Ì
 int g_TimeUpNumber;		//ƒ^ƒCƒ€ƒI[ƒo[‰‰o‚Ì’iŠK—p•Ï”
+bool g_bGaugeCount;		//ƒQ[ƒWƒJƒEƒ“ƒg‚ğg‚¤‚©‚Ç‚¤‚©
 
 //====================================================================
 //ƒXƒRƒAƒQ[ƒW‚Ì‰Šú‰»ˆ—
@@ -50,6 +52,7 @@ void InitScoreGauge(void)
 
 	//ƒOƒ[ƒoƒ‹•Ï”‰Šú‰»
 	g_TimeUpNumber = -1;
+	g_bGaugeCount = false;
 
 	//UI‚Ì•\¦İ’è
 	for (int nCntSG = 0; nCntSG < NUM_SSUI; nCntSG++)
@@ -153,8 +156,18 @@ void UninitScoreGauge(void)
 void UpdateScoreGauge(void)
 {
 	MODE mode = GetMode();
+	AREATYPE GaugeSpeed = GetCurrentArea();
 
-	if (g_TimeUpNumber != -1)
+	if (GaugeSpeed == AREATYPE_SAFE && g_bGaugeCount == true)
+	{
+		g_bGaugeCount = false;
+	}
+	else
+	{
+		SetScoreGauge();
+	}
+
+	if (g_TimeUpNumber != -1 && g_bGaugeCount == true)
 	{
 		switch (g_TimeUpNumber)
 		{
@@ -163,7 +176,7 @@ void UpdateScoreGauge(void)
 				g_aSucoreGauge[0].bEnd == false &&
 				g_aSucoreGauge[0].bUse == true)
 			{
-				g_aSucoreGauge[0].fWidth += GAUGE_SPEED;
+				g_aSucoreGauge[0].fWidth += GAUGE_SPEED * GaugeSpeed;
 			}
 			else
 			{
@@ -178,7 +191,7 @@ void UpdateScoreGauge(void)
 				g_aSucoreGauge[1].bEnd == false &&
 				g_aSucoreGauge[1].bUse == true)
 			{
-				g_aSucoreGauge[1].fHeight += GAUGE_SPEED;
+				g_aSucoreGauge[1].fHeight += GAUGE_SPEED * GaugeSpeed;
 			}
 			else
 			{
@@ -193,8 +206,8 @@ void UpdateScoreGauge(void)
 				g_aSucoreGauge[2].bEnd == false &&
 				g_aSucoreGauge[2].bUse == true)
 			{
-				g_aSucoreGauge[2].pos.x -= GAUGE_SPEED;
-				g_aSucoreGauge[2].fWidth += GAUGE_SPEED;
+				g_aSucoreGauge[2].pos.x -= GAUGE_SPEED * GaugeSpeed;
+				g_aSucoreGauge[2].fWidth += GAUGE_SPEED * GaugeSpeed;
 			}
 			else
 			{
@@ -209,13 +222,13 @@ void UpdateScoreGauge(void)
 				g_aSucoreGauge[3].bEnd == false &&
 				g_aSucoreGauge[3].bUse == true)
 			{
-				g_aSucoreGauge[3].pos.y -= GAUGE_SPEED;
-				g_aSucoreGauge[3].fHeight += GAUGE_SPEED;
+				g_aSucoreGauge[3].pos.y -= GAUGE_SPEED * GaugeSpeed;
+				g_aSucoreGauge[3].fHeight += GAUGE_SPEED * GaugeSpeed;
 			}
 			else
 			{
 				g_aSucoreGauge[3].bEnd = true;
-				SetScoreGauge();
+				g_bGaugeCount = false;
 			}
 		}
 	}
@@ -223,6 +236,7 @@ void UpdateScoreGauge(void)
 		VERTEX_2D*pVtx;	//’¸“_ƒ|ƒCƒ“ƒ^‚ğŠ“¾
 
 		//’¸“_ƒoƒbƒtƒ@‚ğƒƒbƒN‚µA—¼“Xî•ñ‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğŠ“¾
+
 		g_pVtxBuffScoreGauge->Lock(0, 0, (void**)&pVtx, 0);
 
 		for (int nCntSG = 0; nCntSG < NUM_SSUI; nCntSG++)
@@ -278,35 +292,39 @@ void DrawScoreGauge(void)
 //====================================================================
 void SetScoreGauge(void)
 {
-	for (int nCntSG = 0; nCntSG < NUM_SSUI; nCntSG++)
+	if (g_bGaugeCount == false)
 	{
-		switch (nCntSG)
+		for (int nCntSG = 0; nCntSG < NUM_SSUI; nCntSG++)
 		{
-		case 0:
-			g_aSucoreGauge[nCntSG].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-			break;
-		case 1:
-			g_aSucoreGauge[nCntSG].pos = D3DXVECTOR3(1270.0f, 0.0f, 0.0f);
-			break;
-		case 2:
-			g_aSucoreGauge[nCntSG].pos = D3DXVECTOR3(1280.0f, 710.0f, 0.0f);
-			break;
-		case 3:
-			g_aSucoreGauge[nCntSG].pos = D3DXVECTOR3(0.0f, 710.0f, 0.0f);
-			break;
-		}
+			switch (nCntSG)
+			{
+			case 0:
+				g_aSucoreGauge[nCntSG].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+				break;
+			case 1:
+				g_aSucoreGauge[nCntSG].pos = D3DXVECTOR3(1270.0f, 0.0f, 0.0f);
+				break;
+			case 2:
+				g_aSucoreGauge[nCntSG].pos = D3DXVECTOR3(1280.0f, 710.0f, 0.0f);
+				break;
+			case 3:
+				g_aSucoreGauge[nCntSG].pos = D3DXVECTOR3(0.0f, 710.0f, 0.0f);
+				break;
+			}
 
-		g_aSucoreGauge[nCntSG].fWidth = 10.0f;
-		g_aSucoreGauge[nCntSG].fHeight = 10.0f;
-		g_aSucoreGauge[nCntSG].bEnd = false;
-		if (nCntSG == 0)
-		{
-			g_aSucoreGauge[nCntSG].bUse = true;
+			g_aSucoreGauge[nCntSG].fWidth = 10.0f;
+			g_aSucoreGauge[nCntSG].fHeight = 10.0f;
+			g_aSucoreGauge[nCntSG].bEnd = false;
+			if (nCntSG == 0)
+			{
+				g_aSucoreGauge[nCntSG].bUse = true;
+			}
+			else
+			{
+				g_aSucoreGauge[nCntSG].bUse = false;
+			}
 		}
-		else
-		{
-			g_aSucoreGauge[nCntSG].bUse = false;
-		}
+		g_TimeUpNumber = 0;
+		g_bGaugeCount = true;
 	}
-	g_TimeUpNumber = 0;
 }
