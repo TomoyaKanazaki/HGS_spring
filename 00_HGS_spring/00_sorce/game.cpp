@@ -27,6 +27,7 @@
 #include "ScoreGauge.h"
 #include "score.h"
 #include "PlusScore.h"
+#include "RankingNumber.h"
 
 //==========================================
 //  初期化処理
@@ -203,10 +204,16 @@ void UpdateGame()
 	}
 
 	//フェード
-	if (GetTime() <= 0 || GetHit())
+	if (GetFade() == FADE_NONE)
 	{
-		SetFade(MODE_RESULT);
+		if (GetTime() <= 0 || GetHit())
+		{
+			SetRanking(GetScore());
+
+			SetFade(MODE_RESULT);
+		}
 	}
+
 }
 
 //==========================================

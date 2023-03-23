@@ -90,9 +90,6 @@ void InitEnemy(void)
 			}
 		}
 	}
-
-	SetEnemy(g_Enemy[nCntEnemy].pos, g_Enemy[nCntEnemy].move, g_Enemy[nCntEnemy].rot, ENEMY_NTYPE00);
-	SetEnemy(g_Enemy[nCntEnemy].pos, g_Enemy[nCntEnemy].move, g_Enemy[nCntEnemy].rot, ENEMY_NTYPE01);
 }
 
 //====================================================================
