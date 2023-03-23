@@ -188,7 +188,7 @@ void UpdateTitle()
 
 	VERTEX_2D*pVtx;	//頂点ポインタを所得
 
-					//頂点バッファをロックし、両店情報へのポインタを所得
+	//頂点バッファをロックし、両店情報へのポインタを所得
 	g_pVtxBuffTitle->Lock(0, 0, (void**)&pVtx, 0);
 
 	for (int nCntTex = 0; nCntTex < MAX_TEX; nCntTex++)
