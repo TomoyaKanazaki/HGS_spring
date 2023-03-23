@@ -90,7 +90,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR lpCmdLine
 		return -1;
 	}
 #else
-	if (FAILED(Init(hInstance, hWnd, TRUE)))
+	if (FAILED(Init(hInstance, hWnd, FALSE)))
 	{
 		//‰Šú‰»ˆ—‚É¸”s‚µ‚½ê‡
 		return -1;
