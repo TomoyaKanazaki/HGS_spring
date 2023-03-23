@@ -164,7 +164,6 @@ void UpdateScoreGauge(void)
 	{
 		AddScore(GetPlusScore());
 		SetPlusScore(0);
-		g_bGaugeCount = false;
 	}
 	else
 	{

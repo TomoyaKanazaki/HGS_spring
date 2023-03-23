@@ -5,11 +5,11 @@
 //マクロ定義
 #define NUM_PLACE (3)				//プラススコアの桁数
 
-#define X_POS_GAME (50.0f)			//ゲーム画面の時のプラススコアのX座標
-#define Y_POS_GAME (70.0f)			//ゲーム画面の時のプラススコアのY座標
-#define X_SIZE_GAME (25.0f)			//ゲーム画面の時のプラススコアの横幅
-#define Y_SIZE_GAME (25.0f)			//ゲーム画面の時のプラススコアの縦幅
-#define WIDE_SIZE_GAME (70.0f)		//ゲーム画面の時のプラススコア同士の幅
+#define X_POS_GAME (100.0f)			//ゲーム画面の時のプラススコアのX座標
+#define Y_POS_GAME (50.0f)			//ゲーム画面の時のプラススコアのY座標
+#define X_SIZE_GAME (20.0f)			//ゲーム画面の時のプラススコアの横幅
+#define Y_SIZE_GAME (20.0f)			//ゲーム画面の時のプラススコアの縦幅
+#define WIDE_SIZE_GAME (40.0f)		//ゲーム画面の時のプラススコア同士の幅
 
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTexturePlusScore = NULL;			//テクスチャのポインタ
