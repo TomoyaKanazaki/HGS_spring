@@ -3,7 +3,7 @@
 #include "effect.h"
 
 #define BULLET_SIZE (5.0f)	//弾の大きさ
-#define BULLET_SPEED (5.0f)	//弾の速さ
+#define BULLET_SPEED (10.0f)	//弾の速さ
 #define EFFECT_COUNTER (1)	//エフェクトをセットする間隔
 
 //プロトタイプ宣言
