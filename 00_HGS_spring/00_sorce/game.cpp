@@ -17,6 +17,8 @@
 #include "meshfield.h"
 #include "meshwall.h"
 
+#include "player.h"
+
 //==========================================
 //  初期化処理
 //==========================================
@@ -42,6 +44,9 @@ void InitGame()
 
 	//ポーズの初期化
 	InitPause();
+
+	//プレイヤーの初期化
+	InitPlayer();
 
 	// ステージのセットアップ
 	TxtSetStage();
@@ -72,6 +77,9 @@ void UninitGame()
 
 	//ポーズの終了
 	UninitPause();
+
+	//プレイヤーの終了
+	UninitPlayer();
 }
 
 //==========================================
@@ -96,6 +104,9 @@ void UpdateGame()
 
 		// カメラの更新
 		UpdateCamera();
+
+		//プレイヤーの更新
+		UpdatePlayer();
 	}
 	else
 	{ // ポーズ中の場合
@@ -133,4 +144,7 @@ void DrawGame()
 
 	//ポーズの描画
 	DrawPause();
+
+	//プレイヤーの描画
+	DrawPlayer();
 }
