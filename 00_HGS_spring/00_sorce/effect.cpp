@@ -24,7 +24,7 @@ void InitEffect(void)
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\effect000.jpg",
+		"02_data\\02_TEXTURE\\effect_000.jpg",
 		&g_pTextureEffect);
 
 	//エフェクトの情報の初期化

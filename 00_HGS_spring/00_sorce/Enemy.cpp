@@ -2,6 +2,7 @@
 #include "Enemy.h"
 #include "Bullet.h"
 #include "particle.h"
+#include "player.h"
 
 #define ENEMY00_LIFE (7)		//敵の体力
 #define ENWMY_MOVE (1.0f)		//敵の移動量
@@ -9,6 +10,7 @@
 #define BULLET_POS_Y (25.0f)	//弾の発射位置(縦の軸)
 #define BULLET_LIFE (120)		//弾の寿命
 #define BULLETCOUNTER (120)		//弾を撃つ感覚
+#define ENEMY_CHASE (500.0f)	//敵が追いかけてくる距離
 
 //プロトタイプ宣言
 void UpdateSlime(int nCnt);
@@ -156,6 +158,8 @@ void UpdateEnemy(void)
 //====================================================================
 void UpdateSlime(int nCnt)
 {
+	D3DXVECTOR3 pPosPlayer = GetPosPlayer();		//プレイヤーの情報へのポインタ
+
 	switch (g_Enemy[nCnt].State)
 	{
 	case ENEMY_STATE_WAIT:
@@ -164,12 +168,20 @@ void UpdateSlime(int nCnt)
 		break;
 	}
 
-	//移動処理
-	g_Enemy[nCnt].move = D3DXVECTOR3(-cosf(g_Enemy[nCnt].rot.y) * ENWMY_MOVE, 0.0f, sinf(g_Enemy[nCnt].rot.y) * ENWMY_MOVE);
-	g_Enemy[nCnt].State = ENEMY_STATE_BATTLE;
+	if (CollisionCircle(pPosPlayer, g_Enemy[nCnt].pos, ENEMY_CHASE, 0.0f, -10.0f, 10.0f) == true)
+	{
+		//移動処理
+		g_Enemy[nCnt].move = D3DXVECTOR3(-cosf(g_Enemy[nCnt].rot.y) * ENWMY_MOVE, 0.0f, sinf(g_Enemy[nCnt].rot.y) * ENWMY_MOVE);
+		g_Enemy[nCnt].State = ENEMY_STATE_BATTLE;
 
-	//向きの補正
-	RotEnemy(g_Enemy[nCnt].pos, nCnt);
+		//向きの補正
+		RotEnemy(g_Enemy[nCnt].pos, nCnt);
+	}
+	else
+	{
+		g_Enemy[nCnt].move = D3DXVECTOR3(0.0f,0.0f,0.0f);
+		g_Enemy[nCnt].State = ENEMY_STATE_WAIT;
+	}
 
 	//位置更新(入力による動き)
 	g_Enemy[nCnt].pos += g_Enemy[nCnt].move;
@@ -191,38 +203,43 @@ void UpdateSlime(int nCnt)
 //====================================================================
 void UpdateCannon(int nCnt)
 {
+	D3DXVECTOR3 pPosPlayer = GetPosPlayer();		//プレイヤーの情報へのポインタ
+
 	//向きの補正
 	RotEnemy(g_Enemy[nCnt].pos, nCnt);
 
-	//弾発射のクールタイムを減少させる
-	g_Enemy[nCnt].BulletCounter++;
-
-	if (g_Enemy[nCnt].BulletCounter >= BULLETCOUNTER)
+	if (CollisionCircle(pPosPlayer, g_Enemy[nCnt].pos, ENEMY_CHASE, 0.0f, -10.0f, 10.0f) == true)
 	{
-		SetBullet(D3DXVECTOR3(
-			g_Enemy[nCnt].pos.x - cosf(g_Enemy[nCnt].rot.y) * BULLET_POS_XZ,
-			g_Enemy[nCnt].pos.y + BULLET_POS_Y,
-			g_Enemy[nCnt].pos.z + sinf(g_Enemy[nCnt].rot.y) * BULLET_POS_XZ),
-			g_Enemy[nCnt].rot.y + D3DX_PI * -0.5f,
-			BULLET_LIFE,
-			BULLET_NORMAL);
+		//弾発射のクールタイムを減少させる
+		g_Enemy[nCnt].BulletCounter++;
 
-		SetParticle(
-			D3DXVECTOR3(
-			g_Enemy[nCnt].pos.x - cosf(g_Enemy[nCnt].rot.y) * 40.0f,
-			g_Enemy[nCnt].pos.y + 25.0f,
-			g_Enemy[nCnt].pos.z + sinf(g_Enemy[nCnt].rot.y) * 40.0f),
-			g_Enemy[nCnt].rot,
-			D3DXCOLOR(1.0f, 0.2f, 0.2f, 1.0f),
-			5,
-			5.0f,
-			6);
+		if (g_Enemy[nCnt].BulletCounter >= BULLETCOUNTER)
+		{
+			SetBullet(D3DXVECTOR3(
+				g_Enemy[nCnt].pos.x - cosf(g_Enemy[nCnt].rot.y) * BULLET_POS_XZ,
+				g_Enemy[nCnt].pos.y + BULLET_POS_Y,
+				g_Enemy[nCnt].pos.z + sinf(g_Enemy[nCnt].rot.y) * BULLET_POS_XZ),
+				g_Enemy[nCnt].rot.y + D3DX_PI * -0.5f,
+				BULLET_LIFE,
+				BULLET_NORMAL);
 
-		g_Enemy[nCnt].BulletCounter = 0;
+			SetParticle(
+				D3DXVECTOR3(
+					g_Enemy[nCnt].pos.x - cosf(g_Enemy[nCnt].rot.y) * 40.0f,
+					g_Enemy[nCnt].pos.y + 25.0f,
+					g_Enemy[nCnt].pos.z + sinf(g_Enemy[nCnt].rot.y) * 40.0f),
+				g_Enemy[nCnt].rot,
+				D3DXCOLOR(1.0f, 0.2f, 0.2f, 1.0f),
+				5,
+				5.0f,
+				6);
+
+			g_Enemy[nCnt].BulletCounter = 0;
+		}
+
+		//位置更新(入力による動き)
+		g_Enemy[nCnt].pos += g_Enemy[nCnt].move;
 	}
-
-	//位置更新(入力による動き)
-	g_Enemy[nCnt].pos += g_Enemy[nCnt].move;
 }
 
 //====================================================================
@@ -230,11 +247,11 @@ void UpdateCannon(int nCnt)
 //====================================================================
 void RotEnemy(D3DXVECTOR3 Pos, int nCnt)
 {
-	//Player * pPlayer = GetPlayer();		//プレイヤーの情報へのポインタ
+	D3DXVECTOR3 pPosPlayer = GetPosPlayer();		//プレイヤーの情報へのポインタ
 
-	//float fAngle = atan2f(pPlayer->pos.z - Pos.z, Pos.x - pPlayer->pos.x);
+	float fAngle = atan2f(pPosPlayer.z - Pos.z, Pos.x - pPosPlayer.x);
 
-	//g_Enemy[nCnt].rot.y = fAngle;
+	g_Enemy[nCnt].rot.y = fAngle;
 }
 
 //====================================================================
@@ -257,17 +274,15 @@ bool CollisionCircle(D3DXVECTOR3 pos1, D3DXVECTOR3 pos2, float nRadiusOut, float
 {
 	bool nHit = false;
 
-	//Player *pPlayer = GetPlayer();
-
-	//if (sqrtf((pos1.x - pos2.x) * (pos1.x - pos2.x)
-	//	+ (pos1.z - pos2.z) * (pos1.z - pos2.z)) <= nRadiusOut
-	//	&& sqrtf((pos1.x - pos2.x) * (pos1.x - pos2.x)
-	//		+ (pos1.z - pos2.z) * (pos1.z - pos2.z)) >= nRadiusIn
-	//	&& pos1.y + MinY < pos2.y
-	//	&& pos1.y + MaxY > pos2.y)
-	//{//円の判定が当たった
-	//	nHit = true;
-	//}
+	if (sqrtf((pos1.x - pos2.x) * (pos1.x - pos2.x)
+		+ (pos1.z - pos2.z) * (pos1.z - pos2.z)) <= nRadiusOut
+		&& sqrtf((pos1.x - pos2.x) * (pos1.x - pos2.x)
+			+ (pos1.z - pos2.z) * (pos1.z - pos2.z)) >= nRadiusIn
+		&& pos1.y + MinY < pos2.y
+		&& pos1.y + MaxY > pos2.y)
+	{//円の判定が当たった
+		nHit = true;
+	}
 
 	return nHit;
 }

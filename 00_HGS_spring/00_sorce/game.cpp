@@ -35,12 +35,6 @@ void InitGame()
 	// ライトの初期化
 	InitLight();
 
-	//敵の初期化
-	InitEnemy();
-
-	//弾の初期化
-	InitBullet();
-
 	// メッシュドームの初期化
 	InitMeshDome();
 
@@ -55,6 +49,12 @@ void InitGame()
 
 	// 区域の初期化
 	InitArea();
+
+	//敵の初期化
+	InitEnemy();
+
+	//弾の初期化
+	InitBullet();
 
 	//エフェクトの初期化
 	InitEffect();
@@ -83,12 +83,6 @@ void UninitGame()
 	// ライトの終了
 	UninitLight();
 
-	//敵の終了
-	UninitEnemy();
-
-	//弾の終了
-	UninitBullet();
-
 	// メッシュドームの終了
 	UninitMeshDome();
 
@@ -103,6 +97,12 @@ void UninitGame()
 
 	// 区域の終了
 	UninitArea();
+
+	//敵の終了
+	UninitEnemy();
+
+	//弾の終了
+	UninitBullet();
 
 	//エフェクトの終了
 	UninitEffect();
@@ -122,14 +122,11 @@ void UninitGame()
 //==========================================
 void UpdateGame()
 {
-	if(GetPause() == false)
+	//ポーズの更新
+	UpdatePause();
+
+	if (GetPause() == false)
 	{ // ポーズ中じゃない場合
-
-		//敵の更新
-		UpdateEnemy();
-
-		//弾の更新
-		UpdateBullet();
 
 		// メッシュドームの更新
 		UpdateMeshDome();
@@ -146,23 +143,23 @@ void UpdateGame()
 		// 区域の更新
 		UpdateArea();
 
+		//敵の更新
+		UpdateEnemy();
+
+		//弾の更新
+		UpdateBullet();
+
 		//エフェクトの更新
 		UpdateEffect();
 
 		//パーティクルの更新
 		UpdateParticle();
 
-		// カメラの更新
-		UpdateCamera();
-
 		//プレイヤーの更新
 		UpdatePlayer();
-	}
-	else
-	{ // ポーズ中の場合
 
-		//ポーズの更新
-		UpdatePause();
+		// カメラの更新
+		UpdateCamera();
 	}
 
 	//フェード
@@ -180,12 +177,6 @@ void DrawGame()
 	// カメラの設定
 	SetCamera(CAMERATYPE_MAIN);
 
-	//敵の描画
-	DrawEnemy();
-
-	//弾の描画
-	DrawBullet();
-
 	// メッシュドームの描画
 	DrawMeshDome();
 
@@ -200,6 +191,12 @@ void DrawGame()
 
 	// 区域の描画
 	DrawArea();
+
+	//敵の描画
+	DrawEnemy();
+
+	//弾の描画
+	DrawBullet();
 
 	//エフェクトの描画
 	DrawEffect();
