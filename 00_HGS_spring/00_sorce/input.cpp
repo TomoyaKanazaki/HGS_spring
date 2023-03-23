@@ -680,8 +680,10 @@ HRESULT InitMouse(HWND hWnd)
 	//マウスへのアクセス権を取得
 	g_Mouse.pDevMouse->Acquire();
 
+#ifndef _DEBUG
 	//マウスカーソルの消去
 	ShowCursor(false);
+#endif
 
 	return S_OK;
 }
