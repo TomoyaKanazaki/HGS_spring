@@ -156,6 +156,8 @@
   <ItemGroup>
     <ClInclude Include="01_header\camera.h" />
     <ClInclude Include="01_header\debugproc.h" />
+    <ClInclude Include="01_header\effect.h" />
+    <ClInclude Include="01_header\Enemy.h" />
     <ClInclude Include="01_header\fade.h" />
     <ClInclude Include="01_header\game.h" />
     <ClInclude Include="01_header\input.h" />
@@ -168,15 +170,19 @@
     <ClInclude Include="01_header\meshfield.h" />
     <ClInclude Include="01_header\meshwall.h" />
     <ClInclude Include="01_header\model.h" />
+    <ClInclude Include="01_header\particle.h" />
     <ClInclude Include="01_header\pause.h" />
     <ClInclude Include="01_header\polygon.h" />
     <ClInclude Include="01_header\result.h" />
     <ClInclude Include="01_header\texture.h" />
     <ClInclude Include="01_header\title.h" />
+    <ClInclude Include="Bullet.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="00_sorce\camera.cpp" />
     <ClCompile Include="00_sorce\debugproc.cpp" />
+    <ClCompile Include="00_sorce\effect.cpp" />
+    <ClCompile Include="00_sorce\Enemy.cpp" />
     <ClCompile Include="00_sorce\fade.cpp" />
     <ClCompile Include="00_sorce\game.cpp" />
     <ClCompile Include="00_sorce\input.cpp" />
@@ -189,11 +195,13 @@
     <ClCompile Include="00_sorce\meshfield.cpp" />
     <ClCompile Include="00_sorce\meshwall.cpp" />
     <ClCompile Include="00_sorce\model.cpp" />
+    <ClCompile Include="00_sorce\particle.cpp" />
     <ClCompile Include="00_sorce\pause.cpp" />
     <ClCompile Include="00_sorce\polygon.cpp" />
     <ClCompile Include="00_sorce\result.cpp" />
     <ClCompile Include="00_sorce\texture.cpp" />
     <ClCompile Include="00_sorce\title.cpp" />
+    <ClCompile Include="Bullet.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
