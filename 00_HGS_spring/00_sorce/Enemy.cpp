@@ -242,7 +242,7 @@ void UpdateSlime(int nCnt)
 		}
 	}
 
-	if (GetEnemyArea(g_Enemy[nCnt].pos) == AREATYPE_SAFE)
+	if (GetEnemyArea(g_Enemy[nCnt].pos) <= AREATYPE_SAFE)
 	{
 		g_Enemy[nCnt].pos = g_Enemy[nCnt].posOld;
 	}
@@ -294,7 +294,7 @@ void UpdateSlime1(int nCnt)
 		}
 	}
 
-	if (GetEnemyArea(g_Enemy[nCnt].pos) == AREATYPE_01)
+	if (GetEnemyArea(g_Enemy[nCnt].pos) <= AREATYPE_01)
 	{
 		g_Enemy[nCnt].pos = g_Enemy[nCnt].posOld;
 	}
@@ -346,7 +346,7 @@ void UpdateSlime2(int nCnt)
 		}
 	}
 
-	if (GetEnemyArea(g_Enemy[nCnt].pos) == AREATYPE_03)
+	if (GetEnemyArea(g_Enemy[nCnt].pos) <= AREATYPE_03)
 	{
 		g_Enemy[nCnt].pos = g_Enemy[nCnt].posOld;
 	}

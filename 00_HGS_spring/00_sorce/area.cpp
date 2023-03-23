@@ -26,7 +26,7 @@ const char *apTextureArea[] =			// テクスチャの相対パス
 
 const float aRadiusArea[] =	// 区域の半径
 {
-	50.0f,					// セーフエリア
+	100.0f,					// セーフエリア
 	300.0f,				// 第一エリア
 	550.0f,				// 第二エリア
 	800.0f,				// 第三エリア
