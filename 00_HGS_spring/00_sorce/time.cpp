@@ -16,7 +16,7 @@
 //  マクロ定義
 //==========================================
 #define TIME_DIGIT (3) //桁数
-#define START_TIME (120) //ゲーム時間 (1/1秒)
+#define START_TIME (60) //ゲーム時間 (1/1秒)
 #define TIME_SIZE (100.0f) //タイムポリゴンのサイズ
 #define TIME_POS (D3DXVECTOR3((float)SCREEN_WIDTH - 10.0f, TIME_SIZE, 0.0f)) //タイムの描画位置
 
