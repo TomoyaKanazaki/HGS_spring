@@ -142,7 +142,7 @@ void InitMeshField(void)
 						pVtx[0].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
 						// 頂点カラーの設定
-						pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+						pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.55f);
 
 						// テクスチャ座標の設定
 						pVtx[0].tex = D3DXVECTOR2(1.0f * (nCntWidth % 2), 1.0f * nCntHeight);
