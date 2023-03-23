@@ -17,7 +17,7 @@ void UpdateRanKingNumber(void);
 void DrawRanKingNumber(void);
 void ResetRanKing(void);
 void SaveData(void);
-void LoadData(void);
+void LordData(void);
 void SetRanking(int nRanKing);
 void StartRanKing(void);
 #endif

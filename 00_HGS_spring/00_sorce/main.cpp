@@ -14,6 +14,8 @@
 #include "title.h"
 #include "game.h"
 #include "result.h"
+#include "sound.h"
+#include "RankingNumber.h"
 
 //==========================================
 //  グローバル変数宣言
@@ -300,6 +302,12 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	//デバッグプロックの初期化
 	InitDebugProc();
 
+	//サウンドの初期化処理
+	InitSound(hWnd);
+
+	//ランキングの読み込み
+	LordData();
+
 	//テクスチャの初期化
 	InitTexture();
 
@@ -321,6 +329,9 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 void Uninit(void)
 {
 	//各種オブジェクトの終了処理
+
+	//サウンドの終了処理
+	UninitSound();
 
 	//デバッグプロックの終了
 	UninitDebugProc();

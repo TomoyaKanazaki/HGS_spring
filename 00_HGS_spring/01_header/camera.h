@@ -23,6 +23,7 @@
 typedef enum
 {
 	CAMERATYPE_MAIN = 0,			// メインカメラ
+	CAMERATYPE_TITLE,			    // タイトルカメラ
 	CAMERATYPE_MAX,					// この列挙型の総数
 } CAMERATYPE;
 
@@ -53,6 +54,9 @@ void UninitCamera(void);			// カメラの終了処理
 void UpdateCamera(void);			// カメラの更新処理
 void SetCamera(int nID);			// カメラの設定処理
 Camera *GetCamera(int nID);			// カメラの取得処理
+
+void InitTitleCamera(void);				// カメラの初期化処理
+void UpdateTitleCamera(void);			// カメラの更新処理
 
 //**********************************************************************************************************************
 //	プロトタイプ宣言 (デバッグ用)

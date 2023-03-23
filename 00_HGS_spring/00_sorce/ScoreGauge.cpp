@@ -6,6 +6,7 @@
 #include "area.h"
 #include "PlusScore.h"
 #include "score.h"
+#include "sound.h"
 
 //マクロ定義
 #define NUM_SSUI		(4)	//GAMEUIの種類数
@@ -163,6 +164,10 @@ void UpdateScoreGauge(void)
 	if (GaugeSpeed == AREATYPE_SAFE && g_bGaugeCount == true)
 	{
 		AddScore(GetPlusScore());
+		if (GetPlusScore() != 0)
+		{
+			PlaySound(SOUND_LABEL_SE_PLAYER_JUMP);
+		}
 		SetPlusScore(0);
 	}
 	else
@@ -233,6 +238,8 @@ void UpdateScoreGauge(void)
 				g_aSucoreGauge[3].bEnd = true;
 				g_bGaugeCount = false;
 				AddPlusScore(1);
+				//サウンドの再生
+				PlaySound(SOUND_LABEL_SE_DAMAGEWAVE);
 			}
 		}
 	}
