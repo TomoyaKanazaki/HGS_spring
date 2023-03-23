@@ -3,6 +3,7 @@
 #include "Bullet.h"
 #include "particle.h"
 #include "player.h"
+#include "area.h"
 
 #define ENEMY00_LIFE (7)		//敵の体力
 #define ENWMY_MOVE (1.0f)		//敵の移動量
@@ -11,10 +12,12 @@
 #define BULLET_LIFE (120)		//弾の寿命
 #define BULLETCOUNTER (120)		//弾を撃つ感覚
 #define ENEMY_CHASE (500.0f)	//敵が追いかけてくる距離
+#define ENEMY_NUM (100) // * 区域番号 = 発生する敵の数
 
 //プロトタイプ宣言
 void UpdateSlime(int nCnt);
 void UpdateCannon(int nCnt);
+void RandSetEnemy(void);
 
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTextureEnemy[ENEMY_MAX][64] = {};	//テクスチャのポインタ
@@ -90,6 +93,9 @@ void InitEnemy(void)
 			}
 		}
 	}
+
+	//敵を設定
+	RandSetEnemy();
 }
 
 //====================================================================
@@ -350,7 +356,7 @@ void DrawEnemy(void)
 //====================================================================
 //敵の設定処理
 //====================================================================
-void SetEnemy(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot, ENEMY_NTYPE nType)
+void SetEnemy(D3DXVECTOR3 pos, int nType)
 {
 	int nCntEnemy;
 
@@ -360,8 +366,6 @@ void SetEnemy(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot, ENEMY_NTYPE nT
 		{
 			g_Enemy[nCntEnemy].pos = pos;
 			g_Enemy[nCntEnemy].posOld = pos;
-			g_Enemy[nCntEnemy].move = move;
-			g_Enemy[nCntEnemy].rot = rot;
 			g_Enemy[nCntEnemy].nType = nType;
 			g_Enemy[nCntEnemy].State = ENEMY_STATE_WAIT;
 			g_Enemy[nCntEnemy].bUse = true;
@@ -478,4 +482,40 @@ Enemy * GetEnemy(void)
 bool GetHit()
 {
 	return g_bHit;
+}
+
+//==========================================
+//  敵を発生
+//==========================================
+void RandSetEnemy()
+{
+	//区域の数分セットを呼び出す
+	for (int nCntArea = 0; nCntArea < AREATYPE_MAX; nCntArea++)
+	{
+		//(区域番号 * ENEMY_NUM)の回数設定する
+		for (int nCntSet = 0; nCntSet < nCntArea * ENEMY_NUM; nCntSet++)
+		{
+			//出現座標(ランダム)を算出する
+			D3DXVECTOR3 pos = D3DXVECTOR3((float)rand(), 0.0f, (float)rand());
+			D3DXVec3Normalize(&pos, &pos);
+			pos.x *= 1000.0f;
+			pos.z *= 1000.0f;
+			pos.x += GetAreaSize(nCntArea) - 1500.0f;
+			pos.z += GetAreaSize(nCntArea) - 1500.0f;
+			if (rand() % 2 == 0)
+			{
+				pos.x *= -1.0f;
+			}
+			if (rand() % 2 == 0)
+			{
+				pos.z *= -1.0f;
+			}
+
+			//敵の種類を設定
+			int nType = rand() % ENEMY_MAX;
+
+			//敵を設置
+			SetEnemy(pos, nType);
+		}
+	}
 }

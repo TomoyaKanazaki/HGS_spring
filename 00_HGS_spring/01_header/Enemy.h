@@ -1,7 +1,7 @@
 #ifndef _ENEMY_H_
 #define _ENEMY_H_
 
-#define MAX_ENEMY (256)		//オブジェクトの最大数
+#define MAX_ENEMY (2048)		//オブジェクトの最大数
 
 //モデルの構造体
 typedef enum
@@ -32,7 +32,7 @@ typedef struct
 	D3DXVECTOR3 vtxMin;							//モデルの最小
 	D3DXVECTOR3 vtxMax;							//モデルの最大
 	D3DXVECTOR3 size; //大きさ
-	ENEMY_NTYPE nType;							//モデルの種類
+	int nType;							//モデルの種類
 	ENEMY_STATE State;							//敵の状態
 	int BulletCounter;							//大砲のカウンター
 	float fRadius; //半径
@@ -46,7 +46,7 @@ void UninitEnemy(void);
 void UpdateEnemy(void);
 void DrawEnemy(void);
 void RotEnemy(D3DXVECTOR3 Pos, int nCnt);
-void SetEnemy(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot, ENEMY_NTYPE nType);
+void SetEnemy(D3DXVECTOR3 pos, int nType);
 void CollisionEnemy(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove, D3DXVECTOR3 min, D3DXVECTOR3 max);
 void KnoccBackPlayer(D3DXVECTOR3 Pos, float Power);
 bool CollisionCircle(D3DXVECTOR3 pos1, D3DXVECTOR3 pos2, float nRadiusOut, float nRadiusIn, float MinY, float MaxY);

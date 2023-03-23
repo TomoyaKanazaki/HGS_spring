@@ -20,7 +20,7 @@
 #define SIZE_TATE_BG_X		(10.0f)		//「たて」の幅
 #define SIZE_TATE_BG_Y		(720.0f)	//「たて」の高さ
 
-#define GAUGE_SPEED			(20.0f)	//ゲージのスピード
+#define GAUGE_SPEED			(40.0f)	//ゲージのスピード
 
 //構造体の定義
 typedef struct

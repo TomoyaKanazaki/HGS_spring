@@ -282,3 +282,11 @@ AREATYPE GetCurrentArea(void)
 		return AREATYPE_RED;
 	}
 }
+
+//==========================================
+//  ‹æˆæ‚Ì”ÍˆÍ‚ðŽæ“¾
+//==========================================
+float GetAreaSize(int areatype)
+{
+	return aRadiusArea[areatype];
+}
