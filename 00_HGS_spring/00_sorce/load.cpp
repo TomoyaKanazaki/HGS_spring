@@ -174,6 +174,6 @@ void TxtSetEnemy(void)
 	{ // ファイルが開けなかった場合
 
 		// エラーメッセージボックス
-		MessageBox(NULL, "大砲ファイルの読み込みに失敗！", "警告！", MB_ICONWARNING);
+		MessageBox(NULL, "敵ファイルの読み込みに失敗！", "警告！", MB_ICONWARNING);
 	}
 }
