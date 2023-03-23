@@ -6,12 +6,12 @@
 #include "area.h"
 
 #define ENEMY00_LIFE (7)		//敵の体力
-#define ENWMY_MOVE (8.0f)		//敵の移動量
+#define ENWMY_MOVE (4.0f)		//敵の移動量
 #define BULLET_POS_XZ (20.0f)	//弾の発射位置(横の軸)
 #define BULLET_POS_Y (25.0f)	//弾の発射位置(縦の軸)
 #define BULLET_LIFE (120)		//弾の寿命
 #define BULLETCOUNTER (120)		//弾を撃つ感覚
-#define ENEMY_CHASE (500.0f)	//敵が追いかけてくる距離
+#define ENEMY_CHASE (700.0f)	//敵が追いかけてくる距離
 #define ENEMY_NUM (50) // * 区域番号 = 発生する敵の数
 
 //プロトタイプ宣言
