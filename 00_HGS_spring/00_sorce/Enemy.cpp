@@ -6,13 +6,13 @@
 #include "area.h"
 
 #define ENEMY00_LIFE (7)		//敵の体力
-#define ENWMY_MOVE (1.0f)		//敵の移動量
+#define ENWMY_MOVE (8.0f)		//敵の移動量
 #define BULLET_POS_XZ (20.0f)	//弾の発射位置(横の軸)
 #define BULLET_POS_Y (25.0f)	//弾の発射位置(縦の軸)
 #define BULLET_LIFE (120)		//弾の寿命
 #define BULLETCOUNTER (120)		//弾を撃つ感覚
 #define ENEMY_CHASE (500.0f)	//敵が追いかけてくる距離
-#define ENEMY_NUM (100) // * 区域番号 = 発生する敵の数
+#define ENEMY_NUM (50) // * 区域番号 = 発生する敵の数
 
 //プロトタイプ宣言
 void UpdateSlime(int nCnt);
@@ -498,10 +498,10 @@ void RandSetEnemy()
 			//出現座標(ランダム)を算出する
 			D3DXVECTOR3 pos = D3DXVECTOR3((float)rand(), 0.0f, (float)rand());
 			D3DXVec3Normalize(&pos, &pos);
-			pos.x *= 1000.0f;
-			pos.z *= 1000.0f;
-			pos.x += GetAreaSize(nCntArea) - 1500.0f;
-			pos.z += GetAreaSize(nCntArea) - 1500.0f;
+			pos.x *= rand() % 1000;
+			pos.z *= rand() % 1000;
+			pos.x += GetAreaSize(nCntArea) - (float)(rand() % 1000);
+			pos.z += GetAreaSize(nCntArea) - (float)(rand() % 1000);
 			if (rand() % 2 == 0)
 			{
 				pos.x *= -1.0f;
