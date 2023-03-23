@@ -165,14 +165,11 @@ void UpdateGame()
 		//プレイヤーの更新
 		UpdatePlayer();
 
-		//スコアゲージの更新
-		UpdateScoreGauge();
-	}
-	else
-	{ // ポーズ中の場合
-
 		// カメラの更新
 		UpdateCamera();
+
+		//スコアゲージの更新
+		UpdateScoreGauge();
 	}
 
 	//フェード
