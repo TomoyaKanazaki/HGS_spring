@@ -4,6 +4,7 @@
 #include "particle.h"
 #include "player.h"
 #include "area.h"
+#include "sound.h"
 
 #define ENEMY00_LIFE (7)		//ìGÇÃëÃóÕ
 #define ENWMY_MOVE (4.0f)		//ìGÇÃà⁄ìÆó Ç‹ÇÈ
@@ -369,6 +370,9 @@ void UpdateCannon(int nCnt)
 
 		if (g_Enemy[nCnt].BulletCounter >= BULLETCOUNTER)
 		{
+			//ÉTÉEÉìÉhÇÃçƒê∂
+			PlaySound(SOUND_LABEL_SE_CANNON_BULLET);
+
 			SetBullet(D3DXVECTOR3(
 				g_Enemy[nCnt].pos.x - cosf(g_Enemy[nCnt].rot.y) * BULLET_POS_XZ,
 				g_Enemy[nCnt].pos.y + BULLET_POS_Y,
