@@ -11,6 +11,7 @@
 #include "camera.h"
 #include "input.h"
 #include "player.h"
+#include "area.h"
 
 #ifdef _DEBUG	// デバッグ処理
 #include "debugproc.h"
@@ -32,6 +33,7 @@
 #define REV_POS_R		(0.25f)		// 注視点の位置の補正係数 (x, z)
 #define REV_POS_V_Y		(0.045f)	// 視点の位置の補正係数 (y)
 #define REV_POS_R_Y		(0.05f)		// 注視点の位置の補正係数 (y)
+#define REV_DIS_CAM		(0.05f)		// 距離の補正係数
 
 #define MOVE_CAMERA		(4.0f)		// カメラの移動量
 #define MOVE_ROT_X		(0.015f)	// 向きの変更量 (x)
@@ -46,6 +48,19 @@
 
 #define LIMIT_ROT_HIGH	(D3DX_PI - 0.1f)	// 回転量 (x) の回転制限値 (上)
 #define LIMIT_ROT_LOW	(0.1f)				// 回転量 (x) の回転制限値 (下)
+
+//************************************************************
+//	コンスト定義
+//************************************************************
+const float aDisCamera[] =	// 区域の半径
+{
+	-500.0f,				// セーフエリア
+	-450.0f,				// 第一エリア
+	-400.0f,				// 第二エリア
+	-350.0f,				// 第三エリア
+	-300.0f,				// 第四エリア
+	-250.0f,				// レッドエリア
+};
 
 //************************************************************
 //	プロトタイプ宣言
@@ -77,7 +92,8 @@ void InitCamera(void)
 	g_aCamera[CAMERATYPE_MAIN].destPosR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// 目標の注視点
 	g_aCamera[CAMERATYPE_MAIN].vecU     = D3DXVECTOR3(0.0f, 0.0f, 1.0f);		// 上方向ベクトル
 	g_aCamera[CAMERATYPE_MAIN].rot      = D3DXVECTOR3(FIRST_ROT, 0.0f, 0.0f);	// 向き
-	g_aCamera[CAMERATYPE_MAIN].fDis     = FIRST_DIS;							// 視点と注視点の距離
+	g_aCamera[CAMERATYPE_MAIN].fDis     = FIRST_DIS;							// 現在の視点と注視点の距離
+	g_aCamera[CAMERATYPE_MAIN].fDestDis = g_aCamera[CAMERATYPE_MAIN].fDis;		// 目標の視点と注視点の距離
 
 	// ビューポート情報を初期化
 	g_aCamera[CAMERATYPE_MAIN].viewport.X      = 0;				// 左上隅のピクセル座標 (x)
@@ -174,8 +190,20 @@ void SetCamera(int nID)
 //======================================================================================================================
 void MoveFollowCamera(void)
 {
+	// 変数を宣言
+	float fDiffDis = 0.0f;	// 差分の計算用
+
 	// 上方向ベクトルを設定
 	g_aCamera[CAMERATYPE_MAIN].vecU = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+
+	// 目標の距離を設定
+	g_aCamera[CAMERATYPE_MAIN].fDestDis = aDisCamera[(int)GetCurrentArea()];
+
+	// 差分の距離を求める
+	fDiffDis = g_aCamera[CAMERATYPE_MAIN].fDestDis - g_aCamera[CAMERATYPE_MAIN].fDis;
+
+	// 距離を設定
+	g_aCamera[CAMERATYPE_MAIN].fDis += fDiffDis * REV_DIS_CAM;
 
 	// 視点の位置を更新
 	g_aCamera[CAMERATYPE_MAIN].posV = GetPosPlayer();

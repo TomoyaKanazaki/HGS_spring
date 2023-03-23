@@ -38,7 +38,8 @@ typedef struct
 	D3DXVECTOR3  destPosR;			// 目標の注視点
 	D3DXVECTOR3  vecU;				// 上方向ベクトル
 	D3DXVECTOR3  rot;				// 向き
-	float        fDis;				// 視点と注視点の距離
+	float        fDis;				// 現在の視点と注視点の距離
+	float        fDestDis;			// 目標の視点と注視点の距離
 	D3DXMATRIX   mtxProjection;		// プロジェクションマトリックス
 	D3DXMATRIX   mtxView;			// ビューマトリックス
 	D3DVIEWPORT9 viewport;			// ビューポート
