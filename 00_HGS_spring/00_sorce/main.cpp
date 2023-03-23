@@ -90,7 +90,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR lpCmdLine
 		return -1;
 	}
 #else
-	if (FAILED(Init(hInstance, hWnd, TRUE)))
+	if (FAILED(Init(hInstance, hWnd, FALSE)))
 	{
 		//初期化処理に失敗した場合
 		return -1;
@@ -305,7 +305,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	//サウンドの初期化処理
 	InitSound(hWnd);
 
-	//ランキングの読み込み
+	//ロード処理
 	LordData();
 
 	//テクスチャの初期化

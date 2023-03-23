@@ -317,7 +317,7 @@ void SaveData(void)
 	FILE *pFile; //ファイルポインタを宣言
 
 				 //ファイルを開く
-	pFile = fopen("02_data\\00_TXT\\ranking.txt", "r");
+	pFile = fopen("02_data\\00_TXT\\ranking.txt", "w");
 
 	if (pFile != NULL)
 	{//ファイルを開けた場合
