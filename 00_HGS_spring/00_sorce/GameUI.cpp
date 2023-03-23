@@ -8,15 +8,15 @@
 //マクロ定義
 #define NUM_SSUI		(5)	//GAMEUIの種類数
 
-#define POS_GAME_BG_X		(640.0f)	//「」のX座標の位置
-#define POS_GAME_BG_Y		(360.0f)	//「」のY座標の位置
-#define SIZE_GAME_BG_X		(640.0f)	//「」の幅
-#define SIZE_GAME_BG_Y		(360.0f)	//「」の高さ
+#define POS_GAME_BG_X		(100.0f)	//「」のX座標の位置
+#define POS_GAME_BG_Y		(30.0f)		//「」のY座標の位置
+#define SIZE_GAME_BG_X		(100.0f)	//「」の幅
+#define SIZE_GAME_BG_Y		(100.0f)	//「」の高さ
 
-#define POS_SCORE_BG_X			(875.0f)	//「」のX座標の位置
-#define POS_SCORE_BG_Y			(495.0f)	//「」のY座標の位置
-#define SIZE_SCORE_BG_X			(340.0f)	//「」の幅
-#define SIZE_SCORE_BG_Y			(400.0f)	//「」の高さ
+#define POS_SCORE_BG_X			(1100.0f)	//「」のX座標の位置
+#define POS_SCORE_BG_Y			(30.0f)	//「」のY座標の位置
+#define SIZE_SCORE_BG_X			(100.0f)	//「」の幅
+#define SIZE_SCORE_BG_Y			(100.0f)	//「」の高さ
 
 #define POS_PERFECT_BG_X		(680.0f)	//「」のX座標の位置
 #define POS_PERFECT_BG_Y		(430.0f)	//「」のY座標の位置
@@ -49,28 +49,16 @@ void InitGameUI(void)
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\GAME\\Osumi00.png",
+		"02_data\\02_TEXTURE\\score.png",
 		&g_apTextureGameUI[0]);
 
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\GAME\\pepepepe02.png",
+		"02_data\\02_TEXTURE\\time.png",
 		&g_apTextureGameUI[1]);
 
-	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\GAME\\RankUi.png",
-		&g_apTextureGameUI[2]);
-
-	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\GAME\\pepepepe01.png",
-		&g_apTextureGameUI[3]);
-
-	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\GAME\\pepepepe03.png",
-		&g_apTextureGameUI[4]);
-
 	//UIの表示設定
-	bUseGameUI[0] = false;
-	bUseGameUI[1] = false;
+	bUseGameUI[0] = true;
+	bUseGameUI[1] = true;
 	bUseGameUI[2] = false;
 	bUseGameUI[3] = false;
 	bUseGameUI[4] = false;

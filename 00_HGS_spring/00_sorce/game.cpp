@@ -29,6 +29,7 @@
 #include "PlusScore.h"
 #include "RankingNumber.h"
 #include "sound.h"
+#include "GameUI.h"
 
 //==========================================
 //  初期化処理
@@ -88,6 +89,8 @@ void InitGame()
 
 	//プラススコアの初期化
 	InitPlusScore();
+
+	InitGameUI();
 
 	// ステージのセットアップ
 	TxtSetStage();
@@ -154,6 +157,8 @@ void UninitGame()
 
 	//プラススコアの終了
 	UninitPlusScore();
+
+	UninitGameUI();
 }
 
 //==========================================
@@ -211,6 +216,8 @@ void UpdateGame()
 
 		//プラススコアの更新
 		UpdatePlusScore();
+
+		UpdateGameUI();
 	}
 
 	//フェード
@@ -280,4 +287,6 @@ void DrawGame()
 
 	//プラススコアの描画
 	DrawPlusScore();
+
+	DrawGameUI();
 }

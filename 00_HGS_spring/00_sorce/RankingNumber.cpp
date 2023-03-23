@@ -18,7 +18,7 @@
 #define WIDE_SIZE_GAME_Y (100.0f)	//ゲーム画面の時のランキング同士の高さ
 
 #define X_POS_SCORE (300.0f)		//ゲーム画面の時のスコアのX座標
-#define Y_POS_SCORE (360.0f)		//ゲーム画面の時のスコアのX座標
+#define Y_POS_SCORE (450.0f)		//ゲーム画面の時のスコアのX座標
 #define X_WIDTH_SCORE (75.0f)		//ゲーム画面の時のスコアのX座標
 
 //ランキング構造体

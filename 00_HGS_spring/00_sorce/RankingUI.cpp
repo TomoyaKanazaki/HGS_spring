@@ -8,15 +8,15 @@
 //マクロ定義
 #define NUM_SSUI		(5)	//GAMEUIの種類数
 
-#define POS_RANKING_BG_X		(640.0f)	//「」のX座標の位置
-#define POS_RANKING_BG_Y		(360.0f)	//「」のY座標の位置
-#define SIZE_RANKING_BG_X		(640.0f)	//「」の幅
-#define SIZE_RANKING_BG_Y		(360.0f)	//「」の高さ
+#define POS_RANKING_BG_X		(870.0f)	//「」のX座標の位置
+#define POS_RANKING_BG_Y		(450.0f)	//「」のY座標の位置
+#define SIZE_RANKING_BG_X		(250.0f)	//「」の幅
+#define SIZE_RANKING_BG_Y		(240.0f)	//「」の高さ
 
-#define POS_SCORE_BG_X			(875.0f)	//「」のX座標の位置
-#define POS_SCORE_BG_Y			(495.0f)	//「」のY座標の位置
-#define SIZE_SCORE_BG_X			(340.0f)	//「」の幅
-#define SIZE_SCORE_BG_Y			(400.0f)	//「」の高さ
+#define POS_SCORE_BG_X			(380.0f)	//「」のX座標の位置
+#define POS_SCORE_BG_Y			(450.0f)	//「」のY座標の位置
+#define SIZE_SCORE_BG_X			(200.0f)	//「」の幅
+#define SIZE_SCORE_BG_Y			(200.0f)	//「」の高さ
 
 #define POS_PERFECT_BG_X		(680.0f)	//「」のX座標の位置
 #define POS_PERFECT_BG_Y		(430.0f)	//「」のY座標の位置
@@ -49,11 +49,11 @@ void InitRankingUI(void)
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\RANKING\\Osumi00.png",
+		"02_data\\02_TEXTURE\\ranking.png",
 		&g_apTextureRankingUI[0]);
 
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\RANKING\\pepepepe02.png",
+		"02_data\\02_TEXTURE\\konkaiscore.png",
 		&g_apTextureRankingUI[1]);
 
 	D3DXCreateTextureFromFile(pDevice,
@@ -69,8 +69,8 @@ void InitRankingUI(void)
 		&g_apTextureRankingUI[4]);
 
 	//UIの表示設定
-	bUseRankingUI[0] = false;
-	bUseRankingUI[1] = false;
+	bUseRankingUI[0] = true;
+	bUseRankingUI[1] = true;
 	bUseRankingUI[2] = false;
 	bUseRankingUI[3] = false;
 	bUseRankingUI[4] = false;

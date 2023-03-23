@@ -5,7 +5,7 @@
 //マクロ定義
 #define NUM_PLACE (3)				//プラススコアの桁数
 
-#define X_POS_GAME (100.0f)			//ゲーム画面の時のプラススコアのX座標
+#define X_POS_GAME (230.0f)			//ゲーム画面の時のプラススコアのX座標
 #define Y_POS_GAME (50.0f)			//ゲーム画面の時のプラススコアのY座標
 #define X_SIZE_GAME (20.0f)			//ゲーム画面の時のプラススコアの横幅
 #define Y_SIZE_GAME (20.0f)			//ゲーム画面の時のプラススコアの縦幅
