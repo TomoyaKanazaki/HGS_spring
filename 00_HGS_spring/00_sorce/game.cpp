@@ -75,9 +75,6 @@ void InitGame()
 	//タイムの初期化
 	InitTime();
 
-	// ステージのセットアップ
-	TxtSetStage();
-
 	//スコアゲージの初期化
 	InitScoreGauge();
 
@@ -86,6 +83,12 @@ void InitGame()
 
 	//プラススコアの初期化
 	InitPlusScore();
+
+	// ステージのセットアップ
+	TxtSetStage();
+
+	// 敵のセットアップ
+	TxtSetEnemy();
 }
 
 //==========================================

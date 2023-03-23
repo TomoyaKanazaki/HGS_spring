@@ -366,9 +366,13 @@ void SetEnemy(D3DXVECTOR3 pos, int nType)
 		{
 			g_Enemy[nCntEnemy].pos = pos;
 			g_Enemy[nCntEnemy].posOld = pos;
-			g_Enemy[nCntEnemy].nType = nType;
+			g_Enemy[nCntEnemy].nType = (ENEMY_NTYPE)nType;
 			g_Enemy[nCntEnemy].State = ENEMY_STATE_WAIT;
 			g_Enemy[nCntEnemy].bUse = true;
+
+			// 情報を初期化
+			g_Enemy[nCntEnemy].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			g_Enemy[nCntEnemy].rot  = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
 			int nNumVtx;		//頂点数
 			DWORD dwSizeFVF;	//頂点フォーマットのサイズ

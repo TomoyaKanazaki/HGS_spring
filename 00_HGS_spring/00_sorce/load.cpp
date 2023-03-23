@@ -139,20 +139,31 @@ void TxtSetEnemy(void)
 					// ファイルから文字列を読み込む
 					fscanf(pFile, "%s", &aString[0]);
 
-					if (strcmp(&aString[0], "POS") == 0)
-					{ // 読み込んだ文字列が POS の場合
-						fscanf(pFile, "%s", &aString[0]);					// = を読み込む (不要)
-						fscanf(pFile, "%f %f %f", &pos.x, &pos.y, &pos.z);	// 手前の制限位置を読み込む
-					}
-					else if (strcmp(&aString[0], "TYPE") == 0)
-					{ // 読み込んだ文字列が TYPE の場合
-						fscanf(pFile, "%s", &aString[0]);	// = を読み込む (不要)
-						fscanf(pFile, "%d", &nType);		// 奥の制限位置を読み込む
+					if (strcmp(&aString[0], "ENEMYSET") == 0)
+					{ // 読み込んだ文字列が ENEMYSET の場合
+
+						do
+						{ // 読み込んだ文字列が END_ENEMYSET ではない場合ループ
+
+							// ファイルから文字列を読み込む
+							fscanf(pFile, "%s", &aString[0]);
+
+							if (strcmp(&aString[0], "POS") == 0)
+							{ // 読み込んだ文字列が POS の場合
+								fscanf(pFile, "%s", &aString[0]);					// = を読み込む (不要)
+								fscanf(pFile, "%f %f %f", &pos.x, &pos.y, &pos.z);	// 位置を読み込む
+							}
+							else if (strcmp(&aString[0], "TYPE") == 0)
+							{ // 読み込んだ文字列が TYPE の場合
+								fscanf(pFile, "%s", &aString[0]);	// = を読み込む (不要)
+								fscanf(pFile, "%d", &nType);		// 種類を読み込む
+							}
+						} while (strcmp(&aString[0], "END_ENEMYSET") != 0);	// 読み込んだ文字列が END_ENEMYSET ではない場合ループ
+
+						// 敵の設定
+						SetEnemy(pos, nType);
 					}
 				} while (strcmp(&aString[0], "END_STAGE_ENEMYSET") != 0);	// 読み込んだ文字列が END_STAGE_ENEMYSET ではない場合ループ
-
-				// 敵の設定
-				//SetEnemy(pos, nType);
 			}
 		} while (nEnd != EOF);	// 読み込んだ文字列が EOF ではない場合ループ
 		
