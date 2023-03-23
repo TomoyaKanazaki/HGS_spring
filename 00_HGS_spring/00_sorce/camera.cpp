@@ -101,10 +101,13 @@ void UninitCamera(void)
 //============================================================
 void UpdateCamera(void)
 {
-#if 1
+#if 0
 	// カメラの位置の更新 (追従)
 	MoveFollowCamera();
 #else
+	// 上方向ベクトルを設定
+	g_aCamera[CAMERATYPE_MAIN].vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+
 	// カメラの位置の更新 (操作)
 	MoveCamera();
 
@@ -166,12 +169,14 @@ void SetCamera(int nID)
 	pDevice->SetTransform(D3DTS_VIEW, &g_aCamera[nID].mtxView);
 }
 
-#if 1
 //======================================================================================================================
 //	メインカメラの位置の更新処理 (追従)
 //======================================================================================================================
 void MoveFollowCamera(void)
 {
+	// 上方向ベクトルを設定
+	g_aCamera[CAMERATYPE_MAIN].vecU = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+
 	// 視点の位置を更新
 	g_aCamera[CAMERATYPE_MAIN].posV = GetPosPlayer();
 	g_aCamera[CAMERATYPE_MAIN].posV.y -= g_aCamera[CAMERATYPE_MAIN].fDis;
@@ -179,37 +184,6 @@ void MoveFollowCamera(void)
 	// 注視点の位置を更新
 	g_aCamera[CAMERATYPE_MAIN].posR = GetPosPlayer();
 }
-#endif
-
-#if 0
-//============================================================
-//	メインカメラの位置の更新処理 (固定)
-//============================================================
-void MoveFixedCamera(void)
-{
-	// 変数を宣言
-	D3DXVECTOR3 diffPosR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	// カメラの注視点の位置の計算代入用
-
-	// ポインタを宣言
-	Police *pPolice = GetPoliceData();		// 警察の情報
-
-	// 目標の注視点の位置を更新
-	g_aCamera[CAMERATYPE_MAIN].destPosR.x = pPolice->pos.x + sinf(pPolice->rot.y + D3DX_PI) * POS_R_PLUS;	// プレイヤーの位置より少し前
-	g_aCamera[CAMERATYPE_MAIN].destPosR.y = pPolice->pos.y + POS_R_PLUS_Y;									// プレイヤーの位置と同じ
-	g_aCamera[CAMERATYPE_MAIN].destPosR.z = pPolice->pos.z + cosf(pPolice->rot.y + D3DX_PI) * POS_R_PLUS;	// プレイヤーの位置より少し前
-
-	// 目標の注視点位置までの差分を計算
-	diffPosR = g_aCamera[CAMERATYPE_MAIN].destPosR - g_aCamera[CAMERATYPE_MAIN].posR;
-
-	// 視点の位置を固定
-	g_aCamera[CAMERATYPE_MAIN].posV = D3DXVECTOR3(1800.0f, 800.0f, 1000.0f);
-
-	// 注視点の位置を更新
-	g_aCamera[CAMERATYPE_MAIN].posR.x += diffPosR.x * REV_POS_R;
-	g_aCamera[CAMERATYPE_MAIN].posR.y += diffPosR.y * REV_POS_R_Y;
-	g_aCamera[CAMERATYPE_MAIN].posR.z += diffPosR.z * REV_POS_R;
-}
-#endif
 
 //============================================================
 //	メインカメラの位置の更新処理 (操作)
