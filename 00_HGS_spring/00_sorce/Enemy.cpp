@@ -189,7 +189,7 @@ void UpdateEnemy(void)
 			}
 
 			//”»’è
-			g_bHit = GetCollisionPlayer(g_Enemy[nCntEnemy].pos, g_Enemy[nCntEnemy].fRadius);
+			g_bHit = GetCollisionPlayer(g_Enemy[nCntEnemy].pos, g_Enemy[nCntEnemy].fRadius - ENEMY_COLLISION);
 		}
 	}
 }
