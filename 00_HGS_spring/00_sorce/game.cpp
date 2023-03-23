@@ -193,14 +193,14 @@ void DrawGame()
 	// メッシュシリンダーの描画
 	DrawMeshCylinder();
 
+	// 区域の描画
+	DrawArea();
+
 	// メッシュフィールドの描画
 	DrawMeshField();
 
 	// メッシュウォールの描画
 	DrawMeshWall();
-
-	// 区域の描画
-	DrawArea();
 
 	//敵の描画
 	DrawEnemy();
