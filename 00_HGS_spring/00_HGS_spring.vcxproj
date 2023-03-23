@@ -185,6 +185,7 @@
     <ClInclude Include="01_header\result.h" />
     <ClInclude Include="01_header\score.h" />
     <ClInclude Include="01_header\ScoreGauge.h" />
+    <ClInclude Include="01_header\sound.h" />
     <ClInclude Include="01_header\texture.h" />
     <ClInclude Include="01_header\time.h" />
     <ClInclude Include="01_header\title.h" />
@@ -219,6 +220,7 @@
     <ClCompile Include="00_sorce\result.cpp" />
     <ClCompile Include="00_sorce\score.cpp" />
     <ClCompile Include="00_sorce\ScoreGauge.cpp" />
+    <ClCompile Include="00_sorce\sound.cpp" />
     <ClCompile Include="00_sorce\texture.cpp" />
     <ClCompile Include="00_sorce\time.cpp" />
     <ClCompile Include="00_sorce\title.cpp" />

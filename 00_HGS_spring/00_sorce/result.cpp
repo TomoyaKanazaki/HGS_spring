@@ -10,12 +10,16 @@
 #include "rankingnumber.h"
 #include "NumberUI.h"
 #include "RAnkingUI.h"
+#include "sound.h"
 
 //==========================================
 //  初期化処理
 //==========================================
 void InitResult()
 {
+	//サウンドの再生
+	PlaySound(SOUND_LABEL_BGM_RANKING);
+
 	InitNumberUI();
 
 	InitRankingUI();
@@ -33,6 +37,9 @@ void UninitResult()
 	UninitRanKingNumber();
 
 	UninitNumberUI();
+
+	//サウンドの停止
+	StopSound();
 }
 
 //==========================================
@@ -47,7 +54,7 @@ void UpdateResult()
 	UpdateNumberUI();
 
 	//フェード
-	if (GetKeyboardTrigger(DIK_RETURN))
+	if (GetKeyboardTrigger(DIK_RETURN) == true || GetGamepadTrigger(BUTTON_START, 0) == true || GetGamepadTrigger(BUTTON_A, 0) == true || GetGamepadTrigger(BUTTON_B, 0) == true)
 	{
 		SetFade(MODE_TITLE);
 	}
