@@ -9,6 +9,7 @@
 #include "input.h"
 #include "model.h"
 #include "limit.h"
+#include "particle.h"
 
 //==========================================
 //  マクロ定義
@@ -68,21 +69,24 @@ void UninitPlayer()
 //==========================================
 void UpdatePlayer()
 {
-	if (GetMode() == MODE_TITLE)
+	if (g_Player.state != PLAYERSTATE_MAX)
 	{
-		g_Player.pos = D3DXVECTOR3(30.0f, 0.0f, 0.0f);
+		if (GetMode() == MODE_TITLE)
+		{
+			g_Player.pos = D3DXVECTOR3(30.0f, 0.0f, 0.0f);
 
-		g_Player.rot = D3DXVECTOR3(0.0f, D3DX_PI * 0.25f, 0.0f);
+			g_Player.rot = D3DXVECTOR3(0.0f, D3DX_PI * 0.25f, 0.0f);
+		}
+
+		if (GetMode() != MODE_TITLE)
+		{
+			//移動処理
+			ChangeMovePlayer();
+		}
+
+		// プレイヤーの位置補正
+		RevPosPlayer();
 	}
-
-	if (GetMode() != MODE_TITLE)
-	{
-		//移動処理
-		ChangeMovePlayer();
-	}
-
-	// プレイヤーの位置補正
-	RevPosPlayer();
 }
 
 //==========================================
@@ -132,9 +136,12 @@ void DrawPlayer()
 
 		//テクスチャの設定
 		pDevice->SetTexture(0, g_Player.ModelData.pTexture[nCntMat]);
-
-		//モデルの描画
-		g_Player.ModelData.pMesh->DrawSubset(nCntMat);
+		
+		if (g_Player.state != PLAYERSTATE_MAX)
+		{
+			//モデルの描画
+			g_Player.ModelData.pMesh->DrawSubset(nCntMat);
+		}
 	}
 
 	//保存しているマテリアルを復元
@@ -297,6 +304,15 @@ bool GetCollisionPlayer(D3DXVECTOR3 pos, float fRadius)
 	if (fDistance < fJudgRadius * fJudgRadius)
 	{
 		g_bPlayerHit = true;
+		g_Player.state = PLAYERSTATE_MAX;
+
+		SetParticle(
+				g_Player.pos,
+				g_Player.rot,
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			5,
+			5.0f,
+			6);
 	}
 
 	//返り値を設定
