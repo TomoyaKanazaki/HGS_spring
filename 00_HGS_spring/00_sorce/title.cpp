@@ -11,6 +11,7 @@
 #include "camera.h"
 #include "light.h"
 #include "meshfield.h"
+#include "meshdome.h"
 #include "area.h"
 #include "player.h"
 #include "sound.h"
@@ -55,6 +56,9 @@ void InitTitle()
 	// 区域の初期化
 	InitArea();
 
+	// メッシュドームの初期化
+	InitMeshDome();
+
 	// メッシュフィールドの初期化
 	InitMeshField();
 
@@ -69,6 +73,9 @@ void InitTitle()
 		g_aTitle[nCntTex].fWidth = 0.0f;
 		g_aTitle[nCntTex].fHeight = 0.0f;
 	}
+
+	g_aTitle[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	g_aTitle[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f);
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
@@ -124,7 +131,6 @@ void InitTitle()
 
 	g_nCntCol = 0;
 
-
 	//頂点バッファをアンロックする
 	g_pVtxBuffTitle->Unlock();
 
@@ -141,6 +147,9 @@ void UninitTitle()
 {
 	// 区域の初期化
 	UninitArea();
+
+	// メッシュドームの初期化
+	UninitMeshDome();
 
 	// メッシュフィールドの初期化
 	UninitMeshField();
@@ -180,6 +189,9 @@ void UpdateTitle()
 	// 区域の初期化
 	UpdateArea();
 
+	// メッシュドームの初期化
+	UpdateMeshDome();
+
 	// メッシュフィールドの初期化
 	UpdateMeshField();
 
@@ -192,8 +204,6 @@ void UpdateTitle()
 	g_pVtxBuffTitle->Lock(0, 0, (void**)&pVtx, 0);
 
 	for (int nCntTex = 0; nCntTex < MAX_TEX; nCntTex++)
-	//フェード
-	if (GetKeyboardTrigger(DIK_RETURN) == true || GetGamepadTrigger(BUTTON_START, 0) == true || GetGamepadTrigger(BUTTON_A, 0) == true || GetGamepadTrigger(BUTTON_B, 0) == true)
 	{
 		if (nCntTex == 0)
 		{
@@ -225,41 +235,40 @@ void UpdateTitle()
 		float fDiff = fDest - g_aTitle[nCntTex].pos.y;
 		g_aTitle[nCntTex].pos.y += fDest * 0.05f;
 
-		if (g_aTitle[0].pos.y >= 160.0f)
-		{//タイトルの位置が160以上だったら
-
-			g_aTitle[0].pos.y = 160.0f;
-
-			g_nCntCol++;
-
-			if (g_nCntCol >= 100)
-			{//カウントが100以下だったら
-
-				g_aTitle[1].col.a -= 0.01f;
-			}
-
-			if (g_nCntCol <= 100)
-			{//カウントが100以上だったら
-
-				g_aTitle[1].col.a += 0.01f;
-			}
-
-			if (g_nCntCol >= 200)
-			{//カウントが200以上だったら
-
-				g_nCntCol = 0;
-			}
-
-			
-		}
-
 		pVtx += 4;	//頂点データのポインタを４つ分進める
 	}
+
+	if (g_aTitle[0].pos.y >= 30.0f)
+	{//タイトルの位置が160以上だったら
+
+		g_aTitle[0].pos.y = 30.0f;
+
+		g_nCntCol++;
+
+		if (g_nCntCol >= 100)
+		{//カウントが100以下だったら
+
+			g_aTitle[1].col.a -= 0.01f;
+		}
+
+		if (g_nCntCol <= 100)
+		{//カウントが100以上だったら
+
+			g_aTitle[1].col.a += 0.01f;
+		}
+
+		if (g_nCntCol >= 200)
+		{//カウントが200以上だったら
+
+			g_nCntCol = 0;
+		}
+	}
+
 	//頂点バッファをアンロックする
 	g_pVtxBuffTitle->Unlock();
 
 	//フェード
-	if (GetKeyboardTrigger(DIK_RETURN))
+	if (GetKeyboardTrigger(DIK_RETURN) || GetGamepadTrigger(BUTTON_START, 0) == true || GetGamepadTrigger(BUTTON_A, 0) == true || GetGamepadTrigger(BUTTON_B, 0) == true)
 	{
 		SetFade(MODE_GAME);
 	}
@@ -275,6 +284,9 @@ void DrawTitle()
 
 	// 区域の初期化
 	DrawArea();
+
+	// メッシュドームの初期化
+	DrawMeshDome();
 
 	// メッシュフィールドの初期化
 	DrawMeshField();
