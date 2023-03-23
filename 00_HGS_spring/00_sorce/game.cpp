@@ -18,6 +18,10 @@
 #include "meshfield.h"
 #include "meshwall.h"
 
+#include "Enemy.h"
+#include "Bullet.h"
+#include "effect.h"
+#include "particle.h"
 #include "player.h"
 
 //==========================================
@@ -30,6 +34,12 @@ void InitGame()
 
 	// ライトの初期化
 	InitLight();
+
+	//敵の初期化
+	InitEnemy();
+
+	//弾の初期化
+	InitBullet();
 
 	// メッシュドームの初期化
 	InitMeshDome();
@@ -45,6 +55,12 @@ void InitGame()
 
 	// 区域の初期化
 	InitArea();
+
+	//エフェクトの初期化
+	InitEffect();
+
+	//パーティクルの初期化
+	InitParticle();
 
 	//ポーズの初期化
 	InitPause();
@@ -67,6 +83,12 @@ void UninitGame()
 	// ライトの終了
 	UninitLight();
 
+	//敵の終了
+	UninitEnemy();
+
+	//弾の終了
+	UninitBullet();
+
 	// メッシュドームの終了
 	UninitMeshDome();
 
@@ -81,6 +103,12 @@ void UninitGame()
 
 	// 区域の終了
 	UninitArea();
+
+	//エフェクトの終了
+	UninitEffect();
+
+	//パーティクルの終了
+	UninitParticle();
 
 	//ポーズの終了
 	UninitPause();
@@ -97,6 +125,12 @@ void UpdateGame()
 	if(GetPause() == false)
 	{ // ポーズ中じゃない場合
 
+		//敵の更新
+		UpdateEnemy();
+
+		//弾の更新
+		UpdateBullet();
+
 		// メッシュドームの更新
 		UpdateMeshDome();
 
@@ -111,6 +145,12 @@ void UpdateGame()
 
 		// 区域の更新
 		UpdateArea();
+
+		//エフェクトの更新
+		UpdateEffect();
+
+		//パーティクルの更新
+		UpdateParticle();
 
 		// カメラの更新
 		UpdateCamera();
@@ -140,6 +180,12 @@ void DrawGame()
 	// カメラの設定
 	SetCamera(CAMERATYPE_MAIN);
 
+	//敵の描画
+	DrawEnemy();
+
+	//弾の描画
+	DrawBullet();
+
 	// メッシュドームの描画
 	DrawMeshDome();
 
@@ -154,6 +200,12 @@ void DrawGame()
 
 	// 区域の描画
 	DrawArea();
+
+	//エフェクトの描画
+	DrawEffect();
+
+	//パーティクルの描画
+	DrawParticle();
 
 	//ポーズの描画
 	DrawPause();
