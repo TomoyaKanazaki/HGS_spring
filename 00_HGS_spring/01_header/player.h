@@ -24,5 +24,6 @@ void InitPlayer(void);
 void UninitPlayer(void);
 void UpdatePlayer(void);
 void DrawPlayer(void);
+D3DXVECTOR3 GetPosPlayer(void);
 
 #endif

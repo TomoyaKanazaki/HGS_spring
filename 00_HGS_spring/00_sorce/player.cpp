@@ -30,7 +30,8 @@ typedef struct
 //==========================================
 //  プロトタイプ宣言
 //==========================================
-void MovePlayer(void);
+void ChangeMovePlayer(void);
+void ChangeRotPlayer(void);
 
 //==========================================
 //  グローバル変数宣言
@@ -63,7 +64,7 @@ void UninitPlayer()
 void UpdatePlayer()
 {
 	//移動処理
-	MovePlayer();
+	ChangeMovePlayer();
 }
 
 //==========================================
@@ -123,9 +124,17 @@ void DrawPlayer()
 }
 
 //==========================================
+//  プレイヤーの位置情報を取得
+//==========================================
+D3DXVECTOR3 GetPosPlayer()
+{
+	return g_Player.pos;
+}
+
+//==========================================
 //  プレイヤーの移動処理
 //==========================================
-void MovePlayer()
+void ChangeMovePlayer()
 {
 	//ローカル変数宣言
 	D3DXVECTOR3 move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -161,4 +170,13 @@ void MovePlayer()
 	//デバッグ表示
 	PrintDebugProc("エスケープ君はここにいる! ( %f : %f : %f )\n", g_Player.pos.x, g_Player.pos.y, g_Player.pos.z);
 	PrintDebugProc("エスケープ君はこっちに向かってる! ( %f : %f : %f )", g_Player.move.x, g_Player.move.y, g_Player.move.z);
+}
+
+//==========================================
+//  プレイヤーの回転処理
+//==========================================
+void ChangeRotPlayer()
+{
+	//ローカル変数宣言
+	D3DXVECTOR3 rot;
 }
