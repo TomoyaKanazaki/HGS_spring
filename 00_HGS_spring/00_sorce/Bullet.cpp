@@ -1,6 +1,7 @@
 #include "main.h"
 #include "Bullet.h"
 #include "effect.h"
+#include "player.h"
 
 #define BULLET_SIZE (5.0f)	//’e‚Ì‘å‚«‚³
 #define BULLET_SPEED (10.0f)	//’e‚Ì‘¬‚³
@@ -140,6 +141,9 @@ void UpdateBullet(void)
 			{
 				g_aBullet[nCntBill].bUse = false;
 			}
+
+			//“–‚½‚è”»’è
+			GetCollisionPlayer(g_aBullet[nCntBill].pos, BULLET_SIZE);
 		}
 	}
 
