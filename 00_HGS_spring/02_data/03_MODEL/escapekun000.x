@@ -580,7 +580,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.150000;0.150000;0.150000;;
    TextureFilename {
-    "C:\\Users\\student\\Downloads\\face000.png";
+    "02_data\\03_MODEL\\00_TEXTURE\\face000.png";
    }
   }
  }

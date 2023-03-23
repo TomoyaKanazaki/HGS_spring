@@ -306,7 +306,10 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	InitTexture();
 
 	// モデルの初期化
-	InitModel();
+	if (FAILED(InitModel()))
+	{
+		return E_FAIL;
+	}
 
 	//フェードの初期化
 	InitFade(g_Mode);
