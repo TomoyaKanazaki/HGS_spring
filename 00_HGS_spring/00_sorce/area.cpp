@@ -31,7 +31,7 @@ const float aRadiusArea[] =	// 区域の半径
 	550.0f,				// 第二エリア
 	800.0f,				// 第三エリア
 	1050.0f,				// 第四エリア
-	1300.0f,				// レッドエリア
+	10000000.0f,				// レッドエリア
 };
 
 const D3DXCOLOR aColorArea[] =			// 区域の色
