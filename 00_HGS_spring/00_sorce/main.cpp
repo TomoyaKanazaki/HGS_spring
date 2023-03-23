@@ -16,6 +16,7 @@
 #include "result.h"
 #include "sound.h"
 #include "RankingNumber.h"
+#include "tutorial.h"
 
 //==========================================
 //  グローバル変数宣言
@@ -349,6 +350,7 @@ void Uninit(void)
 	UninitTitle();
 	UninitGame();
 	UninitResult();
+	UninitTutorial();
 
 	//Direct3Dデバイスの破棄
 	if (g_pD3DDevice != NULL)
@@ -389,7 +391,7 @@ void Update(void)
 		UpdateResult();
 		break;
 	case MODE_TUTORIAL:
-
+		UpdateTutorial();
 		break;
 	default:
 		break;
@@ -437,7 +439,7 @@ void Draw(void)
 			DrawResult();
 			break;
 		case MODE_TUTORIAL:
-
+			DrawTutorial();
 			break;
 		default:
 			break;
@@ -478,7 +480,7 @@ void SetMode(MODE NextMode)
 		UninitResult();
 		break;
 	case MODE_TUTORIAL:
-
+		UninitTutorial();
 		break;
 	default:
 		break;
@@ -500,7 +502,7 @@ void SetMode(MODE NextMode)
 		InitResult();
 		break;
 	case MODE_TUTORIAL:
-
+		InitTutorial();
 		break;
 	default:
 		break;

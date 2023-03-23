@@ -270,7 +270,7 @@ void UpdateTitle()
 	//フェード
 	if (GetKeyboardTrigger(DIK_RETURN) || GetGamepadTrigger(BUTTON_START, 0) == true || GetGamepadTrigger(BUTTON_A, 0) == true || GetGamepadTrigger(BUTTON_B, 0) == true)
 	{
-		SetFade(MODE_GAME);
+		SetFade(MODE_TUTORIAL);
 	}
 }
 
