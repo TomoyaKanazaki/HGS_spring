@@ -11,7 +11,7 @@
 #define BULLET_POS_Y (25.0f)	//’e‚Ì”­ŽËˆÊ’u(c‚ÌŽ²)
 #define BULLET_LIFE (120)		//’e‚ÌŽõ–½
 #define BULLETCOUNTER (50)		//’e‚ðŒ‚‚ÂŠ´Šo
-#define ENEMY_CHASE (100.0f)	//“G‚ª’Ç‚¢‚©‚¯‚Ä‚­‚é‹——£
+#define ENEMY_CHASE (300.0f)	//“G‚ª’Ç‚¢‚©‚¯‚Ä‚­‚é‹——£
 #define ENEMY_NUM (5) // * ‹æˆæ”Ô† = ”­¶‚·‚é“G‚Ì”
 #define ENEMY_COLLISION (10.0f) //“G“¯Žm‚Ì“–‚½‚è”»’è
 

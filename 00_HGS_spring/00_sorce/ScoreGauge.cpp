@@ -179,7 +179,7 @@ void UpdateScoreGauge(void)
 				g_aSucoreGauge[0].bEnd == false &&
 				g_aSucoreGauge[0].bUse == true)
 			{
-				g_aSucoreGauge[0].fWidth += GAUGE_SPEED * GaugeSpeed;
+				g_aSucoreGauge[0].fWidth += GAUGE_SPEED * (GaugeSpeed * 2.0f);
 			}
 			else
 			{
@@ -194,7 +194,7 @@ void UpdateScoreGauge(void)
 				g_aSucoreGauge[1].bEnd == false &&
 				g_aSucoreGauge[1].bUse == true)
 			{
-				g_aSucoreGauge[1].fHeight += GAUGE_SPEED * GaugeSpeed;
+				g_aSucoreGauge[1].fHeight += GAUGE_SPEED * (GaugeSpeed * 2.0f);
 			}
 			else
 			{
@@ -209,8 +209,8 @@ void UpdateScoreGauge(void)
 				g_aSucoreGauge[2].bEnd == false &&
 				g_aSucoreGauge[2].bUse == true)
 			{
-				g_aSucoreGauge[2].pos.x -= GAUGE_SPEED * GaugeSpeed;
-				g_aSucoreGauge[2].fWidth += GAUGE_SPEED * GaugeSpeed;
+				g_aSucoreGauge[2].pos.x -= GAUGE_SPEED * (GaugeSpeed * 2.0f);
+				g_aSucoreGauge[2].fWidth += GAUGE_SPEED * (GaugeSpeed * 2.0f);
 			}
 			else
 			{
@@ -225,8 +225,8 @@ void UpdateScoreGauge(void)
 				g_aSucoreGauge[3].bEnd == false &&
 				g_aSucoreGauge[3].bUse == true)
 			{
-				g_aSucoreGauge[3].pos.y -= GAUGE_SPEED * GaugeSpeed;
-				g_aSucoreGauge[3].fHeight += GAUGE_SPEED * GaugeSpeed;
+				g_aSucoreGauge[3].pos.y -= GAUGE_SPEED * (GaugeSpeed * 2.0f);
+				g_aSucoreGauge[3].fHeight += GAUGE_SPEED * (GaugeSpeed * 2.0f);
 			}
 			else
 			{
