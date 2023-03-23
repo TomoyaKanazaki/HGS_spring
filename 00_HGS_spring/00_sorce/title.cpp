@@ -13,6 +13,7 @@
 #include "meshfield.h"
 #include "area.h"
 #include "player.h"
+#include "sound.h"
 
 //==========================================
 //  タイトル構造体の定義
@@ -126,6 +127,11 @@ void InitTitle()
 
 	//頂点バッファをアンロックする
 	g_pVtxBuffTitle->Unlock();
+
+
+
+	//サウンドの再生
+	PlaySound(SOUND_LABEL_BGM_TITLE);
 }
 
 //==========================================
@@ -157,6 +163,11 @@ void UninitTitle()
 		g_pVtxBuffTitle->Release();
 		g_pVtxBuffTitle = NULL;
 	}
+
+
+
+	//サウンドの停止
+	StopSound();
 }
 
 //==========================================
@@ -181,6 +192,8 @@ void UpdateTitle()
 	g_pVtxBuffTitle->Lock(0, 0, (void**)&pVtx, 0);
 
 	for (int nCntTex = 0; nCntTex < MAX_TEX; nCntTex++)
+	//フェード
+	if (GetKeyboardTrigger(DIK_RETURN) == true || GetGamepadTrigger(BUTTON_START, 0) == true || GetGamepadTrigger(BUTTON_A, 0) == true || GetGamepadTrigger(BUTTON_B, 0) == true)
 	{
 		if (nCntTex == 0)
 		{

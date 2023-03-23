@@ -28,12 +28,16 @@
 #include "score.h"
 #include "PlusScore.h"
 #include "RankingNumber.h"
+#include "sound.h"
 
 //==========================================
 //  初期化処理
 //==========================================
 void InitGame()
 {
+	//サウンドの再生
+	PlaySound(SOUND_LABEL_BGM_GAME_02);
+
 	// カメラの初期化
 	InitCamera();
 
@@ -97,6 +101,9 @@ void InitGame()
 //==========================================
 void UninitGame()
 {
+	//サウンドの停止
+	StopSound();
+
 	// カメラの終了
 	UninitCamera();
 
