@@ -53,11 +53,6 @@ void UpdateResult()
 
 	UpdateNumberUI();
 
-	//フェード
-	if (GetKeyboardTrigger(DIK_RETURN) == true || GetGamepadTrigger(BUTTON_START, 0) == true || GetGamepadTrigger(BUTTON_A, 0) == true || GetGamepadTrigger(BUTTON_B, 0) == true)
-	{
-		SetFade(MODE_TITLE);
-	}
 }
 
 //==========================================
