@@ -230,3 +230,23 @@ void ChangeRotPlayer()
 		}
 	}
 }
+
+//==========================================
+//  当たり判定
+//==========================================
+bool GetCollisionPlayer(D3DXVECTOR3 pos, float fRadius)
+{
+	//ローカル変数宣言
+	float fJudgRadius = fRadius + g_Player.ModelData.fRadius; //判定半径
+	float fDistance = (g_Player.pos.x - pos.x) * (g_Player.pos.x - pos.x) + (g_Player.pos.z - pos.z) * (g_Player.pos.z - pos.z); //プレイヤーと判定対象の距離
+	bool bHit = false; //衝突判定フラグ
+
+	//判定
+	if (fDistance < fJudgRadius * fJudgRadius)
+	{
+		bHit = true;
+	}
+
+	//返り値を設定
+	return bHit;
+}
