@@ -8,6 +8,7 @@
 #include "debugproc.h"
 #include "input.h"
 #include "model.h"
+#include "limit.h"
 
 //==========================================
 //  マクロ定義
@@ -33,6 +34,7 @@ typedef struct
 //==========================================
 void ChangeMovePlayer(void);
 void ChangeRotPlayer(void);
+void RevPosPlayer(void);
 
 //==========================================
 //  グローバル変数宣言
@@ -66,6 +68,9 @@ void UpdatePlayer()
 {
 	//移動処理
 	ChangeMovePlayer();
+
+	// プレイヤーの位置補正
+	RevPosPlayer();
 }
 
 //==========================================
@@ -233,6 +238,37 @@ void ChangeRotPlayer()
 		{
 			g_Player.rot.y += (D3DX_PI * 2);
 		}
+	}
+}
+
+//==========================================
+//  プレイヤーの位置補正処理
+//==========================================
+void RevPosPlayer(void)
+{
+	if (g_Player.pos.z > GetLimit().fNear - g_Player.ModelData.fRadius)
+	{ // 範囲外の場合 (手前)
+
+		// 手前に位置を補正
+		g_Player.pos.z = GetLimit().fNear - g_Player.ModelData.fRadius;
+	}
+	if (g_Player.pos.z < GetLimit().fFar + g_Player.ModelData.fRadius)
+	{ // 範囲外の場合 (奥)
+
+		// 奥に位置を補正
+		g_Player.pos.z = GetLimit().fFar + g_Player.ModelData.fRadius;
+	}
+	if (g_Player.pos.x > GetLimit().fRight - g_Player.ModelData.fRadius)
+	{ // 範囲外の場合 (右)
+
+		// 右に位置を補正
+		g_Player.pos.x = GetLimit().fRight - g_Player.ModelData.fRadius;
+	}
+	if (g_Player.pos.x < GetLimit().fLeft + g_Player.ModelData.fRadius)
+	{ // 範囲外の場合 (左)
+
+		// 左に位置を補正
+		g_Player.pos.x = GetLimit().fLeft + g_Player.ModelData.fRadius;
 	}
 }
 

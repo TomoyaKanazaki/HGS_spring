@@ -1,0 +1,80 @@
+#===========================================================
+#
+#	ステージの配置情報 [stage.txt]
+#	Author : 藤田 勇一 & you
+#
+#===========================================================
+#===========================================================
+#	移動範囲の情報
+#===========================================================
+STAGE_LIMITSET
+	NEAR = 5000
+	FAR = -5000
+	RIGHT = 5000
+	LEFT = -5000
+	FIELD = 0
+END_STAGE_LIMITSET
+
+#===========================================================
+#	メッシュフェールドの配置情報
+#===========================================================
+STAGE_MESHFIELDSET
+
+	MESHFIELDSET
+		POS = 0 0 0
+		ROT = 0 0 0
+		WIDTH = 10000
+		HEIGHT = 10000
+		PARTWIDTH = 50
+		PARTHEIGHT = 50
+		TYPE = 0
+	END_MESHFIELDSET
+	
+END_STAGE_MESHFIELDSET
+
+#===========================================================
+#	メッシュウォールの配置情報
+#===========================================================
+STAGE_MESHWALLSET
+	
+	MESHWALLSET
+		POS = 0 0 5000
+		ROT = 0 0 0
+		WIDTH = 10000
+		HEIGHT = 100
+		PARTWIDTH = 50
+		PARTHEIGHT = 1
+		TYPE = 0
+	END_MESHWALLSET
+	
+	MESHWALLSET
+		POS = 0 0 -5000
+		ROT = 0 180 0
+		WIDTH = 10000
+		HEIGHT = 100
+		PARTWIDTH = 50
+		PARTHEIGHT = 1
+		TYPE = 0
+	END_MESHWALLSET
+	
+	MESHWALLSET
+		POS = 5000 0 0
+		ROT = 0 90 0
+		WIDTH = 10000
+		HEIGHT = 100
+		PARTWIDTH = 50
+		PARTHEIGHT = 1
+		TYPE = 0
+	END_MESHWALLSET
+	
+	MESHWALLSET
+		POS = -5000 0 0
+		ROT = 0 270 0
+		WIDTH = 10000
+		HEIGHT = 100
+		PARTWIDTH = 50
+		PARTHEIGHT = 1
+		TYPE = 0
+	END_MESHWALLSET
+	
+END_STAGE_MESHWALLSET
