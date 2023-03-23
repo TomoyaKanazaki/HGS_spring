@@ -305,7 +305,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	//サウンドの初期化処理
 	InitSound(hWnd);
 
-	//ランキングの読み込み
+	//ロード処理
 	LordData();
 
 	//テクスチャの初期化
