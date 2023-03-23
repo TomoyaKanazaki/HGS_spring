@@ -68,8 +68,18 @@ void UninitPlayer()
 //==========================================
 void UpdatePlayer()
 {
-	//移動処理
-	ChangeMovePlayer();
+	if (GetMode() == MODE_TITLE)
+	{
+		g_Player.pos = D3DXVECTOR3(30.0f, 0.0f, 0.0f);
+
+		g_Player.rot = D3DXVECTOR3(0.0f, D3DX_PI * 0.25f, 0.0f);
+	}
+
+	if (GetMode() != MODE_TITLE)
+	{
+		//移動処理
+		ChangeMovePlayer();
+	}
 
 	// プレイヤーの位置補正
 	RevPosPlayer();
