@@ -50,6 +50,7 @@ void SetEnemy(D3DXVECTOR3 pos, int nType);
 void CollisionEnemy(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove, D3DXVECTOR3 min, D3DXVECTOR3 max);
 void KnoccBackPlayer(D3DXVECTOR3 Pos, float Power);
 bool CollisionCircle(D3DXVECTOR3 pos1, D3DXVECTOR3 pos2, float nRadiusOut, float nRadiusIn, float MinY, float MaxY);
+bool CollisionEnemy(int nCnt);
 Enemy * GetEnemy(void);
 bool GetHit(void);
 
