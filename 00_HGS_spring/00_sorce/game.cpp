@@ -129,7 +129,10 @@ void UninitGame()
 //==========================================
 void UpdateGame()
 {
-	if(GetPause() == false)
+	//ポーズの更新
+	UpdatePause();
+
+	if (GetPause() == false)
 	{ // ポーズ中じゃない場合
 
 		// メッシュドームの更新
@@ -159,20 +162,15 @@ void UpdateGame()
 		//パーティクルの更新
 		UpdateParticle();
 
-		// カメラの更新
-		UpdateCamera();
-
 		//プレイヤーの更新
 		UpdatePlayer();
 
 		//スコアゲージの更新
 		UpdateScoreGauge();
-	}
-	else
 	{ // ポーズ中の場合
 
-		//ポーズの更新
-		UpdatePause();
+		// カメラの更新
+		UpdateCamera();
 	}
 
 	//フェード

@@ -10,6 +10,7 @@
 #include "main.h"
 #include "camera.h"
 #include "input.h"
+#include "player.h"
 
 #ifdef _DEBUG	// デバッグ処理
 #include "debugproc.h"
@@ -24,7 +25,7 @@
 
 // メインカメラ
 #define FIRST_ROT		(1.45f)		// 開始時の視点と注視点の間の向き (x)
-#define FIRST_DIS		(-340.0f)	// 開始時の視点と注視点の間の距離
+#define FIRST_DIS		(-500.0f)	// 開始時の視点と注視点の間の距離
 
 #define REV_ROT_FOLLOW	(0.05f)		// 追従時の回り込みの補正係数
 #define REV_POS_V		(0.225f)	// 視点の位置の補正係数 (x, z)
@@ -71,10 +72,10 @@ void InitCamera(void)
 	// 基本情報を初期化
 	g_aCamera[CAMERATYPE_MAIN].posV     = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// 現在の視点
 	g_aCamera[CAMERATYPE_MAIN].posVOld  = g_aCamera[CAMERATYPE_MAIN].posV;		// 前回の視点
-	g_aCamera[CAMERATYPE_MAIN].posR     = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// 現在の注視点
+	g_aCamera[CAMERATYPE_MAIN].posR     = D3DXVECTOR3(0.0f, 800.0f, 0.0f);		// 現在の注視点
 	g_aCamera[CAMERATYPE_MAIN].destPosV = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// 目標の視点
 	g_aCamera[CAMERATYPE_MAIN].destPosR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// 目標の注視点
-	g_aCamera[CAMERATYPE_MAIN].vecU     = D3DXVECTOR3(0.0f, 1.0f, 0.0f);		// 上方向ベクトル
+	g_aCamera[CAMERATYPE_MAIN].vecU     = D3DXVECTOR3(0.0f, 0.0f, 1.0f);		// 上方向ベクトル
 	g_aCamera[CAMERATYPE_MAIN].rot      = D3DXVECTOR3(FIRST_ROT, 0.0f, 0.0f);	// 向き
 	g_aCamera[CAMERATYPE_MAIN].fDis     = FIRST_DIS;							// 視点と注視点の距離
 
@@ -101,8 +102,12 @@ void UninitCamera(void)
 void UpdateCamera(void)
 {
 #if 0
-
+	// カメラの位置の更新 (追従)
+	MoveFollowCamera();
 #else
+	// 上方向ベクトルを設定
+	g_aCamera[CAMERATYPE_MAIN].vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+
 	// カメラの位置の更新 (操作)
 	MoveCamera();
 
@@ -164,146 +169,21 @@ void SetCamera(int nID)
 	pDevice->SetTransform(D3DTS_VIEW, &g_aCamera[nID].mtxView);
 }
 
-#if 0
 //======================================================================================================================
 //	メインカメラの位置の更新処理 (追従)
 //======================================================================================================================
 void MoveFollowCamera(void)
 {
-	// 変数を宣言
-	D3DXVECTOR3 diffPosV = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	// カメラの視点の位置の計算代入用
-	D3DXVECTOR3 diffPosR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	// カメラの注視点の位置の計算代入用
+	// 上方向ベクトルを設定
+	g_aCamera[CAMERATYPE_MAIN].vecU = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
 
-	// ポインタを宣言
-	Player *pPlayer = GetPlayer();		// プレイヤーの情報
-
-	switch (pPlayer->nCameraState)
-	{
-	case PLAYCAMESTATE_NORMAL:			// 通常のカメラ状態
-
-		if (pPlayer->bCameraFirst == true)
-		{ // 一人称がONの場合
-
-			// 目標の視点の位置を更新
-			g_aCamera[CAMERATYPE_MAIN].posV.x = pPlayer->pos.x + sinf(pPlayer->rot.y) * CAMERA_FORWARD_SHIFT;	// 目標注視点から距離分離れた位置
-			g_aCamera[CAMERATYPE_MAIN].posV.y = pPlayer->pos.y + CAMERA_UP_SHIFT;								// 固定の高さ
-			g_aCamera[CAMERATYPE_MAIN].posV.z = pPlayer->pos.z + cosf(pPlayer->rot.y) * CAMERA_FORWARD_SHIFT;	// 目標注視点から距離分離れた位置
-
-			// 目標の注始点を更新する
-			g_aCamera[CAMERATYPE_MAIN].posR.x = g_aCamera[CAMERATYPE_MAIN].posV.x - ((g_aCamera[CAMERATYPE_MAIN].fDis * sinf(g_aCamera[CAMERATYPE_MAIN].rot.x)) * sinf(g_aCamera[CAMERATYPE_MAIN].rot.y));	// 目標注視点から距離分離れた位置
-			g_aCamera[CAMERATYPE_MAIN].posR.y = g_aCamera[CAMERATYPE_MAIN].posV.y;																															// 視点と同じ高さ
-			g_aCamera[CAMERATYPE_MAIN].posR.z = g_aCamera[CAMERATYPE_MAIN].posV.z - ((g_aCamera[CAMERATYPE_MAIN].fDis * sinf(g_aCamera[CAMERATYPE_MAIN].rot.x)) * cosf(g_aCamera[CAMERATYPE_MAIN].rot.y));	// 目標注視点から距離分離れた位置
-		}
-		else
-		{ // 一人称がOFFの場合
-
-			// 目標の注視点の位置を更新
-			g_aCamera[CAMERATYPE_MAIN].destPosR.x = pPlayer->pos.x + sinf(pPlayer->rot.y + D3DX_PI) * POS_R_PLUS;	// プレイヤーの位置より少し前
-			g_aCamera[CAMERATYPE_MAIN].destPosR.y = pPlayer->pos.y + POS_R_PLUS_Y;									// プレイヤーの位置と同じ
-			g_aCamera[CAMERATYPE_MAIN].destPosR.z = pPlayer->pos.z + cosf(pPlayer->rot.y + D3DX_PI) * POS_R_PLUS;	// プレイヤーの位置より少し前
-
-			// 目標の視点の位置を更新
-			g_aCamera[CAMERATYPE_MAIN].destPosV.x = g_aCamera[CAMERATYPE_MAIN].destPosR.x + ((g_aCamera[CAMERATYPE_MAIN].fDis * sinf(g_aCamera[CAMERATYPE_MAIN].rot.x)) * sinf(g_aCamera[CAMERATYPE_MAIN].rot.y));	// 目標注視点から距離分離れた位置
-			g_aCamera[CAMERATYPE_MAIN].destPosV.y = POS_V_Y;																																						// 固定の高さ
-			g_aCamera[CAMERATYPE_MAIN].destPosV.z = g_aCamera[CAMERATYPE_MAIN].destPosR.z + ((g_aCamera[CAMERATYPE_MAIN].fDis * sinf(g_aCamera[CAMERATYPE_MAIN].rot.x)) * cosf(g_aCamera[CAMERATYPE_MAIN].rot.y));	// 目標注視点から距離分離れた位置
-
-			// 目標の位置までの差分を計算
-			diffPosV = g_aCamera[CAMERATYPE_MAIN].destPosV - g_aCamera[CAMERATYPE_MAIN].posV;	// 視点
-			diffPosR = g_aCamera[CAMERATYPE_MAIN].destPosR - g_aCamera[CAMERATYPE_MAIN].posR;	// 注視点
-
-			// 視点の位置を更新
-			g_aCamera[CAMERATYPE_MAIN].posV.x += diffPosV.x * REV_POS_V;
-			g_aCamera[CAMERATYPE_MAIN].posV.y += diffPosV.y * REV_POS_V_Y;
-			g_aCamera[CAMERATYPE_MAIN].posV.z += diffPosV.z * REV_POS_V;
-
-			// 注視点の位置を更新
-			g_aCamera[CAMERATYPE_MAIN].posR.x += diffPosR.x * REV_POS_R;
-			g_aCamera[CAMERATYPE_MAIN].posR.y += diffPosR.y * REV_POS_R_Y;
-			g_aCamera[CAMERATYPE_MAIN].posR.z += diffPosR.z * REV_POS_R;
-		}
-
-		break;							// 抜け出す
-
-	case PLAYCAMESTATE_BACK:			// 後ろを見るカメラ状態
-
-		if (pPlayer->bCameraFirst == true)
-		{ // 一人称がONの場合
-
-			// 目標の視点の位置を更新
-			g_aCamera[CAMERATYPE_MAIN].posV.x = pPlayer->pos.x - sinf(pPlayer->rot.y) * CAMERA_BACK_SHIFT;	// 目標注視点から距離分離れた位置
-			g_aCamera[CAMERATYPE_MAIN].posV.y = pPlayer->pos.y + CAMERA_UP_SHIFT;							// 固定の高さ
-			g_aCamera[CAMERATYPE_MAIN].posV.z = pPlayer->pos.z - cosf(pPlayer->rot.y) * CAMERA_BACK_SHIFT;	// 目標注視点から距離分離れた位置
-
-			// 目標の注始点を更新する
-			g_aCamera[CAMERATYPE_MAIN].posR.x = g_aCamera[CAMERATYPE_MAIN].posV.x + ((g_aCamera[CAMERATYPE_MAIN].fDis * sinf(g_aCamera[CAMERATYPE_MAIN].rot.x)) * sinf(g_aCamera[CAMERATYPE_MAIN].rot.y));	// 目標注視点から距離分離れた位置
-			g_aCamera[CAMERATYPE_MAIN].posR.y = g_aCamera[CAMERATYPE_MAIN].posV.y;																															// 視点と同じ高さ
-			g_aCamera[CAMERATYPE_MAIN].posR.z = g_aCamera[CAMERATYPE_MAIN].posV.z + ((g_aCamera[CAMERATYPE_MAIN].fDis * sinf(g_aCamera[CAMERATYPE_MAIN].rot.x)) * cosf(g_aCamera[CAMERATYPE_MAIN].rot.y));	// 目標注視点から距離分離れた位置
-		}
-		else
-		{ // 一人称がOFFの場合
-
-			// 目標の注視点の位置を更新
-			g_aCamera[CAMERATYPE_MAIN].destPosR.x = pPlayer->pos.x + sinf(pPlayer->rot.y + D3DX_PI) * -POS_R_PLUS;	// プレイヤーの位置より少し前
-			g_aCamera[CAMERATYPE_MAIN].destPosR.y = pPlayer->pos.y + POS_R_PLUS_Y;									// プレイヤーの位置と同じ
-			g_aCamera[CAMERATYPE_MAIN].destPosR.z = pPlayer->pos.z + cosf(pPlayer->rot.y + D3DX_PI) * -POS_R_PLUS;	// プレイヤーの位置より少し前
-
-			// 目標の視点の位置を更新
-			g_aCamera[CAMERATYPE_MAIN].destPosV.x = g_aCamera[CAMERATYPE_MAIN].destPosR.x - ((g_aCamera[CAMERATYPE_MAIN].fDis * sinf(g_aCamera[CAMERATYPE_MAIN].rot.x)) * sinf(g_aCamera[CAMERATYPE_MAIN].rot.y));	// 目標注視点から距離分離れた位置
-			g_aCamera[CAMERATYPE_MAIN].destPosV.y = POS_V_Y;																																						// 固定の高さ
-			g_aCamera[CAMERATYPE_MAIN].destPosV.z = g_aCamera[CAMERATYPE_MAIN].destPosR.z - ((g_aCamera[CAMERATYPE_MAIN].fDis * sinf(g_aCamera[CAMERATYPE_MAIN].rot.x)) * cosf(g_aCamera[CAMERATYPE_MAIN].rot.y));	// 目標注視点から距離分離れた位置
-
-			// 目標の位置までの差分を計算
-			diffPosV = g_aCamera[CAMERATYPE_MAIN].destPosV - g_aCamera[CAMERATYPE_MAIN].posV;	// 視点
-			diffPosR = g_aCamera[CAMERATYPE_MAIN].destPosR - g_aCamera[CAMERATYPE_MAIN].posR;	// 注視点
-
-			// 視点の位置を更新
-			g_aCamera[CAMERATYPE_MAIN].posV.x += diffPosV.x * REV_POS_V;
-			g_aCamera[CAMERATYPE_MAIN].posV.y += diffPosV.y * REV_POS_V_Y;
-			g_aCamera[CAMERATYPE_MAIN].posV.z += diffPosV.z * REV_POS_V;
-
-			// 注視点の位置を更新
-			g_aCamera[CAMERATYPE_MAIN].posR.x += diffPosR.x * REV_POS_R;
-			g_aCamera[CAMERATYPE_MAIN].posR.y += diffPosR.y * REV_POS_R_Y;
-			g_aCamera[CAMERATYPE_MAIN].posR.z += diffPosR.z * REV_POS_R;
-		}
-
-		break;							//抜け出す
-	}
-
-	// カメラの向きをプレイヤーの向きに合わせる
-	g_aCamera[CAMERATYPE_MAIN].rot.y = pPlayer->rot.y;
-}
-#endif
-
-#if 0
-//============================================================
-//	メインカメラの位置の更新処理 (固定)
-//============================================================
-void MoveFixedCamera(void)
-{
-	// 変数を宣言
-	D3DXVECTOR3 diffPosR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	// カメラの注視点の位置の計算代入用
-
-	// ポインタを宣言
-	Police *pPolice = GetPoliceData();		// 警察の情報
-
-	// 目標の注視点の位置を更新
-	g_aCamera[CAMERATYPE_MAIN].destPosR.x = pPolice->pos.x + sinf(pPolice->rot.y + D3DX_PI) * POS_R_PLUS;	// プレイヤーの位置より少し前
-	g_aCamera[CAMERATYPE_MAIN].destPosR.y = pPolice->pos.y + POS_R_PLUS_Y;									// プレイヤーの位置と同じ
-	g_aCamera[CAMERATYPE_MAIN].destPosR.z = pPolice->pos.z + cosf(pPolice->rot.y + D3DX_PI) * POS_R_PLUS;	// プレイヤーの位置より少し前
-
-	// 目標の注視点位置までの差分を計算
-	diffPosR = g_aCamera[CAMERATYPE_MAIN].destPosR - g_aCamera[CAMERATYPE_MAIN].posR;
-
-	// 視点の位置を固定
-	g_aCamera[CAMERATYPE_MAIN].posV = D3DXVECTOR3(1800.0f, 800.0f, 1000.0f);
+	// 視点の位置を更新
+	g_aCamera[CAMERATYPE_MAIN].posV = GetPosPlayer();
+	g_aCamera[CAMERATYPE_MAIN].posV.y -= g_aCamera[CAMERATYPE_MAIN].fDis;
 
 	// 注視点の位置を更新
-	g_aCamera[CAMERATYPE_MAIN].posR.x += diffPosR.x * REV_POS_R;
-	g_aCamera[CAMERATYPE_MAIN].posR.y += diffPosR.y * REV_POS_R_Y;
-	g_aCamera[CAMERATYPE_MAIN].posR.z += diffPosR.z * REV_POS_R;
+	g_aCamera[CAMERATYPE_MAIN].posR = GetPosPlayer();
 }
-#endif
 
 //============================================================
 //	メインカメラの位置の更新処理 (操作)

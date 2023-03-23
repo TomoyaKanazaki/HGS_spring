@@ -25,5 +25,6 @@ void UninitPlayer(void);
 void UpdatePlayer(void);
 void DrawPlayer(void);
 D3DXVECTOR3 GetPosPlayer(void);
+bool GetCollisionPlayer(D3DXVECTOR3 pos, float fRadius);
 
 #endif
