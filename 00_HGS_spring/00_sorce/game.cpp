@@ -218,6 +218,8 @@ void UpdateGame()
 	{
 		if (GetTime() <= 0 || GetHit())
 		{
+			GetCollisionPlayer(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 10000000.0f);
+
 			SetRanking(GetScore());
 
 			SetFade(MODE_RESULT);
