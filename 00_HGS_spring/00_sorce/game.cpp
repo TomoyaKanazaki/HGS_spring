@@ -203,7 +203,7 @@ void UpdateGame()
 	}
 
 	//フェード
-	if (GetKeyboardTrigger(DIK_RETURN))
+	if (GetTime() <= 0)
 	{
 		SetFade(MODE_RESULT);
 	}
