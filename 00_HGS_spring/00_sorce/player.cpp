@@ -71,14 +71,14 @@ void UpdatePlayer()
 {
 	if (g_Player.state != PLAYERSTATE_MAX)
 	{
-		if (GetMode() == MODE_TITLE)
+		if (GetMode() == MODE_TITLE || GetMode() == MODE_RESULT)
 		{
 			g_Player.pos = D3DXVECTOR3(30.0f, 0.0f, 0.0f);
 
 			g_Player.rot = D3DXVECTOR3(0.0f, D3DX_PI * 0.25f, 0.0f);
 		}
 
-		if (GetMode() != MODE_TITLE)
+		if (GetMode() != MODE_TITLE || GetMode() != MODE_RESULT)
 		{
 			//à⁄ìÆèàóù
 			ChangeMovePlayer();
