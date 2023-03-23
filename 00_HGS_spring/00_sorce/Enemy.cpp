@@ -13,6 +13,7 @@
 #define BULLETCOUNTER (120)		//弾を撃つ感覚
 #define ENEMY_CHASE (500.0f)	//敵が追いかけてくる距離
 #define ENEMY_NUM (100) // * 区域番号 = 発生する敵の数
+#define ENEMY_COLLISION (10.0f) //敵同士の当たり判定
 
 //プロトタイプ宣言
 void UpdateSlime(int nCnt);
@@ -194,6 +195,17 @@ void UpdateSlime(int nCnt)
 
 	//位置更新(入力による動き)
 	g_Enemy[nCnt].pos += g_Enemy[nCnt].move;
+
+	//for (int nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++)
+	//{
+	//	if (g_Enemy[nCntEnemy].bUse == true && nCnt != nCntEnemy)
+	//	{
+	//		if (CollisionCircle(g_Enemy[nCnt].pos, g_Enemy[nCntEnemy].pos, ENEMY_COLLISION, 0.0f, -10.0f, 10.0f) == true)
+	//		{
+	//			g_Enemy[nCnt].pos = g_Enemy[nCnt].posOld;
+	//		}
+	//	}
+	//}
 
 	//Player *pPlayer = GetPlayer();
 
