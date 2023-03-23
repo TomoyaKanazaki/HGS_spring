@@ -13,6 +13,7 @@
 #define BULLETCOUNTER (120)		//弾を撃つ感覚
 #define ENEMY_CHASE (700.0f)	//敵が追いかけてくる距離
 #define ENEMY_NUM (50) // * 区域番号 = 発生する敵の数
+#define ENEMY_COLLISION (10.0f) //敵同士の当たり判定
 
 //プロトタイプ宣言
 void UpdateSlime(int nCnt);
@@ -195,6 +196,17 @@ void UpdateSlime(int nCnt)
 	//位置更新(入力による動き)
 	g_Enemy[nCnt].pos += g_Enemy[nCnt].move;
 
+	//for (int nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++)
+	//{
+	//	if (g_Enemy[nCntEnemy].bUse == true && nCnt != nCntEnemy)
+	//	{
+	//		if (CollisionCircle(g_Enemy[nCnt].pos, g_Enemy[nCntEnemy].pos, ENEMY_COLLISION, 0.0f, -10.0f, 10.0f) == true)
+	//		{
+	//			g_Enemy[nCnt].pos = g_Enemy[nCnt].posOld;
+	//		}
+	//	}
+	//}
+
 	//Player *pPlayer = GetPlayer();
 
 	////ノックバック処理
@@ -366,9 +378,13 @@ void SetEnemy(D3DXVECTOR3 pos, int nType)
 		{
 			g_Enemy[nCntEnemy].pos = pos;
 			g_Enemy[nCntEnemy].posOld = pos;
-			g_Enemy[nCntEnemy].nType = nType;
+			g_Enemy[nCntEnemy].nType = (ENEMY_NTYPE)nType;
 			g_Enemy[nCntEnemy].State = ENEMY_STATE_WAIT;
 			g_Enemy[nCntEnemy].bUse = true;
+
+			// 情報を初期化
+			g_Enemy[nCntEnemy].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			g_Enemy[nCntEnemy].rot  = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
 			int nNumVtx;		//頂点数
 			DWORD dwSizeFVF;	//頂点フォーマットのサイズ
