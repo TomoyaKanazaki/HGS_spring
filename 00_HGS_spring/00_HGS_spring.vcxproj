@@ -165,6 +165,7 @@
     <ClInclude Include="01_header\Enemy.h" />
     <ClInclude Include="01_header\fade.h" />
     <ClInclude Include="01_header\game.h" />
+    <ClInclude Include="01_header\GameUI.h" />
     <ClInclude Include="01_header\input.h" />
     <ClInclude Include="01_header\light.h" />
     <ClInclude Include="01_header\limit.h" />
@@ -199,6 +200,7 @@
     <ClCompile Include="00_sorce\Enemy.cpp" />
     <ClCompile Include="00_sorce\fade.cpp" />
     <ClCompile Include="00_sorce\game.cpp" />
+    <ClCompile Include="00_sorce\GameUI.cpp" />
     <ClCompile Include="00_sorce\input.cpp" />
     <ClCompile Include="00_sorce\light.cpp" />
     <ClCompile Include="00_sorce\limit.cpp" />
