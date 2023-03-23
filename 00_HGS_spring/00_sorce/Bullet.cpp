@@ -2,9 +2,10 @@
 #include "Bullet.h"
 #include "effect.h"
 #include "player.h"
+#include "area.h"
 
 #define BULLET_SIZE (5.0f)	//弾の大きさ
-#define BULLET_SPEED (10.0f)	//弾の速さ
+#define BULLET_SPEED (5.0f)	//弾の速さ
 #define EFFECT_COUNTER (1)	//エフェクトをセットする間隔
 
 //プロトタイプ宣言
@@ -121,6 +122,11 @@ void UpdateBullet(void)
 			//弾の位置更新
 			g_aBullet[nCntBill].pos += g_aBullet[nCntBill].move;
 
+			if (GetEnemyArea(g_aBullet[nCntBill].pos) == AREATYPE_SAFE)
+			{
+				g_aBullet[nCntBill].bUse = false;
+			}
+
 			//寿命を減らす
 			g_aBullet[nCntBill].nLife--;
 
@@ -149,7 +155,7 @@ void UpdateBullet(void)
 
 	VERTEX_3D*pVtx;	//頂点ポインタを所得
 
-					//頂点バッファをロックし、両店情報へのポインタを所得
+	//頂点バッファをロックし、両店情報へのポインタを所得
 	g_pVtxBuffBullet->Lock(0, 0, (void**)&pVtx, 0);
 
 	for (nCntBill = 0; nCntBill < MAX_BULLET; nCntBill++)
