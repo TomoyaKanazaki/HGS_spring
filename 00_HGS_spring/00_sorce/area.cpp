@@ -13,23 +13,32 @@
 //**********************************************************************************************************************
 //	マクロ定義
 //**********************************************************************************************************************
-#define MAX_AREA		(5)			// 使用するポリゴン数 (区域表示の最大数)
+#define MAX_AREA	(5)		// 使用するポリゴン数 (区域表示の最大数)
 
 //**********************************************************************************************************************
 //	コンスト定義
 //**********************************************************************************************************************
-const char *apTextureArea[] =		// テクスチャの相対パス
+const char *apTextureArea[] =			// テクスチャの相対パス
 {
-	"data\\TEXTURE\\area000.jpg",	// 区域のテクスチャの相対パス
+	"02_data\\02_TEXTURE\\area000.png",	// 区域のテクスチャの相対パス
 };
 
 const float aRadiusArea[] =	// 区域の半径
 {
-	500.0f,					// 第一エリア
-	1000.0f,				// 第二エリア
-	2000.0f,				// 第三エリア
-	3000.0f,				// 第四エリア
 	4000.0f,				// 第五エリア
+	3000.0f,				// 第四エリア
+	2000.0f,				// 第三エリア
+	1000.0f,				// 第二エリア
+	500.0f,					// 第一エリア
+};
+
+const D3DXCOLOR aColorArea[] =			// 区域の色
+{
+	D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),	// 第五エリア
+	D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f),	// 第四エリア
+	D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),	// 第三エリア
+	D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f),	// 第二エリア
+	D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),	// 第一エリア
 };
 
 //**********************************************************************************************************************
@@ -116,10 +125,10 @@ void InitArea(void)
 		pVtx[3].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
 		// 頂点カラーの設定
-		pVtx[0].col = D3DXCOLOR(1.0f, 0.2f, 0.2f, 0.2f);
-		pVtx[1].col = D3DXCOLOR(1.0f, 0.2f, 0.2f, 0.2f);
-		pVtx[2].col = D3DXCOLOR(1.0f, 0.2f, 0.2f, 0.2f);
-		pVtx[3].col = D3DXCOLOR(1.0f, 0.2f, 0.2f, 0.2f);
+		pVtx[0].col = aColorArea[nCntArea];
+		pVtx[1].col = aColorArea[nCntArea];
+		pVtx[2].col = aColorArea[nCntArea];
+		pVtx[3].col = aColorArea[nCntArea];
 
 		// テクスチャ座標の設定
 		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
@@ -184,11 +193,6 @@ void DrawArea(void)
 	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);		// Zテストの設定
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);			// Zバッファ更新の有効 / 無効の設定
 
-	// αブレンディングを減算合成に設定
-	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_REVSUBTRACT);
-	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
-
 	for (int nCntArea = 0; nCntArea < MAX_AREA; nCntArea++)
 	{ // 区域の最大表示数分繰り返す
 
@@ -222,9 +226,4 @@ void DrawArea(void)
 	// Zテストを有効にする
 	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);		// Zテストの設定
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);			// Zバッファ更新の有効 / 無効の設定
-
-	// αブレンディングを元に戻す
-	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
-	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 }
