@@ -4,6 +4,8 @@
 #include "game.h"
 #include "time.h"
 #include "area.h"
+#include "PlusScore.h"
+#include "score.h"
 
 //É}ÉNÉçíËã`
 #define NUM_SSUI		(4)	//GAMEUIÇÃéÌóﬁêî
@@ -160,7 +162,8 @@ void UpdateScoreGauge(void)
 
 	if (GaugeSpeed == AREATYPE_SAFE && g_bGaugeCount == true)
 	{
-		g_bGaugeCount = false;
+		AddScore(GetPlusScore());
+		SetPlusScore(0);
 	}
 	else
 	{
@@ -229,6 +232,7 @@ void UpdateScoreGauge(void)
 			{
 				g_aSucoreGauge[3].bEnd = true;
 				g_bGaugeCount = false;
+				AddPlusScore(1);
 			}
 		}
 	}

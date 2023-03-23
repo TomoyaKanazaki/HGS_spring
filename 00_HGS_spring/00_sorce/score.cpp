@@ -1,14 +1,15 @@
 #include "main.h"
 #include "score.h"
+#include "texture.h"
 
 //マクロ定義
 #define NUM_PLACE (3)				//スコアの桁数
 
-#define X_POS_GAME (100.0f)			//ゲーム画面の時のスコアのX座標
+#define X_POS_GAME (50.0f)			//ゲーム画面の時のスコアのX座標
 #define Y_POS_GAME (100.0f)			//ゲーム画面の時のスコアのY座標
-#define X_SIZE_GAME (25.0f)			//ゲーム画面の時のスコアの横幅
-#define Y_SIZE_GAME (25.0f)			//ゲーム画面の時のスコアの縦幅
-#define WIDE_SIZE_GAME (100.0f)		//ゲーム画面の時のスコア同士の幅
+#define X_SIZE_GAME (30.0f)			//ゲーム画面の時のスコアの横幅
+#define Y_SIZE_GAME (30.0f)			//ゲーム画面の時のスコアの縦幅
+#define WIDE_SIZE_GAME (60.0f)		//ゲーム画面の時のスコア同士の幅
 
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTextureScore = NULL;			//テクスチャのポインタ
@@ -26,11 +27,6 @@ void InitScore(void)
 
 	//デバイスの所得
 	pDevice = GetDevice();
-
-	////テクスチャの読み込み
-	//D3DXCreateTextureFromFile(pDevice,
-	//	"data\\TEXTURE\\NUMBER002.png",
-	//	&g_pTextureScore);
 
 	for (nCntScore = 0; nCntScore < NUM_PLACE; nCntScore++)
 	{
@@ -158,7 +154,8 @@ void DrawScore(void)
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
 	//テクスチャの設定
-	pDevice->SetTexture(0, g_pTextureScore);
+	pDevice->SetTexture(0, GetTexture(TEXTURE_NUMBER));
+
 	for (nCntScore = 0; nCntScore < NUM_PLACE; nCntScore++)
 	{
 		//ポリゴンの描画

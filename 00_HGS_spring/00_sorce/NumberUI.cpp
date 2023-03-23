@@ -34,12 +34,12 @@ void InitNumberUI(void)
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\Number00.png",
+		"02_data\\02_TEXTURE\\number.png",
 		&g_apTextureNumberUI[0]);
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\Number00.png",
+		"02_data\\02_TEXTURE\\number.png",
 		&g_apTextureNumberUI[1]);
 
 	//各種変数の初期化
