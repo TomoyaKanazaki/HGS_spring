@@ -7,13 +7,20 @@
 #include "result.h"
 #include "fade.h"
 #include "input.h"
+#include "rankingnumber.h"
+#include "NumberUI.h"
+#include "RAnkingUI.h"
 
 //==========================================
 //  初期化処理
 //==========================================
 void InitResult()
 {
+	InitNumberUI();
 
+	InitRankingUI();
+
+	InitRanKingNumber();
 }
 
 //==========================================
@@ -21,7 +28,11 @@ void InitResult()
 //==========================================
 void UninitResult()
 {
+	UninitRankingUI();
 
+	UninitRanKingNumber();
+
+	UninitNumberUI();
 }
 
 //==========================================
@@ -29,6 +40,12 @@ void UninitResult()
 //==========================================
 void UpdateResult()
 {
+	UpdateRankingUI();
+
+	UpdateRanKingNumber();
+
+	UpdateNumberUI();
+
 	//フェード
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
@@ -41,5 +58,9 @@ void UpdateResult()
 //==========================================
 void DrawResult()
 {
+	DrawRankingUI();
 
+	DrawRanKingNumber();
+
+	DrawNumberUI();
 }

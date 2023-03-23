@@ -15,13 +15,16 @@
 //==========================================
 //  マクロ定義
 //==========================================
-#define TIME_NUM (3) //桁数
+#define TIME_DIGIT (3) //桁数
 #define START_TIME (120) //ゲーム時間 (1/1秒)
+#define TIME_SIZE (100.0f) //タイムポリゴンのサイズ
+#define TIME_POS (D3DXVECTOR3((float)SCREEN_WIDTH, TIME_SIZE, 0.0f)) //タイムの描画位置
 
 //==========================================
 //  プロトタイプ宣言
 //==========================================
 void CalcPauseTime(int nCurrentTime); //ポーズ中の時間を補正する
+void SetTimePolygon(void); //ポリゴンを制御する関数
 
 //==========================================
 //  グローバル変数宣言
@@ -40,7 +43,7 @@ void InitTime()
 	g_nBaseTime = timeGetTime();
 
 	//ポリゴンの生成
-	g_pVtxBuffTime = Init_2D_Polygon(TIME_NUM);
+	g_pVtxBuffTime = Init_2D_Polygon(TIME_DIGIT);
 }
 
 //==========================================
@@ -48,7 +51,8 @@ void InitTime()
 //==========================================
 void UninitTime()
 {
-
+	//ポリゴンの破棄
+	UninitPolygon(&g_pVtxBuffTime);
 }
 
 //==========================================
@@ -72,6 +76,9 @@ void UpdateTime()
 		g_nTime = START_TIME - nBetweenTime;
 	}
 
+	//ポリゴンの更新
+	SetTimePolygon();
+
 #ifdef _DEBUG
 	//デバッグキー
 	if (GetKeyboardTrigger(DIK_T))
@@ -79,6 +86,14 @@ void UpdateTime()
 		//変数の初期化
 		g_nTime = START_TIME;
 		g_nBaseTime = timeGetTime();
+	}
+	if (GetKeyboardTrigger(DIK_UP))
+	{
+		g_nBaseTime += 1000;
+	}
+	if (GetKeyboardTrigger(DIK_DOWN))
+	{
+		g_nBaseTime -= 1000;
 	}
 #endif
 	//デバッグ表示
@@ -91,7 +106,36 @@ void UpdateTime()
 //==========================================
 void DrawTime()
 {
+	//ローカル変数宣言
+	int nNumDigit = TIME_DIGIT;
 
+	//デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+
+	//頂点バッファをデータストリームに設定
+	pDevice->SetStreamSource(0, g_pVtxBuffTime, 0, sizeof(VERTEX_2D));
+
+	//頂点フォーマットの設定
+	pDevice->SetFVF(FVF_VERTEX_2D);
+
+	//残り時間から描画するポリゴン数を変化する
+	if (g_nTime < 100)
+	{
+		nNumDigit -= 1;
+	}
+	if (g_nTime < 10)
+	{
+		nNumDigit -= 2;
+	}
+
+	for (int nCnt = 0; nCnt < nNumDigit; nCnt++)
+	{
+		//テクスチャの設定
+		pDevice->SetTexture(0, GetTexture(TEXTURE_NUMBER));
+
+		//メニュー項目の描画
+		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCnt * 4, 2);
+	}
 }
 
 //==========================================
@@ -125,4 +169,52 @@ void CalcPauseTime(int nCurrentTime)
 	}
 
 	bOldPause = GetPause();
+}
+
+//==========================================
+//  ポリゴンを制御する関数
+//==========================================
+void SetTimePolygon()
+{
+	//ローカル変数宣言
+	int aTex[TIME_DIGIT];
+	int nCntCount, nCalc;
+
+	//最大数の取得
+	nCalc = g_nTime;
+
+	//テクスチャ座標の計測
+	for (nCntCount = 0; nCntCount < TIME_DIGIT; nCntCount++)
+	{
+		aTex[nCntCount] = nCalc % 10;
+		nCalc /= 10;
+	}
+
+	//頂点バッファの呼び出し
+	VERTEX_2D *pVtx;
+
+	//頂点バッファをロック
+	g_pVtxBuffTime->Lock(0, 0, (void**)&pVtx, 0);
+
+	//設定処理
+	for (nCntCount = 0; nCntCount < TIME_DIGIT; nCntCount++)
+	{
+		//頂点座標の設定
+		pVtx[0].pos = D3DXVECTOR3(TIME_POS.x - ((float)(nCntCount + 1.0f) * (TIME_SIZE * 0.6f)), TIME_POS.y - TIME_SIZE, 0.0f);
+		pVtx[1].pos = D3DXVECTOR3(TIME_POS.x - ((float)nCntCount * (TIME_SIZE * 0.6f)), TIME_POS.y - TIME_SIZE, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(TIME_POS.x - ((float)(nCntCount + 1.0f) * (TIME_SIZE * 0.6f)), TIME_POS.y, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(TIME_POS.x - ((float)nCntCount * (TIME_SIZE * 0.6f)), TIME_POS.y, 0.0f);
+
+		//テクスチャ座標の設定
+		pVtx[0].tex = D3DXVECTOR2(aTex[nCntCount] * 0.1f, 0.0f);
+		pVtx[1].tex = D3DXVECTOR2((aTex[nCntCount] * 0.1f) + 0.1f, 0.0f);
+		pVtx[2].tex = D3DXVECTOR2(aTex[nCntCount] * 0.1f, 1.0f);
+		pVtx[3].tex = D3DXVECTOR2((aTex[nCntCount] * 0.1f) + 0.1f, 1.0f);
+
+		//頂点データのポインタを4つ進める
+		pVtx += 4;
+	}
+
+	//頂点バッファをアンロック
+	g_pVtxBuffTime->Unlock();
 }
