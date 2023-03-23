@@ -26,11 +26,11 @@ Limit g_limit;					// 移動範囲の情報
 void InitLimit(void)
 {
 	// ステージの移動範囲の情報を初期化
-	g_limit.fNear  = 0.0f;		// 移動範囲 (手前)
-	g_limit.fFar   = 0.0f;		// 移動範囲 (奥)
-	g_limit.fRight = 0.0f;		// 移動範囲 (右)
-	g_limit.fLeft  = 0.0f;		// 移動範囲 (左)
-	g_limit.fField = LAND_POS;	// 移動範囲 (地面)
+	g_limit.fNear  = 0.0f;				// 移動範囲 (手前)
+	g_limit.fFar   = 0.0f;				// 移動範囲 (奥)
+	g_limit.fRight = 0.0f;				// 移動範囲 (右)
+	g_limit.fLeft  = 0.0f;				// 移動範囲 (左)
+	g_limit.fField = LAND_POS;			// 移動範囲 (地面)
 }
 
 //============================================================

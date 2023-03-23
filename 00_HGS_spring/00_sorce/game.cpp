@@ -10,6 +10,7 @@
 #include "input.h"
 #include "load.h"
 
+#include "area.h"
 #include "camera.h"
 #include "light.h"
 #include "meshdome.h"
@@ -21,6 +22,7 @@
 #include "Bullet.h"
 #include "effect.h"
 #include "particle.h"
+#include "player.h"
 
 //==========================================
 //  初期化処理
@@ -51,6 +53,9 @@ void InitGame()
 	// メッシュウォールの初期化
 	InitMeshWall();
 
+	// 区域の初期化
+	InitArea();
+
 	//エフェクトの初期化
 	InitEffect();
 
@@ -59,6 +64,9 @@ void InitGame()
 
 	//ポーズの初期化
 	InitPause();
+
+	//プレイヤーの初期化
+	InitPlayer();
 
 	// ステージのセットアップ
 	TxtSetStage();
@@ -93,6 +101,9 @@ void UninitGame()
 	// メッシュウォールの終了
 	UninitMeshWall();
 
+	// 区域の終了
+	UninitArea();
+
 	//エフェクトの終了
 	UninitEffect();
 
@@ -101,6 +112,9 @@ void UninitGame()
 
 	//ポーズの終了
 	UninitPause();
+
+	//プレイヤーの終了
+	UninitPlayer();
 }
 
 //==========================================
@@ -129,6 +143,9 @@ void UpdateGame()
 		// メッシュウォールの更新
 		UpdateMeshWall();
 
+		// 区域の更新
+		UpdateArea();
+
 		//エフェクトの更新
 		UpdateEffect();
 
@@ -137,6 +154,9 @@ void UpdateGame()
 
 		// カメラの更新
 		UpdateCamera();
+
+		//プレイヤーの更新
+		UpdatePlayer();
 	}
 	else
 	{ // ポーズ中の場合
@@ -178,6 +198,9 @@ void DrawGame()
 	// メッシュウォールの描画
 	DrawMeshWall();
 
+	// 区域の描画
+	DrawArea();
+
 	//エフェクトの描画
 	DrawEffect();
 
@@ -186,4 +209,7 @@ void DrawGame()
 
 	//ポーズの描画
 	DrawPause();
+
+	//プレイヤーの描画
+	DrawPlayer();
 }
