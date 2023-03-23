@@ -301,7 +301,7 @@ bool GetCollisionPlayer(D3DXVECTOR3 pos, float fRadius)
 	float fDistance = (g_Player.pos.x - pos.x) * (g_Player.pos.x - pos.x) + (g_Player.pos.z - pos.z) * (g_Player.pos.z - pos.z); //ƒvƒŒƒCƒ„[‚Æ”»’è‘ÎÛ‚Ì‹——£
 
 	//”»’è
-	if (fDistance < fJudgRadius * fJudgRadius)
+	if (fDistance < fJudgRadius * fJudgRadius && g_Player.state != PLAYERSTATE_MAX)
 	{
 		g_bPlayerHit = true;
 		g_Player.state = PLAYERSTATE_MAX;
