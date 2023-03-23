@@ -10,6 +10,7 @@
 #include "input.h"
 #include "load.h"
 
+#include "area.h"
 #include "camera.h"
 #include "light.h"
 #include "meshdome.h"
@@ -39,6 +40,9 @@ void InitGame()
 
 	// メッシュウォールの初期化
 	InitMeshWall();
+
+	// 区域の初期化
+	InitArea();
 
 	//ポーズの初期化
 	InitPause();
@@ -70,6 +74,9 @@ void UninitGame()
 	// メッシュウォールの終了
 	UninitMeshWall();
 
+	// 区域の終了
+	UninitArea();
+
 	//ポーズの終了
 	UninitPause();
 }
@@ -93,6 +100,9 @@ void UpdateGame()
 
 		// メッシュウォールの更新
 		UpdateMeshWall();
+
+		// 区域の更新
+		UpdateArea();
 
 		// カメラの更新
 		UpdateCamera();
@@ -130,6 +140,9 @@ void DrawGame()
 
 	// メッシュウォールの描画
 	DrawMeshWall();
+
+	// 区域の描画
+	DrawArea();
 
 	//ポーズの描画
 	DrawPause();

@@ -154,6 +154,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="01_header\area.h" />
     <ClInclude Include="01_header\camera.h" />
     <ClInclude Include="01_header\debugproc.h" />
     <ClInclude Include="01_header\fade.h" />
@@ -175,6 +176,7 @@
     <ClInclude Include="01_header\title.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="00_sorce\area.cpp" />
     <ClCompile Include="00_sorce\camera.cpp" />
     <ClCompile Include="00_sorce\debugproc.cpp" />
     <ClCompile Include="00_sorce\fade.cpp" />
