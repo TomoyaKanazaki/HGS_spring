@@ -23,7 +23,7 @@ LPDIRECT3DDEVICE9 g_pD3DDevice = NULL; //Direct3Dデバイスへのポインタ
 int g_nCountFPS = 0; //FPSカウンタ
 
 #ifdef _DEBUG
-MODE g_Mode = MODE_TITLE; //現在の画面モード (デバッグモードの初期状態)
+MODE g_Mode = MODE_GAME; //現在の画面モード (デバッグモードの初期状態)
 #else
 MODE g_Mode = MODE_TITLE; //現在の画面モード (リリースモードの初期状態)
 #endif //_DEBUG
@@ -304,7 +304,10 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	InitTexture();
 
 	// モデルの初期化
-	InitModel();
+	if (FAILED(InitModel()))
+	{
+		return E_FAIL;
+	}
 
 	//フェードの初期化
 	InitFade(g_Mode);

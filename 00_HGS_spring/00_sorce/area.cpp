@@ -9,6 +9,7 @@
 //**********************************************************************************************************************
 #include "main.h"
 #include "area.h"
+#include "player.h"
 
 //**********************************************************************************************************************
 //	マクロ定義
@@ -25,20 +26,20 @@ const char *apTextureArea[] =			// テクスチャの相対パス
 
 const float aRadiusArea[] =	// 区域の半径
 {
-	4500.0f,				// 第五エリア
-	3500.0f,				// 第四エリア
-	2500.0f,				// 第三エリア
-	1500.0f,				// 第二エリア
 	500.0f,					// 第一エリア
+	1500.0f,				// 第二エリア
+	2500.0f,				// 第三エリア
+	3500.0f,				// 第四エリア
+	4500.0f,				// 第五エリア
 };
 
 const D3DXCOLOR aColorArea[] =			// 区域の色
 {
-	D3DCOLOR_RGBA(205, 50,  2, 255),	// 第五エリア
-	D3DCOLOR_RGBA(155, 100, 3, 255),	// 第四エリア
-	D3DCOLOR_RGBA(100, 155, 4, 255),	// 第三エリア
-	D3DCOLOR_RGBA(50,  205, 5, 255),	// 第二エリア
 	D3DCOLOR_RGBA(0,   255, 0, 255),	// 第一エリア
+	D3DCOLOR_RGBA(50,  205, 5, 255),	// 第二エリア
+	D3DCOLOR_RGBA(100, 155, 4, 255),	// 第三エリア
+	D3DCOLOR_RGBA(155, 100, 3, 255),	// 第四エリア
+	D3DCOLOR_RGBA(205, 50,  2, 255),	// 第五エリア
 };
 
 //**********************************************************************************************************************
@@ -109,7 +110,7 @@ void InitArea(void)
 	// 頂点バッファをロックし、頂点情報へのポインタを取得
 	g_pVtxBuffArea->Lock(0, 0, (void**)&pVtx, 0);
 
-	for (int nCntArea = 0; nCntArea < MAX_AREA; nCntArea++)
+	for (int nCntArea = MAX_AREA - 1; nCntArea >= 0; nCntArea--)
 	{ // 区域の最大表示数分繰り返す
 
 		// 頂点座標の設定
@@ -175,6 +176,7 @@ void UninitArea(void)
 //======================================================================================================================
 void UpdateArea(void)
 {
+	GetCurrentArea();
 
 }
 
@@ -226,4 +228,50 @@ void DrawArea(void)
 	// Zテストを有効にする
 	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);		// Zテストの設定
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);			// Zバッファ更新の有効 / 無効の設定
+}
+
+//======================================================================================================================
+//	区域の取得処理
+//======================================================================================================================
+AREATYPE GetCurrentArea(void)
+{
+	// 変数を宣言
+	float fLength = GetPosPlayer().x * GetPosPlayer().x + GetPosPlayer().z * GetPosPlayer().z;	// エリアとの距離
+
+	if (fLength < aRadiusArea[AREATYPE_SAFE] * aRadiusArea[AREATYPE_SAFE])
+	{ // セーフエリアの範囲内の場合
+
+		// 現在のエリアを返す
+		return AREATYPE_SAFE;
+	}
+	else if (fLength < aRadiusArea[AREATYPE_01] * aRadiusArea[AREATYPE_01])
+	{ // 第一エリアの範囲内の場合
+
+		// 現在のエリアを返す
+		return AREATYPE_01;
+	}
+	else if (fLength < aRadiusArea[AREATYPE_02] * aRadiusArea[AREATYPE_02])
+	{ // 第二エリアの範囲内の場合
+
+		// 現在のエリアを返す
+		return AREATYPE_02;
+	}
+	else if (fLength < aRadiusArea[AREATYPE_03] * aRadiusArea[AREATYPE_03])
+	{ // 第三エリアの範囲内の場合
+
+		// 現在のエリアを返す
+		return AREATYPE_03;
+	}
+	else if (fLength < aRadiusArea[AREATYPE_04] * aRadiusArea[AREATYPE_04])
+	{ // 第四エリアの範囲内の場合
+
+		// 現在のエリアを返す
+		return AREATYPE_04;
+	}
+	else
+	{ // 上記以外の範囲の場合
+
+		// 現在のエリアを返す
+		return AREATYPE_RED;
+	}
 }

@@ -1,5 +1,6 @@
 #include "main.h"
 #include "Bullet.h"
+#include "effect.h"
 
 #define BULLET_SIZE (5.0f)	//弾の大きさ
 #define BULLET_SPEED (5.0f)	//弾の速さ
@@ -129,8 +130,8 @@ void UpdateBullet(void)
 			g_aBullet[nCntBill].nEffectCounter--;
 			if (g_aBullet[nCntBill].nEffectCounter <= 0)
 			{
-				////弾発射時にエフェクトを呼び出す
-				//SetEffect(g_aBullet[nCntBill].pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 8.0f, 10);
+				//弾発射時にエフェクトを呼び出す
+				SetEffect(g_aBullet[nCntBill].pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 8.0f, 10);
 				g_aBullet[nCntBill].nEffectCounter = EFFECT_COUNTER;
 			}
 
@@ -176,11 +177,11 @@ void DrawBullet(void)
 	D3DXMATRIX mtxTrans;	//計算用マトリックス
 	D3DXMATRIX mtxView;	//ビューマトリックス所得用
 
-						////Zテストを無効にする
-						//pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
-						//pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+	////Zテストを無効にする
+	//pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
+	//pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 
-						//アルファテストを有効にする
+	//アルファテストを有効にする
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
@@ -244,7 +245,7 @@ void SetBullet(D3DXVECTOR3 pos, float rot, int nLife, BULLET_TYPE Type)
 
 	VERTEX_2D*pVtx;	//頂点ポインタを所得
 
-					//頂点バッファをロックし、両店情報へのポインタを所得
+	//頂点バッファをロックし、両店情報へのポインタを所得
 	g_pVtxBuffBullet->Lock(0, 0, (void**)&pVtx, 0);
 
 	for (nCntBill = 0; nCntBill < MAX_BULLET; nCntBill++)
