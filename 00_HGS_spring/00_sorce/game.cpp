@@ -25,6 +25,8 @@
 #include "particle.h"
 #include "player.h"
 #include "ScoreGauge.h"
+#include "score.h"
+#include "PlusScore.h"
 
 //==========================================
 //  初期化処理
@@ -78,6 +80,12 @@ void InitGame()
 
 	//スコアゲージの初期化
 	InitScoreGauge();
+
+	//スコアの初期化
+	InitScore();
+
+	//プラススコアの初期化
+	InitPlusScore();
 }
 
 //==========================================
@@ -129,6 +137,12 @@ void UninitGame()
 
 	//タイムの終了
 	UninitTime();
+
+	//スコアの終了
+	UninitScore();
+
+	//プラススコアの終了
+	UninitPlusScore();
 }
 
 //==========================================
@@ -180,6 +194,12 @@ void UpdateGame()
 
 		//スコアゲージの更新
 		UpdateScoreGauge();
+
+		//スコアの更新
+		UpdateScore();
+
+		//プラススコアの更新
+		UpdatePlusScore();
 	}
 
 	//フェード
@@ -235,4 +255,10 @@ void DrawGame()
 
 	//スコアゲージの描画
 	DrawScoreGauge();
+
+	//スコアの描画
+	DrawScore();
+
+	//プラススコアの描画
+	DrawPlusScore();
 }
