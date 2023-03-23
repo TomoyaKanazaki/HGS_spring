@@ -12,7 +12,8 @@
 //==========================================
 //  マクロ定義
 //==========================================
-#define PLAYER_MOVE (5.0f); //プレイヤーの移動量
+#define PLAYER_MOVE (5.0f) //プレイヤーの移動量
+#define PLAYER_ROTATE (0.1f) //プレイヤーの方向転換の慣性
 
 //==========================================
 //  プレイヤー構造体の定義
@@ -137,24 +138,29 @@ D3DXVECTOR3 GetPosPlayer()
 void ChangeMovePlayer()
 {
 	//ローカル変数宣言
-	D3DXVECTOR3 move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 move = D3DXVECTOR3(0.0f, 0.0f, 0.0f); //演算用変数
+	bool bMove = false; //入力判定フラグ
 
 	//入力判定
 	if (GetKeyboardPress(DIK_W) || GetGamepadTrigger(BUTTON_UP, 0) || GetGamepad_Stick_Left(0).y >= 0.2f) //上方向
 	{
 		move.z += 1.0f;
+		bMove = true;
 	}
 	if (GetKeyboardPress(DIK_S) || GetGamepadTrigger(BUTTON_DOWN, 0) || GetGamepad_Stick_Left(0).y <= -0.2f) //下方向
 	{
 		move.z -= 1.0f;
+		bMove = true;
 	}
 	if (GetKeyboardPress(DIK_D) || GetGamepadTrigger(BUTTON_RIGHT, 0) || GetGamepad_Stick_Left(0).x >= 0.2f) //右方向
 	{
 		move.x += 1.0f;
+		bMove = true;
 	}
 	if (GetKeyboardPress(DIK_A) || GetGamepadTrigger(BUTTON_LEFT, 0) || GetGamepad_Stick_Left(0).x <= -0.2f) //左方向
 	{
 		move.x -= 1.0f;
+		bMove = true;
 	}
 
 	//入力補正(正規化)
@@ -167,9 +173,16 @@ void ChangeMovePlayer()
 	//移動量を加算
 	g_Player.pos += g_Player.move;
 
+	//方向転換
+	if (bMove)
+	{
+		ChangeRotPlayer();
+	}
+
 	//デバッグ表示
 	PrintDebugProc("エスケープ君はここにいる! ( %f : %f : %f )\n", g_Player.pos.x, g_Player.pos.y, g_Player.pos.z);
-	PrintDebugProc("エスケープ君はこっちに向かってる! ( %f : %f : %f )", g_Player.move.x, g_Player.move.y, g_Player.move.z);
+	PrintDebugProc("エスケープ君はこっちに向かってる! ( %f : %f : %f )\n", g_Player.move.x, g_Player.move.y, g_Player.move.z);
+	PrintDebugProc("エスケープ君はこっちを向いている! ( %f : %f : %f )", g_Player.rot.x, g_Player.rot.y, g_Player.rot.z);
 }
 
 //==========================================
@@ -178,5 +191,42 @@ void ChangeMovePlayer()
 void ChangeRotPlayer()
 {
 	//ローカル変数宣言
-	D3DXVECTOR3 rot;
+	float fRotMove = g_Player.rot.y; //現在の角度
+	float fRotDest = g_Player.rot.y; //目標の角度
+	float fRotDiff = g_Player.rot.y; //目標と現在の差
+
+	//角度の更新
+	fRotDest = atan2f(-g_Player.move.x, -g_Player.move.z);
+
+	//目標角度と現在角度の差分を算出
+	fRotDiff = fRotDest - fRotMove;
+
+	//存在しない角度を補正
+	if (fRotDiff > D3DX_PI || fRotDiff < -D3DX_PI)
+	{//-3.14～3.14の範囲外の場合
+		if (fRotDiff > D3DX_PI)
+		{
+			fRotDiff += (-D3DX_PI * 2);
+		}
+		else if (fRotDiff <= -D3DX_PI)
+		{
+			fRotDiff += (D3DX_PI * 2);
+		}
+	}
+
+	//プレイヤーの向きを更新
+	g_Player.rot.y += fRotDiff * PLAYER_ROTATE;
+
+	//存在しない角度を補正
+	if (g_Player.rot.y > D3DX_PI || g_Player.rot.y < -D3DX_PI)
+	{//-3.14～3.14の範囲外の場合
+		if (g_Player.rot.y > D3DX_PI)
+		{
+			g_Player.rot.y += (-D3DX_PI * 2);
+		}
+		else if (g_Player.rot.y < -D3DX_PI)
+		{
+			g_Player.rot.y += (D3DX_PI * 2);
+		}
+	}
 }
