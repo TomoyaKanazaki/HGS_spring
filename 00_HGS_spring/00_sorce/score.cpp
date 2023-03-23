@@ -1,5 +1,6 @@
 #include "main.h"
 #include "score.h"
+#include "texture.h"
 
 //マクロ定義
 #define NUM_PLACE (3)				//スコアの桁数
@@ -26,11 +27,6 @@ void InitScore(void)
 
 	//デバイスの所得
 	pDevice = GetDevice();
-
-	////テクスチャの読み込み
-	//D3DXCreateTextureFromFile(pDevice,
-	//	"data\\TEXTURE\\NUMBER002.png",
-	//	&g_pTextureScore);
 
 	for (nCntScore = 0; nCntScore < NUM_PLACE; nCntScore++)
 	{
@@ -158,7 +154,8 @@ void DrawScore(void)
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
 	//テクスチャの設定
-	pDevice->SetTexture(0, g_pTextureScore);
+	pDevice->SetTexture(0, GetTexture(TEXTURE_NUMBER));
+
 	for (nCntScore = 0; nCntScore < NUM_PLACE; nCntScore++)
 	{
 		//ポリゴンの描画

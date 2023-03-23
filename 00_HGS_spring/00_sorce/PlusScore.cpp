@@ -1,36 +1,32 @@
 #include "main.h"
 #include "PlusScore.h"
+#include "texture.h"
 
 //マクロ定義
-#define NUM_PLACE (3)				//スコアの桁数
+#define NUM_PLACE (3)				//プラススコアの桁数
 
-#define X_POS_GAME (50.0f)			//ゲーム画面の時のスコアのX座標
-#define Y_POS_GAME (70.0f)			//ゲーム画面の時のスコアのY座標
-#define X_SIZE_GAME (25.0f)			//ゲーム画面の時のスコアの横幅
-#define Y_SIZE_GAME (25.0f)			//ゲーム画面の時のスコアの縦幅
-#define WIDE_SIZE_GAME (70.0f)		//ゲーム画面の時のスコア同士の幅
+#define X_POS_GAME (50.0f)			//ゲーム画面の時のプラススコアのX座標
+#define Y_POS_GAME (70.0f)			//ゲーム画面の時のプラススコアのY座標
+#define X_SIZE_GAME (25.0f)			//ゲーム画面の時のプラススコアの横幅
+#define Y_SIZE_GAME (25.0f)			//ゲーム画面の時のプラススコアの縦幅
+#define WIDE_SIZE_GAME (70.0f)		//ゲーム画面の時のプラススコア同士の幅
 
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_pTexturePlusScore = NULL;			//テクスチャのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPlusScore = NULL;		//頂点バッファのポインタ
-D3DXVECTOR3 g_posPlusScore[NUM_PLACE];					//スコアの位置
-int g_nPlusScore;										//スコアの値
+D3DXVECTOR3 g_posPlusScore[NUM_PLACE];					//プラススコアの位置
+int g_nPlusScore;										//プラススコアの値
 
 //====================================================================
-//スコアの初期化処理
+//プラススコアの初期化処理
 //====================================================================
 void InitPlusScore(void)
 {
 	int nCntPlusScore;
 	LPDIRECT3DDEVICE9 pDevice; //デバイスへのポインタ
 
-							   //デバイスの所得
+	//デバイスの所得
 	pDevice = GetDevice();
-
-	////テクスチャの読み込み
-	//D3DXCreateTextureFromFile(pDevice,
-	//	"data\\TEXTURE\\NUMBER002.png",
-	//	&g_pTexturePlusScore);
 
 	for (nCntPlusScore = 0; nCntPlusScore < NUM_PLACE; nCntPlusScore++)
 	{
@@ -85,7 +81,7 @@ void InitPlusScore(void)
 }
 
 //====================================================================
-//スコアの終了処理
+//プラススコアの終了処理
 //====================================================================
 void UninitPlusScore(void)
 {
@@ -105,7 +101,7 @@ void UninitPlusScore(void)
 }
 
 //====================================================================
-//スコアの更新処理
+//プラススコアの更新処理
 //====================================================================
 void UpdatePlusScore(void)
 {
@@ -141,7 +137,7 @@ void UpdatePlusScore(void)
 }
 
 //====================================================================
-//スコアの描画処理
+//プラススコアの描画処理
 //====================================================================
 void DrawPlusScore(void)
 {
@@ -158,7 +154,8 @@ void DrawPlusScore(void)
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
 	//テクスチャの設定
-	pDevice->SetTexture(0, g_pTexturePlusScore);
+	pDevice->SetTexture(0, GetTexture(TEXTURE_NUMBER));
+
 	for (nCntPlusScore = 0; nCntPlusScore < NUM_PLACE; nCntPlusScore++)
 	{
 		//ポリゴンの描画
@@ -169,7 +166,7 @@ void DrawPlusScore(void)
 }
 
 //====================================================================
-//スコアの設定処理
+//プラススコアの設定処理
 //====================================================================
 void SetPlusScore(int nPlusScore)
 {
@@ -203,7 +200,7 @@ void SetPlusScore(int nPlusScore)
 }
 
 //====================================================================
-//スコアの加算処理
+//プラススコアの加算処理
 //====================================================================
 void AddPlusScore(int nValue)
 {
@@ -237,7 +234,7 @@ void AddPlusScore(int nValue)
 }
 
 //====================================================================
-//スコアの所得
+//プラススコアの所得
 //====================================================================
 int GetPlusScore(void)
 {
