@@ -7,15 +7,15 @@
 //マクロ定義
 #define NUM_SSUI		(4)	//GAMEUIの種類数
 
-#define POS_YOKO_BG_X		(0.0f)	//「」のX座標の位置
-#define POS_YOKO_BG_Y		(0.0f)	//「」のY座標の位置
-#define SIZE_YOKO_BG_X		(1280.0f)	//「」の幅
-#define SIZE_YOKO_BG_Y		(10.0f)	//「」の高さ
+#define POS_YOKO_BG_X		(0.0f)		//「よこ」のX座標の位置
+#define POS_YOKO_BG_Y		(0.0f)		//「よこ」のY座標の位置
+#define SIZE_YOKO_BG_X		(1280.0f)	//「よこ」の幅
+#define SIZE_YOKO_BG_Y		(10.0f)		//「よこ」の高さ
 
-#define POS_TATE_BG_X		(1270.0f)	//「」のX座標の位置
-#define POS_TATE_BG_Y		(0.0f)	//「」のY座標の位置
-#define SIZE_TATE_BG_X		(10.0f)	//「」の幅
-#define SIZE_TATE_BG_Y		(720.0f)	//「」の高さ
+#define POS_TATE_BG_X		(1270.0f)	//「たて」のX座標の位置
+#define POS_TATE_BG_Y		(0.0f)		//「たて」のY座標の位置
+#define SIZE_TATE_BG_X		(10.0f)		//「たて」の幅
+#define SIZE_TATE_BG_Y		(720.0f)	//「たて」の高さ
 
 #define GAUGE_SPEED			(10.0f)	//ゲージのスピード
 

@@ -24,6 +24,7 @@
 #include "particle.h"
 #include "player.h"
 #include "ScoreGauge.h"
+#include "score.h"
 
 //==========================================
 //  初期化処理
@@ -74,6 +75,9 @@ void InitGame()
 
 	//スコアゲージの初期化
 	InitScoreGauge();
+
+	//スコアの初期化
+	InitScore();
 }
 
 //==========================================
@@ -122,6 +126,9 @@ void UninitGame()
 
 	//スコアゲージの終了
 	UninitScoreGauge();
+
+	//スコアの終了
+	UninitScore();
 }
 
 //==========================================
@@ -167,6 +174,9 @@ void UpdateGame()
 
 		//スコアゲージの更新
 		UpdateScoreGauge();
+
+		//スコアの更新
+		UpdateScore();
 	}
 	else
 	{ // ポーズ中の場合
@@ -225,4 +235,7 @@ void DrawGame()
 
 	//スコアゲージの描画
 	DrawScoreGauge();
+
+	//スコアの描画
+	DrawScore();
 }
