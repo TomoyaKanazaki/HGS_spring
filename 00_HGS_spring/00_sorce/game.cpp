@@ -203,7 +203,7 @@ void UpdateGame()
 	}
 
 	//フェード
-	if (GetTime() <= 0)
+	if (GetTime() <= 0 || GetHit())
 	{
 		SetFade(MODE_RESULT);
 	}

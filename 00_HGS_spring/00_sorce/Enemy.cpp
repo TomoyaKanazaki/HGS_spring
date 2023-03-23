@@ -24,11 +24,14 @@ DWORD g_dwNumMatEnemy[ENEMY_MAX] = {};						//マテリアルの数
 
 Enemy g_Enemy[MAX_ENEMY];					//敵の情報
 
+bool g_bHit; //ヒット判定
+
 //====================================================================
 //敵の初期化処理
 //====================================================================
 void InitEnemy(void)
 {
+	g_bHit = false;
 	int nCntEnemy;
 
 	//デバイスの所得
@@ -149,6 +152,9 @@ void UpdateEnemy(void)
 
 				break;
 			}
+
+			//判定
+			g_bHit = GetCollisionPlayer(g_Enemy[nCntEnemy].pos, g_Enemy[nCntEnemy].fRadius);
 		}
 	}
 }
@@ -412,6 +418,12 @@ void SetEnemy(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot, ENEMY_NTYPE nT
 			//頂点バッファをアンロック
 			g_pMeshEnemy[nType]->UnlockVertexBuffer();
 
+			// モデルサイズを求める
+			g_Enemy[nCntEnemy].size = g_Enemy[nCntEnemy].vtxMax - g_Enemy[nCntEnemy].vtxMin;
+
+			// モデルの円の当たり判定を作成
+			g_Enemy[nCntEnemy].fRadius = ((g_Enemy[nCntEnemy].size.x * 0.5f) + (g_Enemy[nCntEnemy].size.z * 0.5f)) * 0.5f;
+
 			break;
 		}
 	}
@@ -461,4 +473,12 @@ void CollisionEnemy(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove,
 Enemy * GetEnemy(void)
 {
 	return &g_Enemy[0];
+}
+
+//==========================================
+//  当たり判定の取得
+//==========================================
+bool GetHit()
+{
+	return g_bHit;
 }
