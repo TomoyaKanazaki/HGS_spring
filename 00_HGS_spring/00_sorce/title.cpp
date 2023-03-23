@@ -102,10 +102,10 @@ void InitTitle()
 		pVtx[3].pos = D3DXVECTOR3(g_aTitle[nCntTex].pos.x + FWIDTH, g_aTitle[nCntTex].pos.y + FHEIGHT, 0.0f);
 
 		//頂点カラーの設定
-		pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, g_aTitle[nCntTex].col.a);
+		pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, g_aTitle[nCntTex].col.a);
+		pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, g_aTitle[nCntTex].col.a);
+		pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, g_aTitle[nCntTex].col.a);
 
 		//rhwの設定
 		pVtx[0].rhw = 1.0f;
@@ -122,6 +122,7 @@ void InitTitle()
 		pVtx += 4;	//頂点データのポインタを４つ分進める
 	}
 
+	g_nCntCol = 0;
 
 
 	//頂点バッファをアンロックする
@@ -249,17 +250,19 @@ void UpdateTitle()
 				g_nCntCol = 0;
 			}
 
-			//フェード
-			if (GetKeyboardTrigger(DIK_RETURN))
-			{
-				SetFade(MODE_GAME);
-			}
+			
 		}
 
 		pVtx += 4;	//頂点データのポインタを４つ分進める
 	}
 	//頂点バッファをアンロックする
 	g_pVtxBuffTitle->Unlock();
+
+	//フェード
+	if (GetKeyboardTrigger(DIK_RETURN))
+	{
+		SetFade(MODE_GAME);
+	}
 }
 
 //==========================================
