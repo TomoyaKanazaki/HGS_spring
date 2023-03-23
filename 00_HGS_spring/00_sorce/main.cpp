@@ -295,12 +295,10 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	//各種オブジェクトの初期化処理
 
 	//乱数シードの設定
-	srand((unsigned int)time(0));
+	srand((unsigned int)timeGetTime());
 
-#ifdef _DEBUG
 	//デバッグプロックの初期化
 	InitDebugProc();
-#endif
 
 	//テクスチャの初期化
 	InitTexture();
@@ -321,10 +319,8 @@ void Uninit(void)
 {
 	//各種オブジェクトの終了処理
 
-#ifdef _DEBUG
 	//デバッグプロックの終了
 	UninitDebugProc();
-#endif
 
 	//テクスチャの終了
 	UninitTexture();
@@ -363,10 +359,8 @@ void Update(void)
 	//デバイスの更新
 	UpdateDevice();
 
-#ifdef _DEBUG
 	//デバッグプロックの更新
 	UpdateDebugProc();
-#endif
 	
 	//画面モードに対応した処理を行う
 	switch (g_Mode)
@@ -435,10 +429,8 @@ void Draw(void)
 		//フェードの描画
 		DrawFade();
 
-#ifdef _DEBUG
 		//デバッグプロックの描画
 		DrawDebugProc();
-#endif
 
 		//描画終了
 		g_pD3DDevice->EndScene();

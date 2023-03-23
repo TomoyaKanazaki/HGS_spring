@@ -177,6 +177,7 @@
     <ClInclude Include="01_header\polygon.h" />
     <ClInclude Include="01_header\result.h" />
     <ClInclude Include="01_header\texture.h" />
+    <ClInclude Include="01_header\time.h" />
     <ClInclude Include="01_header\title.h" />
     <ClInclude Include="Bullet.h" />
   </ItemGroup>
@@ -204,6 +205,7 @@
     <ClCompile Include="00_sorce\polygon.cpp" />
     <ClCompile Include="00_sorce\result.cpp" />
     <ClCompile Include="00_sorce\texture.cpp" />
+    <ClCompile Include="00_sorce\time.cpp" />
     <ClCompile Include="00_sorce\title.cpp" />
     <ClCompile Include="Bullet.cpp" />
   </ItemGroup>

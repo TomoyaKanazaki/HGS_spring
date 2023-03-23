@@ -13,6 +13,7 @@
 #include "area.h"
 #include "camera.h"
 #include "light.h"
+#include "time.h"
 #include "meshdome.h"
 #include "meshcylinder.h"
 #include "meshfield.h"
@@ -68,6 +69,9 @@ void InitGame()
 	//プレイヤーの初期化
 	InitPlayer();
 
+	//タイムの初期化
+	InitTime();
+
 	// ステージのセットアップ
 	TxtSetStage();
 }
@@ -115,6 +119,9 @@ void UninitGame()
 
 	//プレイヤーの終了
 	UninitPlayer();
+
+	//タイムの終了
+	UninitTime();
 }
 
 //==========================================
@@ -124,6 +131,9 @@ void UpdateGame()
 {
 	//ポーズの更新
 	UpdatePause();
+
+	//タイムの更新
+	UpdateTime();
 
 	if (GetPause() == false)
 	{ // ポーズ中じゃない場合
@@ -209,4 +219,7 @@ void DrawGame()
 
 	//プレイヤーの描画
 	DrawPlayer();
+
+	//タイムの描画
+	DrawTime();
 }
