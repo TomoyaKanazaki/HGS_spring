@@ -23,6 +23,7 @@
 #include "effect.h"
 #include "particle.h"
 #include "player.h"
+#include "ScoreGauge.h"
 
 //==========================================
 //  初期化処理
@@ -70,6 +71,9 @@ void InitGame()
 
 	// ステージのセットアップ
 	TxtSetStage();
+
+	//スコアゲージの初期化
+	InitScoreGauge();
 }
 
 //==========================================
@@ -115,6 +119,9 @@ void UninitGame()
 
 	//プレイヤーの終了
 	UninitPlayer();
+
+	//スコアゲージの終了
+	UninitScoreGauge();
 }
 
 //==========================================
@@ -157,6 +164,12 @@ void UpdateGame()
 
 		//プレイヤーの更新
 		UpdatePlayer();
+
+		//スコアゲージの更新
+		UpdateScoreGauge();
+	}
+	else
+	{ // ポーズ中の場合
 
 		// カメラの更新
 		UpdateCamera();
@@ -209,4 +222,7 @@ void DrawGame()
 
 	//プレイヤーの描画
 	DrawPlayer();
+
+	//スコアゲージの描画
+	DrawScoreGauge();
 }

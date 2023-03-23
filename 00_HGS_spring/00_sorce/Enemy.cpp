@@ -302,43 +302,43 @@ void DrawEnemy(void)
 
 	for (nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++)
 	{
-			//ワールドマトリックスの初期化
-			D3DXMatrixIdentity(&g_Enemy[nCntEnemy].mtxWorld);
+		//ワールドマトリックスの初期化
+		D3DXMatrixIdentity(&g_Enemy[nCntEnemy].mtxWorld);
 
-			//向きを反映
-			D3DXMatrixRotationYawPitchRoll(&mtxRot, g_Enemy[nCntEnemy].rot.y, g_Enemy[nCntEnemy].rot.x, g_Enemy[nCntEnemy].rot.z);
+		//向きを反映
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, g_Enemy[nCntEnemy].rot.y, g_Enemy[nCntEnemy].rot.x, g_Enemy[nCntEnemy].rot.z);
 
-			D3DXMatrixMultiply(&g_Enemy[nCntEnemy].mtxWorld, &g_Enemy[nCntEnemy].mtxWorld, &mtxRot);
+		D3DXMatrixMultiply(&g_Enemy[nCntEnemy].mtxWorld, &g_Enemy[nCntEnemy].mtxWorld, &mtxRot);
 
-			//位置を反映
-			D3DXMatrixTranslation(&mtxTrans, g_Enemy[nCntEnemy].pos.x, g_Enemy[nCntEnemy].pos.y, g_Enemy[nCntEnemy].pos.z);
+		//位置を反映
+		D3DXMatrixTranslation(&mtxTrans, g_Enemy[nCntEnemy].pos.x, g_Enemy[nCntEnemy].pos.y, g_Enemy[nCntEnemy].pos.z);
 
-			D3DXMatrixMultiply(&g_Enemy[nCntEnemy].mtxWorld, &g_Enemy[nCntEnemy].mtxWorld, &mtxTrans);
+		D3DXMatrixMultiply(&g_Enemy[nCntEnemy].mtxWorld, &g_Enemy[nCntEnemy].mtxWorld, &mtxTrans);
 
-			//ワールドマトリックスの設定
-			pDevice->SetTransform(D3DTS_WORLD, &g_Enemy[nCntEnemy].mtxWorld);
+		//ワールドマトリックスの設定
+		pDevice->SetTransform(D3DTS_WORLD, &g_Enemy[nCntEnemy].mtxWorld);
 
-			//現在のマテリアルを所得
-			pDevice->GetMaterial(&matDef);
+		//現在のマテリアルを所得
+		pDevice->GetMaterial(&matDef);
 
-			//マテリアルデータへのポインタを所得する
-			pMat = (D3DXMATERIAL*)g_pBuffMatEnemy[g_Enemy[nCntEnemy].nType]->GetBufferPointer();
+		//マテリアルデータへのポインタを所得する
+		pMat = (D3DXMATERIAL*)g_pBuffMatEnemy[g_Enemy[nCntEnemy].nType]->GetBufferPointer();
 
-			if (g_Enemy[nCntEnemy].bUse == true)
+		if (g_Enemy[nCntEnemy].bUse == true)
+		{
+			for (int nCntMat = 0; nCntMat < (int)g_dwNumMatEnemy[g_Enemy[nCntEnemy].nType]; nCntMat++)
 			{
-				for (int nCntMat = 0; nCntMat < (int)g_dwNumMatEnemy[g_Enemy[nCntEnemy].nType]; nCntMat++)
-				{
-					//マテリアルの設定
-					pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
+				//マテリアルの設定
+				pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
 
-					//テクスチャの設定
-					pDevice->SetTexture(0, g_pTextureEnemy[g_Enemy[nCntEnemy].nType][nCntMat]);
+				//テクスチャの設定
+				pDevice->SetTexture(0, g_pTextureEnemy[g_Enemy[nCntEnemy].nType][nCntMat]);
 
-					//敵(パーツ)の描画
-					g_pMeshEnemy[g_Enemy[nCntEnemy].nType]->DrawSubset(nCntMat);
+				//敵(パーツ)の描画
+				g_pMeshEnemy[g_Enemy[nCntEnemy].nType]->DrawSubset(nCntMat);
 
-				}
 			}
+		}
 		//保存していたマテリアルを戻す
 		pDevice->SetMaterial(&matDef);
 	}
