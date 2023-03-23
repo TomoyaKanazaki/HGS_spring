@@ -29,5 +29,6 @@ void UninitArea(void);			// ‹æˆæ‚ÌI—¹ˆ—
 void UpdateArea(void);			// ‹æˆæ‚ÌXVˆ—
 void DrawArea(void);			// ‹æˆæ‚Ì•`‰æˆ—
 AREATYPE GetCurrentArea(void);	// ‹æˆæ‚Ìæ“¾ˆ—
+float GetAreaSize(int areatype); //‹æˆæ‚Ì”ÍˆÍ‚ğæ“¾
 
 #endif
