@@ -10,7 +10,7 @@
 #define BULLET_POS_XZ (20.0f)	//弾の発射位置(横の軸)
 #define BULLET_POS_Y (25.0f)	//弾の発射位置(縦の軸)
 #define BULLET_LIFE (120)		//弾の寿命
-#define BULLETCOUNTER (120)		//弾を撃つ感覚
+#define BULLETCOUNTER (50)		//弾を撃つ感覚
 #define ENEMY_CHASE (200.0f)	//敵が追いかけてくる距離
 #define ENEMY_NUM (5) // * 区域番号 = 発生する敵の数
 #define ENEMY_COLLISION (10.0f) //敵同士の当たり判定
@@ -57,7 +57,7 @@ void InitEnemy(void)
 	}
 
 	//Xファイルの読み込み
-	D3DXLoadMeshFromX("02_data\\03_MODEL\\Enemy00.x",
+	D3DXLoadMeshFromX("02_data\\03_MODEL\\enemy_ball.x",
 		D3DXMESH_SYSTEMMEM,
 		pDevice,
 		NULL,
@@ -196,16 +196,16 @@ void UpdateSlime(int nCnt)
 	//位置更新(入力による動き)
 	g_Enemy[nCnt].pos += g_Enemy[nCnt].move;
 
-	//for (int nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++)
-	//{
-	//	if (g_Enemy[nCntEnemy].bUse == true && nCnt != nCntEnemy)
-	//	{
-	//		if (CollisionCircle(g_Enemy[nCnt].pos, g_Enemy[nCntEnemy].pos, ENEMY_COLLISION, 0.0f, -10.0f, 10.0f) == true)
-	//		{
-	//			g_Enemy[nCnt].pos = g_Enemy[nCnt].posOld;
-	//		}
-	//	}
-	//}
+	for (int nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++)
+	{
+		if (g_Enemy[nCntEnemy].bUse == true && nCnt != nCntEnemy)
+		{
+			if (CollisionCircle(g_Enemy[nCnt].pos, g_Enemy[nCntEnemy].pos, ENEMY_COLLISION, 0.0f, -10.0f, 10.0f) == true)
+			{
+				g_Enemy[nCnt].pos = g_Enemy[nCnt].posOld;
+			}
+		}
+	}
 
 	//Player *pPlayer = GetPlayer();
 
