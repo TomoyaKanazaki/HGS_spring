@@ -229,13 +229,10 @@ void DrawGame()
 
 	//プレイヤーの描画
 	DrawPlayer();
-<<<<<<< .mine
 
 	//タイムの描画
 	DrawTime();
-=======
 
 	//スコアゲージの描画
 	DrawScoreGauge();
->>>>>>> .theirs
 }

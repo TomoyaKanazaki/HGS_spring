@@ -15,6 +15,7 @@
 //==========================================
 //  マクロ定義
 //==========================================
+#define TIME_NUM (3) //桁数
 #define START_TIME (120) //ゲーム時間 (1/1秒)
 
 //==========================================
@@ -25,6 +26,7 @@ void CalcPauseTime(int nCurrentTime); //ポーズ中の時間を補正する
 //==========================================
 //  グローバル変数宣言
 //==========================================
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffTime = NULL;
 int g_nTime; //残り時間 (1/1秒)
 int g_nBaseTime; //基準時間 (1/1000秒)
 
@@ -36,6 +38,9 @@ void InitTime()
 	//変数の初期化
 	g_nTime = START_TIME;
 	g_nBaseTime = timeGetTime();
+
+	//ポリゴンの生成
+	g_pVtxBuffTime = Init_2D_Polygon(TIME_NUM);
 }
 
 //==========================================
@@ -118,4 +123,6 @@ void CalcPauseTime(int nCurrentTime)
 		//ポーズが開かれていた時間分基準時間を加算する
 		g_nBaseTime += nPauseTime;
 	}
+
+	bOldPause = GetPause();
 }
