@@ -110,7 +110,7 @@ void UpdatePlusScore(void)
 
 	VERTEX_2D*pVtx;	//頂点ポインタを所得
 
-					//頂点バッファをロックし、両店情報へのポインタを所得
+	//頂点バッファをロックし、両店情報へのポインタを所得
 	g_pVtxBuffPlusScore->Lock(0, 0, (void**)&pVtx, 0);
 
 	switch (g_Mode)
@@ -143,8 +143,13 @@ void DrawPlusScore(void)
 {
 	int nCntPlusScore;
 	LPDIRECT3DDEVICE9 pDevice; //デバイスへのポインタ
+	int aTexU[NUM_PLACE];
 
-							   //デバイスの所得
+	aTexU[0] = g_nPlusScore % 1000 / 100;
+	aTexU[1] = g_nPlusScore % 100 / 10;
+	aTexU[2] = g_nPlusScore % 10 / 1;
+
+	//デバイスの所得
 	pDevice = GetDevice();
 
 	//頂点バッファをデータストリームに設定
@@ -158,10 +163,33 @@ void DrawPlusScore(void)
 
 	for (nCntPlusScore = 0; nCntPlusScore < NUM_PLACE; nCntPlusScore++)
 	{
-		//ポリゴンの描画
-		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,	//プリミティブの種類
-			4 * nCntPlusScore,							//プリミティブ(ポリゴン)数
-			2);
+		if (g_nPlusScore >= 100)
+		{
+			//ポリゴンの描画
+			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,	//プリミティブの種類
+				4 * nCntPlusScore,							//プリミティブ(ポリゴン)数
+				2);
+		}
+		else if (g_nPlusScore >= 10)
+		{
+			if (nCntPlusScore == 2 || nCntPlusScore == 1)
+			{
+				//ポリゴンの描画
+				pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,	//プリミティブの種類
+					4 * nCntPlusScore,							//プリミティブ(ポリゴン)数
+					2);
+			}
+		}
+		else if (g_nPlusScore > 0)
+		{
+			if (nCntPlusScore == 2)
+			{
+				//ポリゴンの描画
+				pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,	//プリミティブの種類
+					4 * nCntPlusScore,							//プリミティブ(ポリゴン)数
+					2);
+			}
+		}
 	}
 }
 

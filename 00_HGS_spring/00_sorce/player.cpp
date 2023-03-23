@@ -40,6 +40,7 @@ void RevPosPlayer(void);
 //  グローバル変数宣言
 //==========================================
 PLAYER g_Player; //プレイヤー情報
+bool g_bPlayerHit; //衝突判定フラグ
 
 //==========================================
 //  初期化処理
@@ -48,6 +49,7 @@ void InitPlayer()
 {
 	//変数の初期化
 	ZeroMemory(&g_Player, sizeof(PLAYER));
+	g_bPlayerHit = false;
 
 	//モデル情報の取得
 	g_Player.ModelData = GetModelData(MODELTYPE_ESCAPEKUN);
@@ -280,14 +282,13 @@ bool GetCollisionPlayer(D3DXVECTOR3 pos, float fRadius)
 	//ローカル変数宣言
 	float fJudgRadius = fRadius + g_Player.ModelData.fRadius; //判定半径
 	float fDistance = (g_Player.pos.x - pos.x) * (g_Player.pos.x - pos.x) + (g_Player.pos.z - pos.z) * (g_Player.pos.z - pos.z); //プレイヤーと判定対象の距離
-	bool bHit = false; //衝突判定フラグ
 
 	//判定
 	if (fDistance < fJudgRadius * fJudgRadius)
 	{
-		bHit = true;
+		g_bPlayerHit = true;
 	}
 
 	//返り値を設定
-	return bHit;
+	return g_bPlayerHit;
 }
