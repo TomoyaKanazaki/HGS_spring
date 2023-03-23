@@ -2,6 +2,7 @@
 #include "Enemy.h"
 #include "Bullet.h"
 #include "particle.h"
+#include "player.h"
 
 #define ENEMY00_LIFE (7)		//敵の体力
 #define ENWMY_MOVE (1.0f)		//敵の移動量
@@ -230,11 +231,11 @@ void UpdateCannon(int nCnt)
 //====================================================================
 void RotEnemy(D3DXVECTOR3 Pos, int nCnt)
 {
-	//Player * pPlayer = GetPlayer();		//プレイヤーの情報へのポインタ
+	D3DXVECTOR3 * pPosPlayer = GetPosPlayer();		//プレイヤーの情報へのポインタ
 
-	//float fAngle = atan2f(pPlayer->pos.z - Pos.z, Pos.x - pPlayer->pos.x);
+	float fAngle = atan2f(pPosPlayer.z - Pos.z, Pos.x - pPosPlayer.x);
 
-	//g_Enemy[nCnt].rot.y = fAngle;
+	g_Enemy[nCnt].rot.y = fAngle;
 }
 
 //====================================================================
@@ -257,17 +258,15 @@ bool CollisionCircle(D3DXVECTOR3 pos1, D3DXVECTOR3 pos2, float nRadiusOut, float
 {
 	bool nHit = false;
 
-	//Player *pPlayer = GetPlayer();
-
-	//if (sqrtf((pos1.x - pos2.x) * (pos1.x - pos2.x)
-	//	+ (pos1.z - pos2.z) * (pos1.z - pos2.z)) <= nRadiusOut
-	//	&& sqrtf((pos1.x - pos2.x) * (pos1.x - pos2.x)
-	//		+ (pos1.z - pos2.z) * (pos1.z - pos2.z)) >= nRadiusIn
-	//	&& pos1.y + MinY < pos2.y
-	//	&& pos1.y + MaxY > pos2.y)
-	//{//円の判定が当たった
-	//	nHit = true;
-	//}
+	if (sqrtf((pos1.x - pos2.x) * (pos1.x - pos2.x)
+		+ (pos1.z - pos2.z) * (pos1.z - pos2.z)) <= nRadiusOut
+		&& sqrtf((pos1.x - pos2.x) * (pos1.x - pos2.x)
+			+ (pos1.z - pos2.z) * (pos1.z - pos2.z)) >= nRadiusIn
+		&& pos1.y + MinY < pos2.y
+		&& pos1.y + MaxY > pos2.y)
+	{//円の判定が当たった
+		nHit = true;
+	}
 
 	return nHit;
 }
