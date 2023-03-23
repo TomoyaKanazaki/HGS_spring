@@ -11,8 +11,8 @@
 #define BULLET_POS_Y (25.0f)	//弾の発射位置(縦の軸)
 #define BULLET_LIFE (120)		//弾の寿命
 #define BULLETCOUNTER (120)		//弾を撃つ感覚
-#define ENEMY_CHASE (700.0f)	//敵が追いかけてくる距離
-#define ENEMY_NUM (50) // * 区域番号 = 発生する敵の数
+#define ENEMY_CHASE (200.0f)	//敵が追いかけてくる距離
+#define ENEMY_NUM (5) // * 区域番号 = 発生する敵の数
 #define ENEMY_COLLISION (10.0f) //敵同士の当たり判定
 
 //プロトタイプ宣言
@@ -514,10 +514,10 @@ void RandSetEnemy()
 			//出現座標(ランダム)を算出する
 			D3DXVECTOR3 pos = D3DXVECTOR3((float)rand(), 0.0f, (float)rand());
 			D3DXVec3Normalize(&pos, &pos);
-			pos.x *= rand() % 1000;
-			pos.z *= rand() % 1000;
-			pos.x += GetAreaSize(nCntArea) - (float)(rand() % 1000);
-			pos.z += GetAreaSize(nCntArea) - (float)(rand() % 1000);
+			pos.x *= rand() % 250;
+			pos.z *= rand() % 250;
+			pos.x += GetAreaSize(nCntArea) - (float)(rand() % 2500);
+			pos.z += GetAreaSize(nCntArea) - (float)(rand() % 2500);
 			if (rand() % 2 == 0)
 			{
 				pos.x *= -1.0f;
