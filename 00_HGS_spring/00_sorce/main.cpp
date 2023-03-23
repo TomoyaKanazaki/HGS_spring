@@ -25,7 +25,7 @@ LPDIRECT3DDEVICE9 g_pD3DDevice = NULL; //Direct3Dデバイスへのポインタ
 int g_nCountFPS = 0; //FPSカウンタ
 
 #ifdef _DEBUG
-MODE g_Mode = MODE_GAME; //現在の画面モード (デバッグモードの初期状態)
+MODE g_Mode = MODE_RESULT; //現在の画面モード (デバッグモードの初期状態)
 #else
 MODE g_Mode = MODE_TITLE; //現在の画面モード (リリースモードの初期状態)
 #endif //_DEBUG
@@ -388,6 +388,9 @@ void Update(void)
 	case MODE_RESULT:
 		UpdateResult();
 		break;
+	case MODE_TUTORIAL:
+
+		break;
 	default:
 		break;
 	}
@@ -433,6 +436,9 @@ void Draw(void)
 		case MODE_RESULT:
 			DrawResult();
 			break;
+		case MODE_TUTORIAL:
+
+			break;
 		default:
 			break;
 		}
@@ -471,6 +477,9 @@ void SetMode(MODE NextMode)
 	case MODE_RESULT:
 		UninitResult();
 		break;
+	case MODE_TUTORIAL:
+
+		break;
 	default:
 		break;
 	}
@@ -489,6 +498,9 @@ void SetMode(MODE NextMode)
 		break;
 	case MODE_RESULT:
 		InitResult();
+		break;
+	case MODE_TUTORIAL:
+
 		break;
 	default:
 		break;
