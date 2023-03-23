@@ -283,6 +283,52 @@ AREATYPE GetCurrentArea(void)
 	}
 }
 
+//======================================================================================================================
+//	区域の取得処理
+//======================================================================================================================
+AREATYPE GetEnemyArea(D3DXVECTOR3 pos)
+{
+	// 変数を宣言
+	float fLength = pos.x * pos.x + pos.z * pos.z;	// エリアとの距離
+
+	if (fLength < aRadiusArea[AREATYPE_SAFE] * aRadiusArea[AREATYPE_SAFE])
+	{ // セーフエリアの範囲内の場合
+
+	  // 現在のエリアを返す
+		return AREATYPE_SAFE;
+	}
+	else if (fLength < aRadiusArea[AREATYPE_01] * aRadiusArea[AREATYPE_01])
+	{ // 第一エリアの範囲内の場合
+
+	  // 現在のエリアを返す
+		return AREATYPE_01;
+	}
+	else if (fLength < aRadiusArea[AREATYPE_02] * aRadiusArea[AREATYPE_02])
+	{ // 第二エリアの範囲内の場合
+
+	  // 現在のエリアを返す
+		return AREATYPE_02;
+	}
+	else if (fLength < aRadiusArea[AREATYPE_03] * aRadiusArea[AREATYPE_03])
+	{ // 第三エリアの範囲内の場合
+
+	  // 現在のエリアを返す
+		return AREATYPE_03;
+	}
+	else if (fLength < aRadiusArea[AREATYPE_04] * aRadiusArea[AREATYPE_04])
+	{ // 第四エリアの範囲内の場合
+
+	  // 現在のエリアを返す
+		return AREATYPE_04;
+	}
+	else
+	{ // レッドエリアの範囲内の場合
+
+	  // 現在のエリアを返す
+		return AREATYPE_RED;
+	}
+}
+
 //==========================================
 //  区域の範囲を取得
 //==========================================

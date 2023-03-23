@@ -6,7 +6,9 @@
 #include "area.h"
 
 #define ENEMY00_LIFE (7)		//敵の体力
-#define ENWMY_MOVE (4.0f)		//敵の移動量
+#define ENWMY_MOVE (4.0f)		//敵の移動量まる
+#define ENWMY_MOVE1 (4.5f)		//敵の移動量さんかく
+#define ENWMY_MOVE2 (3.0f)		//敵の移動量しかく
 #define BULLET_POS_XZ (20.0f)	//弾の発射位置(横の軸)
 #define BULLET_POS_Y (25.0f)	//弾の発射位置(縦の軸)
 #define BULLET_LIFE (120)		//弾の寿命
@@ -17,6 +19,8 @@
 
 //プロトタイプ宣言
 void UpdateSlime(int nCnt);
+void UpdateSlime1(int nCnt);
+void UpdateSlime2(int nCnt);
 void UpdateCannon(int nCnt);
 void RandSetEnemy(void);
 
@@ -75,6 +79,26 @@ void InitEnemy(void)
 		NULL,
 		&g_dwNumMatEnemy[ENEMY_NTYPE01],
 		&g_pMeshEnemy[ENEMY_NTYPE01]);
+
+	//Xファイルの読み込み
+	D3DXLoadMeshFromX("02_data\\03_MODEL\\enemy_triangle.x",
+		D3DXMESH_SYSTEMMEM,
+		pDevice,
+		NULL,
+		&g_pBuffMatEnemy[ENEMY_NTYPE02],
+		NULL,
+		&g_dwNumMatEnemy[ENEMY_NTYPE02],
+		&g_pMeshEnemy[ENEMY_NTYPE02]);
+
+	//Xファイルの読み込み
+	D3DXLoadMeshFromX("02_data\\03_MODEL\\enemy_square.x",
+		D3DXMESH_SYSTEMMEM,
+		pDevice,
+		NULL,
+		&g_pBuffMatEnemy[ENEMY_NTYPE03],
+		NULL,
+		&g_dwNumMatEnemy[ENEMY_NTYPE03],
+		&g_pMeshEnemy[ENEMY_NTYPE03]);
 
 	D3DXMATERIAL *pMat;	//マテリアルへのポインタ
 
@@ -155,6 +179,16 @@ void UpdateEnemy(void)
 				UpdateCannon(nCntEnemy);
 
 				break;
+			case ENEMY_NTYPE02:		//大砲
+
+				UpdateSlime1(nCntEnemy);
+
+				break;
+			case ENEMY_NTYPE03:		//大砲
+
+				UpdateSlime2(nCntEnemy);
+
+				break;
 			}
 
 			//判定
@@ -164,7 +198,7 @@ void UpdateEnemy(void)
 }
 
 //====================================================================
-//追跡する敵の更新処理
+//追跡する敵の更新処理まる
 //====================================================================
 void UpdateSlime(int nCnt)
 {
@@ -196,6 +230,7 @@ void UpdateSlime(int nCnt)
 	//位置更新(入力による動き)
 	g_Enemy[nCnt].pos += g_Enemy[nCnt].move;
 
+	//敵同士の当たり判定
 	for (int nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++)
 	{
 		if (g_Enemy[nCntEnemy].bUse == true && nCnt != nCntEnemy)
@@ -207,16 +242,114 @@ void UpdateSlime(int nCnt)
 		}
 	}
 
-	//Player *pPlayer = GetPlayer();
+	if (GetEnemyArea(g_Enemy[nCnt].pos) == AREATYPE_SAFE)
+	{
+		g_Enemy[nCnt].pos = g_Enemy[nCnt].posOld;
+	}
+}
 
-	////ノックバック処理
-	//if (CollisionCircle(pPlayer->pos, g_Enemy[nCnt].pos, 120.0f, 0.0f, pPlayer->vtxMin.y, pPlayer->vtxMax.y) == true)
-	//{
-	//	KnoccBackPlayer(g_Enemy[nCnt].pos, KNOCCBACKPOWER);
-	//}
 
-	////プレイヤーとの当たり判定
-	//CollisionPlayer(g_Enemy[nCnt].pos, g_Enemy[nCnt].posOld, 23.0f, g_Enemy[nCnt].vtxMax.y, g_Enemy[nCnt].vtxMin.y);
+//====================================================================
+//追跡する敵の更新処理さんかく
+//====================================================================
+void UpdateSlime1(int nCnt)
+{
+	D3DXVECTOR3 pPosPlayer = GetPosPlayer();		//プレイヤーの情報へのポインタ
+
+	switch (g_Enemy[nCnt].State)
+	{
+	case ENEMY_STATE_WAIT:
+		break;
+	case ENEMY_STATE_BATTLE:
+		break;
+	}
+
+	if (CollisionCircle(pPosPlayer, g_Enemy[nCnt].pos, ENEMY_CHASE, 5.0f, -10.0f, 10.0f) == true)
+	{
+		//移動処理
+		g_Enemy[nCnt].move = D3DXVECTOR3(-cosf(g_Enemy[nCnt].rot.y) * ENWMY_MOVE1, 0.0f, sinf(g_Enemy[nCnt].rot.y) * ENWMY_MOVE1);
+		g_Enemy[nCnt].State = ENEMY_STATE_BATTLE;
+
+		//向きの補正
+		RotEnemy(g_Enemy[nCnt].pos, nCnt);
+	}
+	else
+	{
+		g_Enemy[nCnt].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		g_Enemy[nCnt].State = ENEMY_STATE_WAIT;
+	}
+
+	//位置更新(入力による動き)
+	g_Enemy[nCnt].pos += g_Enemy[nCnt].move;
+
+	//敵同士の当たり判定
+	for (int nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++)
+	{
+		if (g_Enemy[nCntEnemy].bUse == true && nCnt != nCntEnemy)
+		{
+			if (CollisionCircle(g_Enemy[nCnt].pos, g_Enemy[nCntEnemy].pos, ENEMY_COLLISION, 0.0f, -10.0f, 10.0f) == true)
+			{
+				g_Enemy[nCnt].pos = g_Enemy[nCnt].posOld;
+			}
+		}
+	}
+
+	if (GetEnemyArea(g_Enemy[nCnt].pos) == AREATYPE_01)
+	{
+		g_Enemy[nCnt].pos = g_Enemy[nCnt].posOld;
+	}
+}
+
+
+//====================================================================
+//追跡する敵の更新処理しかく
+//====================================================================
+void UpdateSlime2(int nCnt)
+{
+	D3DXVECTOR3 pPosPlayer = GetPosPlayer();		//プレイヤーの情報へのポインタ
+
+	switch (g_Enemy[nCnt].State)
+	{
+	case ENEMY_STATE_WAIT:
+		break;
+	case ENEMY_STATE_BATTLE:
+		break;
+	}
+
+	if (CollisionCircle(pPosPlayer, g_Enemy[nCnt].pos, ENEMY_CHASE, 5.0f, -10.0f, 10.0f) == true)
+	{
+		//移動処理
+		g_Enemy[nCnt].move = D3DXVECTOR3(-cosf(g_Enemy[nCnt].rot.y) * ENWMY_MOVE2, 0.0f, sinf(g_Enemy[nCnt].rot.y) * ENWMY_MOVE2);
+		g_Enemy[nCnt].State = ENEMY_STATE_BATTLE;
+
+		//向きの補正
+		RotEnemy(g_Enemy[nCnt].pos, nCnt);
+	}
+	else
+	{
+		g_Enemy[nCnt].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		g_Enemy[nCnt].State = ENEMY_STATE_WAIT;
+	}
+
+	//位置更新(入力による動き)
+	g_Enemy[nCnt].pos += g_Enemy[nCnt].move;
+
+	//敵同士の当たり判定
+	for (int nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++)
+	{
+		if (g_Enemy[nCntEnemy].bUse == true && nCnt != nCntEnemy)
+		{
+			if (CollisionCircle(g_Enemy[nCnt].pos, g_Enemy[nCntEnemy].pos, ENEMY_COLLISION, 0.0f, -10.0f, 10.0f) == true)
+			{
+				g_Enemy[nCnt].pos = g_Enemy[nCnt].posOld;
+			}
+		}
+	}
+
+	if (GetEnemyArea(g_Enemy[nCnt].pos) == AREATYPE_03)
+	{
+		g_Enemy[nCnt].pos = g_Enemy[nCnt].posOld;
+	}
 }
 
 //====================================================================
