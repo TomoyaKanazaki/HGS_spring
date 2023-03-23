@@ -17,6 +17,10 @@
 #define WIDE_SIZE_GAME_X (75.0f)	//ゲーム画面の時のランキング同士の幅
 #define WIDE_SIZE_GAME_Y (100.0f)	//ゲーム画面の時のランキング同士の高さ
 
+#define X_POS_SCORE (300.0f)		//ゲーム画面の時のスコアのX座標
+#define Y_POS_SCORE (360.0f)		//ゲーム画面の時のスコアのX座標
+#define X_WIDTH_SCORE (75.0f)		//ゲーム画面の時のスコアのX座標
+
 //ランキング構造体
 typedef struct
 {
@@ -68,9 +72,9 @@ void InitRanKingNumber(void)
 	g_RankingAR = 0.025f;
 	g_RankingAG = -0.025f;
 
-	SetNumberUI(D3DXVECTOR3(0.0f, 0.0f, 0.0f), X_SIZE_GAME, Y_SIZE_GAME, GetScore() % 1000 / 100, 0);
-	SetNumberUI(D3DXVECTOR3(0.0f, 0.0f, 0.0f), X_SIZE_GAME, Y_SIZE_GAME, GetScore() % 100 / 10, 0);
-	SetNumberUI(D3DXVECTOR3(0.0f,0.0f,0.0f), X_SIZE_GAME, Y_SIZE_GAME, GetScore() % 10 / 1, 0);
+	SetNumberUI(D3DXVECTOR3(X_POS_SCORE, Y_POS_SCORE, 0.0f), X_SIZE_GAME, Y_SIZE_GAME, GetScore() % 1000 / 100, 0);
+	SetNumberUI(D3DXVECTOR3(X_POS_SCORE + X_WIDTH_SCORE * 1, Y_POS_SCORE, 0.0f), X_SIZE_GAME, Y_SIZE_GAME, GetScore() % 100 / 10, 0);
+	SetNumberUI(D3DXVECTOR3(X_POS_SCORE + X_WIDTH_SCORE * 2, Y_POS_SCORE, 0.0f), X_SIZE_GAME, Y_SIZE_GAME, GetScore() % 10 / 1, 0);
 
 	VERTEX_2D*pVtx;	//頂点ポインタを所得
 
@@ -313,7 +317,7 @@ void SaveData(void)
 	FILE *pFile; //ファイルポインタを宣言
 
 				 //ファイルを開く
-	pFile = fopen("data\\TEXT\\ranking.txt", "w");
+	pFile = fopen("02_data\\00_TXT\\ranking.txt", "r");
 
 	if (pFile != NULL)
 	{//ファイルを開けた場合
@@ -341,7 +345,7 @@ void LordData(void)
 	FILE *pFile; //ファイルポインタを宣言
 
 				 //ファイルを開く
-	pFile = fopen("data\\TEXT\\ranking.txt", "r");
+	pFile = fopen("02_data\\00_TXT\\ranking.txt", "r");
 
 	if (pFile != NULL)
 	{//ファイルを開けた場合
