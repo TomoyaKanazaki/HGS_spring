@@ -167,6 +167,8 @@ void UpdateGame()
 
 		//スコアゲージの更新
 		UpdateScoreGauge();
+	}
+	else
 	{ // ポーズ中の場合
 
 		// カメラの更新
